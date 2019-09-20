@@ -104,3 +104,6 @@ modules.xml
 *.zip
 *.tar.gz
 *.rar
+.temp/
+
+creations/

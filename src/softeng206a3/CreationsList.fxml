@@ -9,29 +9,25 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="softeng206a3.CreationsListController">
-   <children>
-      <Button layoutX="240.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="25.0" prefWidth="130.0" text="Return to Menu" />
-      <Text layoutX="222.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Creations">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Text>
-      <Text layoutX="305.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have no creations :(" visible="false">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="180.0" layoutY="53.0" prefHeight="260.0" prefWidth="250.0">
-         <content>
-            <TableView fx:id="tableView" prefWidth="248.0">
-              <columns>
-                <TableColumn fx:id="creationIdCol" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" />
-                <TableColumn fx:id="creationNameCol" maxWidth="216.0" minWidth="216.0" prefWidth="216.0" text="Creation Name" />
-              </columns>
-            </TableView>
-         </content>
-      </ScrollPane>
-      <Button layoutX="254.0" layoutY="323.0" mnemonicParsing="false" onAction="#handlePlay" text="Play" />
-      <Button layoutX="305.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
-   </children>
+    <children>
+        <Button layoutX="228.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="25.0" prefWidth="145.0" text="Return to Menu" />
+        <Text layoutX="222.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Creations">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Text>
+        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="180.0" layoutY="53.0" prefHeight="260.0" prefWidth="250.0">
+            <content>
+                <TableView fx:id="tableView" prefWidth="248.0">
+                    <columns>
+                        <TableColumn fx:id="creationIdCol" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" />
+                        <TableColumn fx:id="creationNameCol" maxWidth="216.0" minWidth="216.0" prefWidth="216.0" text="Creation Name" />
+                    </columns>
+                </TableView>
+            </content>
+        </ScrollPane>
+        <Button layoutX="305.0" layoutY="323.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="60.0" text="Play" />
+        <Button layoutX="236.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+    </children>
 </AnchorPane>
+

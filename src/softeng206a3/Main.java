@@ -20,14 +20,17 @@ public class Main extends Application {
         Parent layout = loader.load();
         Scene scene = new Scene(layout);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("WikiSpeak");
+        primaryStage.setTitle("VARpedia");
         primaryStage.show();
-
 
         String cmd = "mkdir creations";
         new ProcessBuilder("bash", "-c", cmd).start();
         cmd = "mkdir .temp";
         new ProcessBuilder("bash", "-c", cmd).start();
+    }
+
+    public static Stage getPrimaryStage() {
+        return _primaryStage;
     }
 
     public static void main(String[] args) {

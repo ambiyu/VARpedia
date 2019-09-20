@@ -9,10 +9,10 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="softeng206a3.CreateController">
    <children>
       <Button fx:id="searchBtn" layoutX="367.0" layoutY="326.0" mnemonicParsing="false" onAction="#searchWiki" text="Search" />
-      <TextField fx:id="textField" layoutX="201.0" layoutY="326.0" promptText="Search term" />
-      <Button layoutX="250.0" layoutY="371.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu" />
-      <TextArea fx:id="textArea" layoutX="25.0" layoutY="25.0" prefHeight="270.0" prefWidth="550.0" />
-      <Button fx:id="sentencesBtn" layoutX="378.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleSelectSentences" text="Next" visible="false" />
+      <TextField fx:id="textField" layoutX="200.0" layoutY="326.0" maxWidth="150.0" minWidth="150.0" onAction="#searchWiki" prefWidth="150.0" promptText="Search term" />
+      <Button layoutX="240.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="25.0" prefWidth="120.0" text="Return to Menu" />
+      <TextArea fx:id="textArea" editable="false" layoutX="25.0" layoutY="25.0" prefHeight="270.0" prefWidth="550.0" />
+      <Button fx:id="sentencesBtn" layoutX="367.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleSelectSentences" text="Next" visible="false" />
       <Button fx:id="createBtn" layoutX="367.0" layoutY="326.0" mnemonicParsing="false" onAction="#generateCreation" text="Create" visible="false" />
       <Text fx:id="textPrompt" layoutX="160.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your search term:" textAlignment="CENTER" wrappingWidth="280.13671875" />
    </children>

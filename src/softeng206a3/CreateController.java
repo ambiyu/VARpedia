@@ -39,7 +39,7 @@ public class CreateController {
     @FXML
     private void searchWiki() {
         if (!textField.getText().trim().isEmpty()) {
-            searchBtn.setDisable(true); // need to enable back later if error
+            searchBtn.setDisable(true);
             _searchTerm = textField.getText();
             textArea.setText("Searching...");
             new Thread(() -> {
@@ -65,6 +65,7 @@ public class CreateController {
 
                             textField.clear();
                             textField.setPromptText("Sentences");
+                            textField.setOnAction(event -> handleSelectSentences());
                             textPrompt.setText("Enter number of sentences (1-" + _sentences.size() + ")");
                             searchBtn.setVisible(false);
                             sentencesBtn.setVisible(true);
@@ -85,41 +86,36 @@ public class CreateController {
 
     @FXML
     private void handleSelectSentences() {
-        try {
-            _numSentences = Integer.parseInt(textField.getText().trim());
-            if (_numSentences > 0 && _numSentences <= _sentences.size()) {
+        if (!textField.getText().trim().matches("^[0-9]+$")) {
+            displayError("Invalid input. Please try again.");
+        } else {
+            try {
+                _numSentences = Integer.parseInt(textField.getText().trim());
+                if (_numSentences > 0 && _numSentences <= _sentences.size()) {
 
-                // reprint text with the number of sentences inputted
-                textArea.clear();
-                for (int i = 1; i <= _numSentences; i++) {
-                    textArea.appendText(i + ". " + _sentences.get(i - 1) + "\n");
+                    // reprint text with the number of sentences inputted
+                    textArea.clear();
+                    for (int i = 1; i <= _numSentences; i++) {
+                        textArea.appendText(i + ". " + _sentences.get(i - 1) + "\n");
+                    }
+
+                    textField.clear();
+                    textField.setPromptText("Creation name");
+                    textField.setOnAction(event -> generateCreation());
+                    textPrompt.setText("Enter a name for this creation");
+                    sentencesBtn.setVisible(false);
+                    createBtn.setVisible(true);
+                } else {
+                    displayError("Invalid input. Please try again.");
                 }
-
-                textField.clear();
-                textField.setPromptText("Creation name");
-                textPrompt.setText("Enter a name for this creation");
-                sentencesBtn.setVisible(false);
-                createBtn.setVisible(true);
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("ERROR");
-                alert.setHeaderText(null);
-                alert.setContentText("Invalid input. Please try again.");
-                alert.showAndWait();
+            } catch (NumberFormatException nfex) {
+                nfex.printStackTrace();
             }
-        } catch (NumberFormatException nfex) {
-            nfex.printStackTrace();
         }
-
-        // error handling
-
     }
 
     @FXML
     private void generateCreation() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText(null);
         String creationName = textField.getText();
 
         // check for conflicting name
@@ -129,8 +125,7 @@ public class CreateController {
             int exitStatus = process.waitFor();
 
             if (exitStatus == 0) {
-                alert.setContentText("Creation with the same name already exists. Please enter another name.");
-                alert.showAndWait();
+                displayError("Creation with the same name already exists. Please enter another name.");
                 return;
             }
         } catch (Exception e) {
@@ -138,9 +133,9 @@ public class CreateController {
         }
 
         if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
-            alert.setContentText("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed. Please try again.");
-            alert.showAndWait();
+            displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
         } else {
+
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < _numSentences; i++) {
                 sb.append(_sentences.get(i));
@@ -152,13 +147,14 @@ public class CreateController {
             createBtn.setDisable(true);
             new Thread(() -> {
                 try {
-                    //execCmd("echo \"" + fullText + "\" > text.txt");
-                    // create audio
                     Main.execCmd("mkdir .temp/" + creationName);
-                    Main.execCmd("echo \"" + fullText + "\" | text2wave -o '.temp/" + creationName + "/audio.wav'");
-                    String cmd = "soxi -D '.temp/" + creationName + "/audio.wav'";
+
+                    // create text and audio files
+                    Main.execCmd("echo \"" + fullText + "\" > '.temp/" + creationName + "/text.txt'");
+                    Main.execCmd("text2wave '.temp/" + creationName + "/text.txt' -o '.temp/" + creationName + "/audio.wav'");
 
                     // get length of audio
+                    String cmd = "soxi -D '.temp/" + creationName + "/audio.wav'";
                     Process process = new ProcessBuilder("bash", "-c", cmd).start();
                     process.waitFor();
                     BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -184,5 +180,13 @@ public class CreateController {
     @FXML
     private void returnToMenu() {
         Main.switchScene(getClass().getResource("Menu.fxml"));
+    }
+
+    private void displayError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

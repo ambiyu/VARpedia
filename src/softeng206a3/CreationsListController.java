@@ -1,9 +1,14 @@
 package softeng206a3;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -63,7 +68,20 @@ public class CreationsListController implements Initializable {
     private void handlePlay() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            new Thread(() -> Main.execCmd("ffplay -autoexit creations/" + selected.getName() + ".mp4") ).start();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
+                MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
+                loader.setController(controller);
+
+                Parent parent = loader.load();
+                Scene createScene = new Scene(parent);
+                Stage window = Main.getPrimaryStage();
+                window.setScene(createScene);
+                window.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             dispSelectionError();
         }
