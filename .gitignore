@@ -1,5 +1,8 @@
 /out
 /.idea
+/audio
+/creations
+/.temp
 
 # User-specific stuff
 .idea/**/workspace.xml
@@ -105,5 +108,3 @@ modules.xml
 *.tar.gz
 *.rar
 .temp/
-
-creations/

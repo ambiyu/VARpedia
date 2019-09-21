@@ -16,9 +16,6 @@ import java.util.List;
 public class CreateController {
 
     private String _searchTerm;
-    private List<String> _sentences;
-    private int _numSentences;
-    private Process _process;
 
     @FXML
     private Text textPrompt;
@@ -54,23 +51,24 @@ public class CreateController {
                     process.waitFor();
                     BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-                    _sentences = new ArrayList<>();
+                    List<String> sentences = new ArrayList<>();
                     String line = stdout.readLine();
                     if (line != null) {
                         do {
-                            _sentences.add(line);
+                            sentences.add(line);
                         } while ((line = stdout.readLine()) != null);
 
                         Platform.runLater(() -> {
                             // display search result
                             textArea.clear();
-                            for (int i = 1; i <= _sentences.size(); i++) {
-                                textArea.appendText(i + ". " + _sentences.get(i - 1) + "\n");
+                            for (int i = 1; i <= sentences.size(); i++) {
+                                textArea.appendText(i + ". " + sentences.get(i - 1) + "\n");
                             }
 
-                            //textField.setVisible(false);
                             searchBtn.setVisible(false);
                             previewBtn.setVisible(true);
+                            saveToAudioBtn.setVisible(true);
+                            textField.setPromptText("File name");
 
                             textPrompt.setVisible(false);
                             //textPrompt.setText("Select/highlight parts of the text to preview/save as audio, or generate creation");
@@ -89,7 +87,7 @@ public class CreateController {
     }
 
     @FXML
-    private void handlePreview() {
+    private void preview() {
         if (textArea.getSelectedText().trim().isEmpty()) {
             displayError("No text selected. Please highlight a part of the text.");
         } else {
@@ -108,33 +106,33 @@ public class CreateController {
         }
     }
 
-
     @FXML
-    private void handleSelectSentences() {
-        if (!textField.getText().trim().matches("^[0-9]+$")) {
-            displayError("Invalid input. Please try again.");
+    private void saveToAudio() {
+        if (textArea.getSelectedText().trim().isEmpty()) {
+            displayError("No text selected. Please highlight a part of the text.");
+        } else if (textField.getText().isEmpty()) {
+            displayError("Please enter a name for the audio file");
+        } else if (!textField.getText().matches("^[a-zA-Z0-9\\_-]+")) {
+            displayError("Invalid character(s) in audio file name. Only letters, numbers, hyphens and underscores are allowed.");
+        } else if (isConflicting("audio", textField.getText(), "wav")) {
+            displayError("Audio file with the same name already exists. Please enter another name.");
         } else {
             try {
-                _numSentences = Integer.parseInt(textField.getText().trim());
-                if (_numSentences > 0 && _numSentences <= _sentences.size()) {
+                //Main.execCmd( "echo \"" + textArea.getSelectedText() + "\" | text2wave -o audio/" + textField.getText() + ".wav");
+                String cmd = "echo \"" + textArea.getSelectedText() + "\" | text2wave -o audio/" + textField.getText() + ".wav";
+                Process process = new ProcessBuilder("bash", "-c", cmd).start();
+                int exitCode = process.waitFor(); // probably not needed
 
-                    // reprint text with the number of sentences inputted
-                    textArea.clear();
-                    for (int i = 1; i <= _numSentences; i++) {
-                        textArea.appendText(i + ". " + _sentences.get(i - 1) + "\n");
-                    }
-
-                    textField.clear();
-                    textField.setPromptText("Creation name");
-                    textField.setOnAction(event -> generateCreation());
-                    textPrompt.setText("Enter a name for this creation");
-                    previewBtn.setVisible(false);
-                    createBtn.setVisible(true);
-                } else {
-                    displayError("Invalid input. Please try again.");
+                if (exitCode == 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully created audio file: audio/" + textField.getText() + ".wav");
+                    alert.showAndWait();
                 }
-            } catch (NumberFormatException nfex) {
-                nfex.printStackTrace();
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -144,19 +142,11 @@ public class CreateController {
     private void generateCreation() {
         String creationName = textField.getText();
 
-        if (isConflicting("creations", creationName)) {
+        if (isConflicting("creations", creationName, "mp4")) {
             displayError("Creation with the same name already exists. Please enter another name.");
         } else if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
             displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
         } else {
-
-            // convert list to string
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < _numSentences; i++) {
-                sb.append(_sentences.get(i));
-                sb.append("\n");
-            }
-            String fullText = sb.toString();
 
             textPrompt.setText("Generating creation...");
             createBtn.setDisable(true);
@@ -165,7 +155,7 @@ public class CreateController {
                     Main.execCmd("mkdir .temp/" + creationName);
 
                     // create text and audio files
-                    Main.execCmd("echo \"" + fullText + "\" > '.temp/" + creationName + "/text.txt'");
+                    Main.execCmd("echo \"" + textArea.getText() + "\" > '.temp/" + creationName + "/text.txt'");
                     Main.execCmd("text2wave '.temp/" + creationName + "/text.txt' -o '.temp/" + creationName + "/audio.wav'");
 
                     // get length of audio
@@ -205,18 +195,18 @@ public class CreateController {
         alert.showAndWait();
     }
 
-    private boolean isConflicting(String folder, String creationName) {
+    private boolean isConflicting(String folder, String name, String format) {
         try {
-            String cmd = "test -f " + folder + "/" + creationName + ".mp4";
+            String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             int exitStatus = process.waitFor();
 
             if (exitStatus == 0) {
-                return false;
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 }
