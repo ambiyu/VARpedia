@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CreateController {
+
     private String _searchTerm;
     private List<String> _sentences;
     private int _numSentences;
+    private Process _process;
 
     @FXML
     private Text textPrompt;
@@ -31,7 +33,10 @@ public class CreateController {
     private Button searchBtn;
 
     @FXML
-    private Button sentencesBtn;
+    private Button previewBtn;
+
+    @FXML
+    private Button saveToAudioBtn;
 
     @FXML
     private Button createBtn;
@@ -63,15 +68,14 @@ public class CreateController {
                                 textArea.appendText(i + ". " + _sentences.get(i - 1) + "\n");
                             }
 
-                            textField.clear();
-                            textField.setPromptText("Sentences");
-                            textField.setOnAction(event -> handleSelectSentences());
-                            textPrompt.setText("Enter number of sentences (1-" + _sentences.size() + ")");
+                            //textField.setVisible(false);
                             searchBtn.setVisible(false);
-                            sentencesBtn.setVisible(true);
-                        });
+                            previewBtn.setVisible(true);
 
-                    } else {
+                            textPrompt.setVisible(false);
+                            //textPrompt.setText("Select/highlight parts of the text to preview/save as audio, or generate creation");
+                        });
+                    } else { // search term not found on wikit
                         Platform.runLater(() -> {
                             textArea.setText("\"" + _searchTerm + "\" not found :(");
                             searchBtn.setDisable(false);
@@ -83,6 +87,27 @@ public class CreateController {
             }).start();
         }
     }
+
+    @FXML
+    private void handlePreview() {
+        if (textArea.getSelectedText().trim().isEmpty()) {
+            displayError("No text selected. Please highlight a part of the text.");
+        } else {
+            new Thread(() -> {
+                try {
+                    previewBtn.setDisable(true);
+                    Main.execCmd("echo \"" + textArea.getSelectedText() + "\" | festival --tts");
+
+                    Platform.runLater(() -> {
+                        previewBtn.setDisable(false);
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+
 
     @FXML
     private void handleSelectSentences() {
@@ -103,7 +128,7 @@ public class CreateController {
                     textField.setPromptText("Creation name");
                     textField.setOnAction(event -> generateCreation());
                     textPrompt.setText("Enter a name for this creation");
-                    sentencesBtn.setVisible(false);
+                    previewBtn.setVisible(false);
                     createBtn.setVisible(true);
                 } else {
                     displayError("Invalid input. Please try again.");
@@ -114,28 +139,18 @@ public class CreateController {
         }
     }
 
+    // TODO: Should get all text from text area.
     @FXML
     private void generateCreation() {
         String creationName = textField.getText();
 
-        // check for conflicting name
-        try {
-            String cmd = "test -f creations/" + creationName + ".mp4";
-            Process process = new ProcessBuilder("bash", "-c", cmd).start();
-            int exitStatus = process.waitFor();
-
-            if (exitStatus == 0) {
-                displayError("Creation with the same name already exists. Please enter another name.");
-                return;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
+        if (isConflicting("creations", creationName)) {
+            displayError("Creation with the same name already exists. Please enter another name.");
+        } else if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
             displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
         } else {
 
+            // convert list to string
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < _numSentences; i++) {
                 sb.append(_sentences.get(i));
@@ -188,5 +203,20 @@ public class CreateController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private boolean isConflicting(String folder, String creationName) {
+        try {
+            String cmd = "test -f " + folder + "/" + creationName + ".mp4";
+            Process process = new ProcessBuilder("bash", "-c", cmd).start();
+            int exitStatus = process.waitFor();
+
+            if (exitStatus == 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }
