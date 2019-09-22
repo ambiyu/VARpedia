@@ -60,7 +60,6 @@ public class CreationsListController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML

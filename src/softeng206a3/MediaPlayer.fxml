@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <MediaView fx:id="mediaView" fitHeight="330.0" fitWidth="440.0" layoutX="80.0" layoutY="14.0" />
+      <MediaView fx:id="mediaView" fitHeight="330.0" fitWidth="600.0" />
       <ButtonBar layoutX="153.0" layoutY="352.0" prefHeight="40.0" prefWidth="245.0">
         <buttons>
           <Button mnemonicParsing="false" onAction="#handleBack" text="Back" />

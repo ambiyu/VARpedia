@@ -11,6 +11,9 @@ public class MenuController {
 
     @FXML
     private void handleCreate() {
-        Main.switchScene(getClass().getResource("Create.fxml"));
+        // remove previous chunks/audio files if there are any
+        Main.execCmd("rm -r .temp/*");
+
+        Main.switchScene(getClass().getResource("Search.fxml"));
     }
 }

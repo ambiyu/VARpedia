@@ -25,8 +25,6 @@ public class Main extends Application {
 
         String cmd = "mkdir creations";
         new ProcessBuilder("bash", "-c", cmd).start();
-        cmd = "mkdir audio";
-        new ProcessBuilder("bash", "-c", cmd).start();
         cmd = "mkdir .temp";
         new ProcessBuilder("bash", "-c", cmd).start();
     }
