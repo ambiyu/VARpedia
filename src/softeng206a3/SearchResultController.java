@@ -1,6 +1,8 @@
 package softeng206a3;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
@@ -28,6 +31,12 @@ public class SearchResultController implements Initializable {
     @FXML
     private Button previewBtn;
 
+    @FXML
+    private Button saveBtn;
+
+    @FXML
+    private ComboBox<String> comboBox;
+
     public SearchResultController(String searchTerm, String text) {
         _searchTerm = searchTerm;
         _text = text;
@@ -44,21 +53,43 @@ public class SearchResultController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // display search result
         textArea.setText(_text);
+
+        ObservableList<String> voices = FXCollections.observableArrayList(
+                "kal_diphone",
+                "akl_nz_jdt_diphone",
+                "akl_nz_cw_cg_cg");
+        comboBox.setItems(voices);
+        comboBox.setValue("kal_diphone");
     }
 
     @FXML
     private void preview() {
+        String[] words = textArea.getSelectedText().split("\\s+");
         if (textArea.getSelectedText().trim().isEmpty()) {
             displayError("No text selected. Please highlight a part of the text.");
+        } else if (words.length > 30) {
+            displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
         } else {
+            previewBtn.setDisable(true);
             new Thread(() -> {
                 try {
-                    previewBtn.setDisable(true);
-                    Main.execCmd("echo \"" + textArea.getSelectedText() + "\" | festival --tts");
+                    String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
 
-                    Platform.runLater(() -> {
-                        previewBtn.setDisable(false);
-                    });
+
+                    Main.execCmd("echo \"(voice_" + comboBox.getValue() + ")\" > .temp/voice.scm");
+                    Main.execCmd("echo \"(SayText " + selectedText + ")\" >> .temp/voice.scm");
+                    int exitCode = Main.execCmd("festival -b .temp/voice.scm");
+
+                    if (exitCode != 0) {
+                        Platform.runLater(() -> {
+                            previewBtn.setDisable(false);
+                            displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"kal_diphone\"");
+                        });
+                    } else {
+                        Platform.runLater(() -> {
+                            previewBtn.setDisable(false);
+                        });
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -68,32 +99,37 @@ public class SearchResultController implements Initializable {
 
     @FXML
     private void saveChunk() {
+        String[] words = textArea.getSelectedText().split("\\s+");
         if (textArea.getSelectedText().trim().isEmpty()) {
             displayError("No text selected. Please highlight a part of the text.");
+        } else if (words.length > 30) {
+            displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
         } else {
+            saveBtn.setDisable(true);
             new Thread(() -> {
                 try {
-                    String selectedText = textArea.getSelectedText();
-                    // TODO: Temp name... How should we name the chunks audio file?
-                    int id = (int)( Math.random()*1000);
-
-                    //Main.execCmd("echo \"" + textArea.getSelectedText() + "\" | text2wave -o .temp/" + (int)(Math.random()*100) + ".wav");
-                    String cmd = "echo \"" + selectedText + "\" | text2wave -o .temp/chunk" + id + ".wav";
-                    Process process = new ProcessBuilder("bash", "-c", cmd).start();
-                    int exitCode = process.waitFor(); // probably not needed
-                    if (exitCode == 0) {
-                        Chunk chunk = new Chunk(id, selectedText);
-                        _chunks.add(chunk);
-
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Success");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Successfully saved chunk");
-                            alert.showAndWait();
-                        });
+                    String voice = comboBox.getValue();
+                    String selectedText = textArea.getSelectedText().replace("\"", ""); // remove all double quotes to prevent some errors
+                    int id = 1;
+                    int numChunks = _chunks.size();
+                    if (numChunks != 0) {
+                        id = _chunks.get(numChunks-1).getChunkNumber()+1; // last chunk number + 1
                     }
 
+                    // create .wav audio file with selected voice
+                    Main.execCmd("echo \"" + selectedText + "\" | text2wave -eval '(voice_" + voice + ")' -o \".temp/chunk" + id + ".wav\"");
+
+                    Chunk chunk = new Chunk(id, selectedText, voice);
+                    _chunks.add(chunk);
+
+                    Platform.runLater(() -> {
+                        saveBtn.setDisable(false);
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Success");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successfully saved chunk");
+                        alert.showAndWait();
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -103,7 +139,7 @@ public class SearchResultController implements Initializable {
     }
 
     @FXML
-    private void chunkManager() {
+    private void toChunkManager() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));
             ChunkManagerController controller = new ChunkManagerController(_searchTerm, textArea.getText(), _chunks);
@@ -117,7 +153,6 @@ public class SearchResultController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -131,20 +166,5 @@ public class SearchResultController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private boolean isConflicting(String folder, String name, String format) {
-        try {
-            String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
-            Process process = new ProcessBuilder("bash", "-c", cmd).start();
-            int exitStatus = process.waitFor();
-
-            if (exitStatus == 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

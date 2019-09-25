@@ -2,24 +2,24 @@ package softeng206a3;
 
 public class Chunk {
     private int _chunkNumber;
-    private String _description;
-    //private String _voice;
+    private String _text;
+    private String _voice;
 
-    public Chunk(int chunkNumber, String description) {
+    public Chunk(int chunkNumber, String text, String voice) {
         _chunkNumber = chunkNumber;
-        _description = description;
-        //_voice = voice;
+        _text = text;
+        _voice = voice;
     }
 
     public int getChunkNumber() {
         return _chunkNumber;
     }
 
-    public String getDescription() {
-        return _description;
+    public String getText() {
+        return _text;
     }
 
-/*    public String getVoice() {
+    public String getVoice() {
         return _voice;
-    }*/
+    }
 }

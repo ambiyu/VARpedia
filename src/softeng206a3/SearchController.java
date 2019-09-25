@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SearchController {
 
@@ -35,14 +33,27 @@ public class SearchController {
             text.setText("Searching...");
             new Thread(() -> {
                 try {
-                    String cmd = "wikit \"" + searchTerm + "\" | grep -o '[^ ][^.]*\\.'";
+                    //String cmd = "wikit \"" + searchTerm + "\" | grep -o '[^ ][^.]*\\.'"; // each sentence on new line
+                    String cmd = "wikit \"" + searchTerm + "\" | grep -o '[^ ].*'";
                     Process process = new ProcessBuilder("bash", "-c", cmd).start();
                     process.waitFor();
                     BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
                     StringBuilder sb = new StringBuilder();
                     String line = stdout.readLine();
-                    if (line != null) {
+                    if (line.endsWith(" not found :^(")) { // search term not found on wikit
+                        Platform.runLater(() -> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("ERROR");
+                            alert.setHeaderText(null);
+                            alert.setContentText("\"" + searchTerm + "\" not found :(");
+                            alert.showAndWait();
+
+                            searchBtn.setDisable(false);
+                            text.setText("Enter search term:");
+                        });
+                    } else {
+
                         do {
                             sb.append(line).append("\n");
                         } while ((line = stdout.readLine()) != null);
@@ -63,17 +74,6 @@ public class SearchController {
                             }
                         });
 
-                    } else { // search term not found on wikit
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("ERROR");
-                            alert.setHeaderText(null);
-                            alert.setContentText("\"" + searchTerm + "\" not found :(");
-                            alert.showAndWait();
-
-                            searchBtn.setDisable(false);
-                            text.setText("Enter search term:");
-                        });
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -8,9 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 
 import java.net.URL;
 import java.util.List;
@@ -41,9 +39,6 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private Button createBtn;
 
-    @FXML
-    private Text text;
-
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
         _searchTerm = searchTerm;
         _text = text;
@@ -53,8 +48,8 @@ public class ChunkManagerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chunkNumCol.setCellValueFactory(new PropertyValueFactory<>("chunkNumber"));
-        chunkDescCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        //chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
+        chunkDescCol.setCellValueFactory(new PropertyValueFactory<>("text"));
+        chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
 
         for (Chunk chunk : _chunks) {
             tableView.getItems().add(chunk);
@@ -68,7 +63,9 @@ public class ChunkManagerController implements Initializable {
             playBtn.setDisable(true);
             new Thread(() -> {
                 try {
-                    Main.execCmd("echo \"" + selected.getDescription() + "\" | festival --tts");
+                    Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
+                    Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
+                    Main.execCmd("festival -b .temp/voice.scm");
 
                     Platform.runLater(() -> {
                         playBtn.setDisable(false);
@@ -95,10 +92,8 @@ public class ChunkManagerController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
                 tableView.getItems().removeAll(selected);
-
-                // TODO: Figure out a file naming system for chunks
-//                Main.execCmd("rm -r .temp/" + selected.getName());
-//                Main.execCmd("rm .temp/" + selected.getName() + ".mp4");
+                _chunks.remove(selected);
+                Main.execCmd("rm .temp/chunk" + selected.getChunkNumber() + ".wav");
             }
         } else {
             dispSelectionError();
@@ -108,8 +103,6 @@ public class ChunkManagerController implements Initializable {
     // maybe make a new scene for selecting number of images and display images?
     @FXML
     private void generateCreation() {
-        text.setVisible(true);
-        createBtn.setDisable(true);
 /*        String creationName = textField.getText();
 
         if (isConflicting("creations", creationName, "mp4")) {
@@ -180,5 +173,20 @@ public class ChunkManagerController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText("No chunk selected");
         alert.showAndWait();
+    }
+
+    private boolean isConflicting(String folder, String name, String format) {
+        try {
+            String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
+            Process process = new ProcessBuilder("bash", "-c", cmd).start();
+            int exitStatus = process.waitFor();
+
+            if (exitStatus == 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

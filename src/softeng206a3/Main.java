@@ -49,12 +49,13 @@ public class Main extends Application {
         }
     }
 
-    public static void execCmd(String cmd) {
+    public static int execCmd(String cmd) {
         try {
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
-            process.waitFor();
+            return process.waitFor();
         } catch (IOException | InterruptedException e) {
             System.out.println("error executing command");
         }
+        return 1;
     }
 }

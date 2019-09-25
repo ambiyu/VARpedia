@@ -16,21 +16,20 @@
                 <Font name="System Bold" size="24.0" />
             </font>
         </Text>
-        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="80.0" layoutY="50.0" prefHeight="240.0" prefWidth="450.0">
+        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="40.0" layoutY="51.0" prefHeight="240.0" prefWidth="520.0">
             <content>
                 <TableView fx:id="tableView" prefWidth="248.0">
                     <columns>
-                        <TableColumn fx:id="chunkNumCol" maxWidth="51.0" minWidth="30.0" prefWidth="50.0" resizable="false" sortable="false" />
-                        <TableColumn fx:id="chunkDescCol" maxWidth="351.0" minWidth="216.0" prefWidth="325.0" sortable="false" text="Description" />
-                  <TableColumn fx:id="chunkVoiceCol" maxWidth="351.0" minWidth="38.0" sortable="false" text="Voice" />
+                        <TableColumn fx:id="chunkNumCol" editable="false" maxWidth="51.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" text="#" />
+                        <TableColumn fx:id="chunkDescCol" editable="false" maxWidth="381.0" minWidth="216.0" prefWidth="349.0" sortable="false" text="Text" />
+                  <TableColumn fx:id="chunkVoiceCol" editable="false" maxWidth="351.0" minWidth="24.0" prefWidth="137.0" sortable="false" text="Voice" />
                     </columns>
                 </TableView>
             </content>
         </ScrollPane>
-        <Button fx:id="playBtn" layoutX="458.0" layoutY="319.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="60.0" text="Play" />
-        <Button layoutX="389.0" layoutY="319.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
-      <Button fx:id="createBtn" layoutX="237.0" layoutY="319.0" mnemonicParsing="false" onAction="#generateCreation" text="Make Creation" />
-      <Text fx:id="text" layoutX="233.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Generating Creation..." visible="false" />
+        <Button fx:id="playBtn" layoutX="500.0" layoutY="313.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="60.0" text="Play" />
+        <Button layoutX="424.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+      <Button fx:id="createBtn" layoutX="244.0" layoutY="313.0" mnemonicParsing="false" onAction="#generateCreation" text="Make Creation" />
       <Button layoutX="184.0" layoutY="361.0" mnemonicParsing="false" onAction="#back" prefHeight="26.0" prefWidth="120.0" text="Back" />
     </children>
 </AnchorPane>
