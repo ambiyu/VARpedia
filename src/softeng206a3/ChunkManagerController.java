@@ -50,7 +50,7 @@ public class ChunkManagerController implements Initializable {
         chunkNumCol.setCellValueFactory(new PropertyValueFactory<>("chunkNumber"));
         chunkDescCol.setCellValueFactory(new PropertyValueFactory<>("text"));
         chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
-
+        createBtn.setDisable(true);
         for (Chunk chunk : _chunks) {
             tableView.getItems().add(chunk);
         }
@@ -103,46 +103,30 @@ public class ChunkManagerController implements Initializable {
     // maybe make a new scene for selecting number of images and display images?
     @FXML
     private void generateCreation() {
-/*        String creationName = textField.getText();
 
-        if (isConflicting("creations", creationName, "mp4")) {
-            displayError("Creation with the same name already exists. Please enter another name.");
-        } else if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
+        String creationName = _searchTerm;
+
+        if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
             displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
         } else {
 
-            textPrompt.setText("Generating creation...");
-            createBtn.setDisable(true);
-            new Thread(() -> {
-                try {
-                    Main.execCmd("mkdir .temp/" + creationName);
-
-                    // create text and audio files
-                    Main.execCmd("echo \"" + textArea.getText() + "\" > '.temp/" + creationName + "/text.txt'");
-                    Main.execCmd("text2wave '.temp/" + creationName + "/text.txt' -o '.temp/" + creationName + "/audio.wav'");
-
-                    // get length of audio
-                    String cmd = "soxi -D '.temp/" + creationName + "/audio.wav'";
-                    Process process = new ProcessBuilder("bash", "-c", cmd).start();
-                    process.waitFor();
-                    BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    double length = Double.parseDouble(stdout.readLine()) + 1;
-
-                    // create video and then combine audio/video into one
-                    Main.execCmd("ffmpeg -f lavfi -i color=c=blue:s=320x240:d=" + length + " -vf \"drawtext=fontfile='pwmas.ttf':fontsize=50:fontcolor=white:x=(w-text_w)/2:y=(h-text_h)/2:text='" + _searchTerm + "'\" .temp/" + creationName + "/video.mp4");
-                    Main.execCmd("ffmpeg -i \".temp/" + creationName + "/video.mp4\" -i \".temp/" + creationName + "/audio.wav\" -shortest creations/" + creationName + ".mp4");
-
-                    Platform.runLater(() -> {
-                        textField.setVisible(false);
-                        createBtn.setVisible(false);
-                        textPrompt.setText("Successfully created \"" + creationName + "\"");
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
-        }*/
+        	try {
+                FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageSelect.fxml"));
+               
+                System.out.println(tableView.getSelectionModel().getSelectedItem().getText());
+                ImageSelectController imageScene = new ImageSelectController(_searchTerm, tableView.getSelectionModel().getSelectedItem().getText(), this);
+               newLoader.setController(imageScene);
+               
+                Parent parent = newLoader.load();
+                Scene createNewScene = new Scene(parent);
+                Stage newWindow = Main.getPrimaryStage();
+                newWindow.setScene(createNewScene);
+                newWindow.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        	
+        }
     }
 
     @FXML
@@ -189,4 +173,22 @@ public class ChunkManagerController implements Initializable {
         }
         return false;
     }
+    private void displayError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+    @FXML
+	public void allowCreation() {
+		if(tableView.getSelectionModel().equals(null)){
+			createBtn.setDisable(true);
+			
+		}
+		else {
+			createBtn.setDisable(false);
+		}
+	}
 }

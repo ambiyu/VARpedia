@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="createBtn" layoutX="336.0" layoutY="287.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="25.0" prefWidth="100.0" text="Create" AnchorPane.bottomAnchor="87.0" AnchorPane.rightAnchor="164.0" />
+      <Button fx:id="backBtn" layoutX="140.0" layoutY="287.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="25.0" prefWidth="100.0" text="Back" AnchorPane.bottomAnchor="87.0" AnchorPane.leftAnchor="140.0" />
+      <TextField fx:id="fileNameInput" layoutX="180.0" layoutY="141.0" onKeyReleased="#allowCreation" prefHeight="26.0" prefWidth="227.0" promptText="Please enter a unique file name" AnchorPane.bottomAnchor="233.0" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="141.0" />
+      <Spinner fx:id="numberChoice" layoutX="248.0" layoutY="222.0" prefHeight="26.0" prefWidth="91.0" AnchorPane.bottomAnchor="152.0" AnchorPane.rightAnchor="261.0" AnchorPane.topAnchor="222.0" />
+      <Label layoutX="236.0" layoutY="123.0" prefHeight="18.0" prefWidth="160.0" text="Name of File" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="123.0" />
+      <Label layoutX="240.0" layoutY="191.0" prefHeight="18.0" prefWidth="121.0" text="Number of images" AnchorPane.topAnchor="191.0" />
+      <Label layoutX="9.0" layoutY="30.0" prefHeight="40.0" prefWidth="410.0" text="File Name and Images" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="73.0">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+         <effect>
+            <Bloom />
+         </effect>
+      </Label>
+      <Button fx:id="returnToMenuBtn" layoutX="215.0" layoutY="342.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="26.0" prefWidth="133.0" text="Return to Menu" AnchorPane.leftAnchor="215.0" />
+   </children>
+</AnchorPane>
