@@ -20,10 +20,6 @@ public class ImageDownload {
 		String config = System.getProperty("user.dir") 
 				+ System.getProperty("file.separator")+ "resources/flickr-api-keys.txt"; 
 
-		//		String config = System.getProperty("user.home")
-		//				+ System.getProperty("file.separator")+ "bin" 
-		//				+ System.getProperty("file.separator")+ "flickr-api-keys.txt"; 
-
 		File file = new File(config); 
 		BufferedReader br = new BufferedReader(new FileReader(file)); 
 
@@ -42,13 +38,11 @@ public class ImageDownload {
 		int numOfImagesDwn = 0;
 		
 		try {
-			String apiKey = "8fbe78a021bff89c660d39ec9876a749"; //getAPIKey("apiKey");
-			String sharedSecret = "084afd66ee43505b";//getAPIKey("sharedSecret");
+			String apiKey = getAPIKey("apiKey");
+			String sharedSecret = getAPIKey("sharedSecret");
 
 			Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
 
-			//String query = "bicycle";
-			//int resultsPerPage = 5;
 			int page = 0;
 			
 			File dir = new File(".temp/downloads");
@@ -78,8 +72,6 @@ public class ImageDownload {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("\nDone");
 		return numOfImagesDwn;
 
 	}
