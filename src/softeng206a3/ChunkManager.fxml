@@ -18,7 +18,7 @@
         </Text>
         <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="40.0" layoutY="51.0" prefHeight="240.0" prefWidth="520.0">
             <content>
-                <TableView fx:id="tableView" onMouseClicked="#allowCreation" prefWidth="248.0">
+                <TableView fx:id="tableView" prefWidth="248.0">
                     <columns>
                         <TableColumn fx:id="chunkNumCol" editable="false" maxWidth="51.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" text="#" />
                         <TableColumn fx:id="chunkDescCol" editable="false" maxWidth="381.0" minWidth="216.0" prefWidth="349.0" sortable="false" text="Text" />

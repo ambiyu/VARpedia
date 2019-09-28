@@ -50,7 +50,7 @@ public class ChunkManagerController implements Initializable {
         chunkNumCol.setCellValueFactory(new PropertyValueFactory<>("chunkNumber"));
         chunkDescCol.setCellValueFactory(new PropertyValueFactory<>("text"));
         chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
-        createBtn.setDisable(true);
+        
         for (Chunk chunk : _chunks) {
             tableView.getItems().add(chunk);
         }
@@ -100,10 +100,11 @@ public class ChunkManagerController implements Initializable {
         }
     }
 
-    // maybe make a new scene for selecting number of images and display images?
+    
     @FXML
     private void generateCreation() {
 
+    	
         String creationName = _searchTerm;
 
         if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
@@ -112,9 +113,8 @@ public class ChunkManagerController implements Initializable {
 
         	try {
                 FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageSelect.fxml"));
-               
-                System.out.println(tableView.getSelectionModel().getSelectedItem().getText());
-                ImageSelectController imageScene = new ImageSelectController(_searchTerm, tableView.getSelectionModel().getSelectedItem().getText(), this);
+     
+                ImageSelectController imageScene = new ImageSelectController(_searchTerm, this);
                newLoader.setController(imageScene);
                
                 Parent parent = newLoader.load();
@@ -159,20 +159,6 @@ public class ChunkManagerController implements Initializable {
         alert.showAndWait();
     }
 
-    private boolean isConflicting(String folder, String name, String format) {
-        try {
-            String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
-            Process process = new ProcessBuilder("bash", "-c", cmd).start();
-            int exitStatus = process.waitFor();
-
-            if (exitStatus == 0) {
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
     private void displayError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
@@ -181,14 +167,4 @@ public class ChunkManagerController implements Initializable {
         alert.showAndWait();
     }
     
-    @FXML
-	public void allowCreation() {
-		if(tableView.getSelectionModel().equals(null)){
-			createBtn.setDisable(true);
-			
-		}
-		else {
-			createBtn.setDisable(false);
-		}
-	}
 }

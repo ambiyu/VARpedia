@@ -1,11 +1,10 @@
 package softeng206a3;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
+
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.List;
+
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -25,7 +24,6 @@ import javafx.stage.Stage;
 public class ImageSelectController implements Initializable {
 
 	private String _creationName;
-	private List<Chunk> _audioText;
 	private ChunkManagerController _previousScene; 
 	private int numOfImages;
 
@@ -52,11 +50,13 @@ public class ImageSelectController implements Initializable {
 
 	@FXML
 	private Button returnToMenuBtn;
+	
+	@FXML 
+	private Label progress;
 
 
-	public ImageSelectController(String searchTerm, List<Chunk> textForAudio, ChunkManagerController reference) {
+	public ImageSelectController(String searchTerm, ChunkManagerController reference) {
 		_creationName = searchTerm;
-		_audioText = textForAudio;
 		_previousScene = reference;
 	}
 
@@ -66,6 +66,7 @@ public class ImageSelectController implements Initializable {
 		SpinnerValueFactory<Integer> spinnerValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
 		numberChoice.setValueFactory(spinnerValues);	
 		createBtn.setDisable(true);
+		progress.setVisible(false);
 	}
 
 
@@ -76,19 +77,19 @@ public class ImageSelectController implements Initializable {
 				displayError("Creation with the same name already exists. Please enter another name.");
 
 			} else {
-
+				
+				progress.setVisible(true);
+				createBtn.setDisable(true);
 				new Thread(() -> {
 					try {
+						
+						
 						Main.execCmd("mkdir .temp/" + _creationName);
 						
 						//Download Images
 						ImageDownload downloader = new ImageDownload();
 						numOfImages = downloader.downloadImages(_creationName, numberChoice.getValue());
-						
-						// create text and audio files
-						//Main.execCmd("echo \"" + _audioText + "\" > '.temp/" + _creationName + "/text.txt'");
-						//Main.execCmd("text2wave '.temp/" + _creationName + "/text.txt' -o '.temp/" + _creationName+ "/audio.wav'");
-
+					
 						// get length of audio
 						String combineAudioCmd = "sox .temp/*.wav .temp/allAudio.wav";
 						Main.execCmd(combineAudioCmd);
@@ -108,7 +109,12 @@ public class ImageSelectController implements Initializable {
 						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=myFont.ttf: \\\n" + "text='" + _creationName + "': fontcolor=white: fontsize=32: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " .temp/vidWithWord.mp4");												
 						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/allAudio.wav\" -shortest creations/" + fileNameInput.getText() + ".mp4");
 						
+						
+						
 				Platform.runLater(() -> {
+					
+							progress.setVisible(false);
+							createBtn.setDisable(false);
 							//create a success alert
 							Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Success");
@@ -122,6 +128,7 @@ public class ImageSelectController implements Initializable {
 					}
 				}).start();
 			}
+			
 		}
 	
 
@@ -150,12 +157,12 @@ public class ImageSelectController implements Initializable {
 	
 	@FXML
 	public void allowCreation() {
-		if(!fileNameInput.getText().trim().equals("")){
-			createBtn.setDisable(false);
+		if(fileNameInput.getText().trim().isEmpty()){
+			createBtn.setDisable(true);
 			
 		}
 		else {
-			createBtn.setDisable(true);
+			createBtn.setDisable(false);
 		}
 	}
 
