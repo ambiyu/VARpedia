@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -24,7 +25,7 @@ import javafx.stage.Stage;
 public class ImageSelectController implements Initializable {
 
 	private String _creationName;
-	private String _audioText;
+	private List<Chunk> _audioText;
 	private ChunkManagerController _previousScene; 
 	private int numOfImages;
 
@@ -53,7 +54,7 @@ public class ImageSelectController implements Initializable {
 	private Button returnToMenuBtn;
 
 
-	public ImageSelectController(String searchTerm, String textForAudio, ChunkManagerController reference) {
+	public ImageSelectController(String searchTerm, List<Chunk> textForAudio, ChunkManagerController reference) {
 		_creationName = searchTerm;
 		_audioText = textForAudio;
 		_previousScene = reference;
@@ -79,17 +80,20 @@ public class ImageSelectController implements Initializable {
 				new Thread(() -> {
 					try {
 						Main.execCmd("mkdir .temp/" + _creationName);
-						//Download Images
 						
+						//Download Images
 						ImageDownload downloader = new ImageDownload();
 						numOfImages = downloader.downloadImages(_creationName, numberChoice.getValue());
 						
 						// create text and audio files
-						Main.execCmd("echo \"" + _audioText + "\" > '.temp/" + _creationName + "/text.txt'");
-						Main.execCmd("text2wave '.temp/" + _creationName + "/text.txt' -o '.temp/" + _creationName+ "/audio.wav'");
+						//Main.execCmd("echo \"" + _audioText + "\" > '.temp/" + _creationName + "/text.txt'");
+						//Main.execCmd("text2wave '.temp/" + _creationName + "/text.txt' -o '.temp/" + _creationName+ "/audio.wav'");
 
 						// get length of audio
-						String cmd = "soxi -D '.temp/" + _creationName + "/audio.wav'";
+						String combineAudioCmd = "sox .temp/*.wav .temp/allAudio.wav";
+						Main.execCmd(combineAudioCmd);
+						
+						String cmd = "soxi -D '.temp/allAudio.wav'";
 						Process process = new ProcessBuilder("bash", "-c", cmd).start();
 						process.waitFor();
 						BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -102,7 +106,7 @@ public class ImageSelectController implements Initializable {
 						
 						// create video and then combine audio/video into one
 						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=myFont.ttf: \\\n" + "text='" + _creationName + "': fontcolor=white: fontsize=32: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " .temp/vidWithWord.mp4");												
-						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/" + _creationName + "/audio.wav\" -shortest creations/" + fileNameInput.getText() + ".mp4");
+						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/allAudio.wav\" -shortest creations/" + fileNameInput.getText() + ".mp4");
 						
 				Platform.runLater(() -> {
 							//create a success alert
