@@ -3,6 +3,7 @@ package softeng206a3;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,8 +14,10 @@ import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class SearchController {
+public class SearchController implements Initializable{
 
     @FXML
     private TextField textField;
@@ -25,6 +28,27 @@ public class SearchController {
     @FXML
     private Text text;
 
+    
+    @FXML
+    public void back() {
+    	Main.switchScene(getClass().getResource("Menu.fxml"));
+    }
+    
+    @Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		searchBtn.setDisable(true);	
+	}
+    
+    @FXML 
+    public void allowSearch() {
+    	if(textField.getText().trim().isEmpty()) {
+    		searchBtn.setDisable(true);
+    	}
+    	else {
+    		searchBtn.setDisable(false);
+    	}
+    }
+    
     @FXML
     private void searchWiki() {
         if (!textField.getText().trim().isEmpty()) {
@@ -81,4 +105,6 @@ public class SearchController {
             }).start();
         }
     }
+
+	
 }

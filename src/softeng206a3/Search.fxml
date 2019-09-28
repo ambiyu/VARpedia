@@ -8,7 +8,8 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng206a3.SearchController">
    <children>
       <Text fx:id="text" layoutX="237.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter search term:" />
-      <TextField fx:id="textField" layoutX="192.0" layoutY="187.0" onAction="#searchWiki" promptText="Search term" />
+      <TextField fx:id="textField" layoutX="192.0" layoutY="187.0" onAction="#searchWiki" onKeyReleased="#allowSearch" promptText="Search term" />
       <Button fx:id="searchBtn" layoutX="380.0" layoutY="187.0" mnemonicParsing="false" onAction="#searchWiki" text="Search" />
+      <Button fx:id="backBtn" layoutX="247.0" layoutY="274.0" mnemonicParsing="false" onAction="#back" text="Back" />
    </children>
 </AnchorPane>
