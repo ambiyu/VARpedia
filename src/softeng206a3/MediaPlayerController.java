@@ -3,9 +3,12 @@ package softeng206a3;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URL;
@@ -17,10 +20,16 @@ public class MediaPlayerController implements Initializable {
     private MediaPlayer player;
 
     @FXML
+    private BorderPane borderPane;
+
+    @FXML
     private MediaView mediaView;
 
     @FXML
     private Button playPauseBtn;
+
+    @FXML
+    private Text currentTime;
 
     public MediaPlayerController(String filePath) {
         fileUrl = new File(filePath);
@@ -32,6 +41,12 @@ public class MediaPlayerController implements Initializable {
         player = new MediaPlayer(video);
         player.setAutoPlay(true);
         mediaView.setMediaPlayer(player);
+        mediaView.fitHeightProperty().bind(borderPane.heightProperty());
+        mediaView.fitWidthProperty().bind(borderPane.widthProperty());
+
+        player.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
+            currentTime.setText("" + newTime.toSeconds());
+        });
     }
 
     @FXML
@@ -54,5 +69,18 @@ public class MediaPlayerController implements Initializable {
     @FXML
     private void handleMute() {
         player.setMute(!player.isMute());
+    }
+
+    @FXML
+    private void handleBackward() {
+        Duration time = player.getCurrentTime();
+        player.seek(time.subtract(Duration.seconds(3)));
+    }
+
+    @FXML
+    private void handleForward() {
+
+        Duration time = player.getCurrentTime();
+        player.seek(time.add(Duration.seconds(3)));
     }
 }
