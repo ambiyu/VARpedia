@@ -102,7 +102,6 @@ public class CreationsListController implements Initializable {
                 tableView.getItems().clear();
                 populateTable();
 
-                Main.execCmd("rm -r .temp/" + selected.getName());
                 Main.execCmd("rm creations/" + selected.getName() + ".mp4");
             }
         } else {

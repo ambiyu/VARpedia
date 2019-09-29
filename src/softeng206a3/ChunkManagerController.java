@@ -72,6 +72,7 @@ public class ChunkManagerController implements Initializable {
             playBtn.setDisable(true);
             new Thread(() -> {
                 try {
+
                     Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
                     Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
                     Main.execCmd("festival -b .temp/voice.scm");
@@ -102,7 +103,7 @@ public class ChunkManagerController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 tableView.getItems().removeAll(selected);
                 _chunks.remove(selected);
-                Main.execCmd("rm .temp/chunk" + selected.getChunkNumber() + ".wav");
+                Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
                 if (_chunks.isEmpty()) {
                     createBtn.setDisable(true);
                 }

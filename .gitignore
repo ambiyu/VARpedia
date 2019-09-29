@@ -3,6 +3,7 @@
 /audio
 /creations
 /.temp
+*.sh
 
 # User-specific stuff
 .idea/**/workspace.xml
