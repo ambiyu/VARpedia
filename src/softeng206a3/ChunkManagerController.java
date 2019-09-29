@@ -28,7 +28,7 @@ public class ChunkManagerController implements Initializable {
     private TableColumn<Chunk, String> chunkNumCol;
 
     @FXML
-    private TableColumn<Chunk, String> chunkDescCol;
+    private TableColumn<Chunk, String> chunkTextCol;
 
     @FXML
     private TableColumn<Chunk, String> chunkVoiceCol;
@@ -39,6 +39,7 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private Button createBtn;
 
+
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
         _searchTerm = searchTerm;
         _text = text;
@@ -48,11 +49,19 @@ public class ChunkManagerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chunkNumCol.setCellValueFactory(new PropertyValueFactory<>("chunkNumber"));
-        chunkDescCol.setCellValueFactory(new PropertyValueFactory<>("text"));
+        chunkTextCol.setCellValueFactory(new PropertyValueFactory<>("text"));
         chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
         
         for (Chunk chunk : _chunks) {
             tableView.getItems().add(chunk);
+        }
+
+        //check if user has any chunks to display at chunkManager
+        if(_chunks.isEmpty()) {
+            createBtn.setDisable(true);
+        }
+        else {
+            createBtn.setDisable(false);
         }
     }
 
@@ -94,6 +103,9 @@ public class ChunkManagerController implements Initializable {
                 tableView.getItems().removeAll(selected);
                 _chunks.remove(selected);
                 Main.execCmd("rm .temp/chunk" + selected.getChunkNumber() + ".wav");
+                if (_chunks.isEmpty()) {
+                    createBtn.setDisable(true);
+                }
             }
         } else {
             dispSelectionError();
@@ -102,30 +114,20 @@ public class ChunkManagerController implements Initializable {
 
     
     @FXML
-    private void generateCreation() {
+    private void makeCreation() {
+        try {
+            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("ImageSelect.fxml"));
 
-    	
-        String creationName = _searchTerm;
+            ImageSelectController imageScene = new ImageSelectController(_searchTerm, this);
+            newLoader.setController(imageScene);
 
-        if (!creationName.matches("^[a-zA-Z0-9\\_-]+")) {
-            displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
-        } else {
-
-        	try {
-                FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageSelect.fxml"));
-     
-                ImageSelectController imageScene = new ImageSelectController(_searchTerm, this);
-               newLoader.setController(imageScene);
-               
-                Parent parent = newLoader.load();
-                Scene createNewScene = new Scene(parent);
-                Stage newWindow = Main.getPrimaryStage();
-                newWindow.setScene(createNewScene);
-                newWindow.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        	
+            Parent parent = newLoader.load();
+            Scene createNewScene = new Scene(parent);
+            Stage newWindow = Main.getPrimaryStage();
+            newWindow.setScene(createNewScene);
+            newWindow.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

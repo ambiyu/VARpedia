@@ -14,10 +14,8 @@ import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class SearchController implements Initializable{
+public class SearchController {
 
     @FXML
     private TextField textField;
@@ -32,21 +30,6 @@ public class SearchController implements Initializable{
     @FXML
     public void back() {
     	Main.switchScene(getClass().getResource("Menu.fxml"));
-    }
-    
-    @Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		searchBtn.setDisable(true);	
-	}
-    
-    @FXML 
-    public void allowSearch() {
-    	if(textField.getText().trim().isEmpty()) {
-    		searchBtn.setDisable(true);
-    	}
-    	else {
-    		searchBtn.setDisable(false);
-    	}
     }
     
     @FXML
@@ -84,6 +67,8 @@ public class SearchController implements Initializable{
 
                         Platform.runLater(() -> {
                             try {
+                                searchBtn.setDisable(false);
+
                                 FXMLLoader loader = new FXMLLoader(getClass().getResource("SearchResult.fxml"));
                                 SearchResultController controller = new SearchResultController(searchTerm, sb.toString());
                                 loader.setController(controller);

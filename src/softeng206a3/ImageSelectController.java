@@ -23,169 +23,153 @@ import javafx.stage.Stage;
 
 public class ImageSelectController implements Initializable {
 
-	private String _creationName;
-	private ChunkManagerController _previousScene; 
-	private int numOfImages;
+    private String _searchTerm;
+    private ChunkManagerController _previousScene;
+    private int numOfImages;
 
-	@FXML
-	private Button createBtn;
+    @FXML
+    private Button createBtn;
 
-	@FXML
-	private Button backBtn;
+    @FXML
+    private Spinner<Integer> numberChoice;
 
-	@FXML 
-	private Spinner<Integer> numberChoice;
+    @FXML
+    private TextField fileNameInput;
 
-	@FXML
-	private TextField fileNameInput;
-
-	@FXML
-	private Label title;
-
-	@FXML
-	private Label spinnerTitle;
-
-	@FXML
-	private Label textAreaTitle;
-
-	@FXML
-	private Button returnToMenuBtn;
-	
-	@FXML 
-	private Label progress;
+    @FXML
+    private Label progress;
 
 
-	public ImageSelectController(String searchTerm, ChunkManagerController reference) {
-		_creationName = searchTerm;
-		_previousScene = reference;
-	}
+    public ImageSelectController(String searchTerm, ChunkManagerController reference) {
+        _searchTerm = searchTerm;
+        _previousScene = reference;
+    }
 
 
-	@Override
-	public void initialize(URL url, ResourceBundle resourceBundle) {
-		SpinnerValueFactory<Integer> spinnerValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
-		numberChoice.setValueFactory(spinnerValues);	
-		createBtn.setDisable(true);
-		progress.setVisible(false);
-	}
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        SpinnerValueFactory<Integer> spinnerValues = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 1);
+        numberChoice.setValueFactory(spinnerValues);
+        createBtn.setDisable(true);
+        progress.setVisible(false);
+    }
 
 
-	@FXML
-	public void handleCreate() { 
-		
-			if (isConflicting("creations", fileNameInput.getText(), "mp4")) {
-				displayError("Creation with the same name already exists. Please enter another name.");
+    @FXML
+    public void handleCreate() {
+        if (!fileNameInput.getText().matches("^[a-zA-Z0-9\\_-]+")) {
+            displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
+        } else if (isConflicting("creations", fileNameInput.getText(), "mp4")) {
+            displayError("Creation with the same name already exists. Please enter another name.");
+        } else {
 
-			} else {
-				
-				progress.setVisible(true);
-				createBtn.setDisable(true);
-				new Thread(() -> {
-					try {
-						
-						
-						Main.execCmd("mkdir .temp/" + _creationName);
-						
-						//Download Images
-						ImageDownload downloader = new ImageDownload();
-						numOfImages = downloader.downloadImages(_creationName, numberChoice.getValue());
-					
-						// get length of audio
-						String combineAudioCmd = "sox .temp/*.wav .temp/allAudio.wav";
-						Main.execCmd(combineAudioCmd);
-						
-						String cmd = "soxi -D '.temp/allAudio.wav'";
-						Process process = new ProcessBuilder("bash", "-c", cmd).start();
-						process.waitFor();
-						BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-						double length = Double.parseDouble(stdout.readLine()) + 1;
-						
-						double lengthOfImage = 1/(length/numOfImages) ;
-													
-						// combine images into a video 
-						Main.execCmd("ffmpeg -r " + lengthOfImage + " -pattern_type glob -i '.temp/downloads/*.jpg' -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" .temp/combinedImages.mp4");
-						
-						// create video and then combine audio/video into one
-						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=myFont.ttf: \\\n" + "text='" + _creationName + "': fontcolor=white: fontsize=32: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " .temp/vidWithWord.mp4");												
-						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/allAudio.wav\" -shortest creations/" + fileNameInput.getText() + ".mp4");
-						
-						
-						
-				Platform.runLater(() -> {
-					
-							progress.setVisible(false);
-							createBtn.setDisable(false);
-							//create a success alert
-							Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Success");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Successfully created file " + fileNameInput.getText() + ".mp4");
-                            alert.showAndWait();
-						});
+            progress.setVisible(true);
+            createBtn.setDisable(true);
+            new Thread(() -> {
+                try {
 
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}).start();
-			}
-			
-		}
-	
+                    //Main.execCmd("mkdir .temp/" + _creationName);
+
+                    //Download Images
+                    ImageDownload downloader = new ImageDownload();
+                    numOfImages = downloader.downloadImages(_searchTerm, numberChoice.getValue());
+
+                    // combine chunks into a single audio file
+                    String combineAudioCmd = "sox .temp/chunks/*.wav .temp/combinedAudio.wav";
+                    Main.execCmd(combineAudioCmd);
+
+                    // get length of audio
+                    String cmd = "soxi -D '.temp/combinedAudio.wav'";
+                    Process process = new ProcessBuilder("bash", "-c", cmd).start();
+                    process.waitFor();
+                    BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    double length = Double.parseDouble(stdout.readLine()) + 1;
+
+                    double lengthOfImage = numOfImages/length;
+
+                    // combine images into a video
+                    //Main.execCmd("cat .temp/images/*.jpg | ffmpeg -f image2pipe -framerate 1 -i - -i .temp/combinedAudio.wav -r " + lengthOfImage + " -pattern_type glob -c:v libx264 -pix_fmt yuv420p -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 -max_muxing_queue_size 1024 -y creations/" + fileNameInput.getText() + ".mp4");
+                    Main.execCmd("ffmpeg -framerate " + lengthOfImage + " -pattern_type glob -i '.temp/images/*.jpg' -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 .temp/combinedImages.mp4");
+
+                    // create video and then combine audio/video into one
+                    Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=32: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
+                    Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + fileNameInput.getText() + ".mp4");
+
+                    Platform.runLater(() -> {
+
+                        progress.setVisible(false);
+                        createBtn.setDisable(false);
+                        //create a success alert
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Success");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successfully created file " + fileNameInput.getText() + ".mp4");
+                        alert.showAndWait();
+                    });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+
+    }
 
 
-	@FXML
-	public void handleBack() {
-		
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));
-			loader.setController(_previousScene);
-			Parent parent = loader.load();
-			Scene createScene = new Scene(parent);
-			Stage window = Main.getPrimaryStage();
-			window.setScene(createScene);
-			window.show();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    @FXML
+    public void handleBack() {
 
-	@FXML
-	public void returnToMenu() {
-		Main.switchScene(getClass().getResource("Menu.fxml"));
-	}
-	
-	@FXML
-	public void allowCreation() {
-		if(fileNameInput.getText().trim().isEmpty()){
-			createBtn.setDisable(true);
-			
-		}
-		else {
-			createBtn.setDisable(false);
-		}
-	}
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));
+            loader.setController(_previousScene);
+            Parent parent = loader.load();
+            Scene createScene = new Scene(parent);
+            Stage window = Main.getPrimaryStage();
+            window.setScene(createScene);
+            window.show();
 
-	private boolean isConflicting(String folder, String name, String format) {
-		try {
-			String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
-			Process process = new ProcessBuilder("bash", "-c", cmd).start();
-			int exitStatus = process.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-			if (exitStatus == 0) {
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	 private void displayError(String message) {
-	        Alert alert = new Alert(Alert.AlertType.ERROR);
-	        alert.setTitle("ERROR");
-	        alert.setHeaderText(null);
-	        alert.setContentText(message);
-	        alert.showAndWait();
-	    }
-	
+    @FXML
+    public void returnToMenu() {
+        Main.switchScene(getClass().getResource("Menu.fxml"));
+    }
+
+    @FXML
+    public void allowCreation() {
+        if(fileNameInput.getText().trim().isEmpty()){
+            createBtn.setDisable(true);
+
+        }
+        else {
+            createBtn.setDisable(false);
+        }
+    }
+
+    private boolean isConflicting(String folder, String name, String format) {
+        try {
+            String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
+            Process process = new ProcessBuilder("bash", "-c", cmd).start();
+            int exitStatus = process.waitFor();
+
+            if (exitStatus == 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    private void displayError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 }

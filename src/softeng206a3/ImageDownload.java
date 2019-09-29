@@ -12,67 +12,67 @@ import com.flickr4java.flickr.photos.*;
 
 public class ImageDownload {
 
-	public ImageDownload() {
-		
-	}
-	public static String getAPIKey(String key) throws Exception {
+    public ImageDownload() {
 
-		String config = System.getProperty("user.dir") 
-				+ System.getProperty("file.separator")+ "resources/flickr-api-keys.txt"; 
+    }
+    public static String getAPIKey(String key) throws Exception {
 
-		File file = new File(config); 
-		BufferedReader br = new BufferedReader(new FileReader(file)); 
+        String config = System.getProperty("user.dir")
+                + System.getProperty("file.separator")+ "resources/flickr-api-keys.txt";
 
-		String line;
-		while ( (line = br.readLine()) != null ) {
-			if (line.trim().startsWith(key)) {
-				br.close();
-				return line.substring(line.indexOf("=")+1).trim();
-			}
-		}
-		br.close();
-		throw new RuntimeException("Couldn't find " + key +" in config file "+file.getName());
-	}
+        File file = new File(config);
+        BufferedReader br = new BufferedReader(new FileReader(file));
 
-	public int downloadImages(String searchTerm, int numOfImages) {
-		int numOfImagesDwn = 0;
-		
-		try {
-			String apiKey = getAPIKey("apiKey");
-			String sharedSecret = getAPIKey("sharedSecret");
+        String line;
+        while ( (line = br.readLine()) != null ) {
+            if (line.trim().startsWith(key)) {
+                br.close();
+                return line.substring(line.indexOf("=")+1).trim();
+            }
+        }
+        br.close();
+        throw new RuntimeException("Couldn't find " + key +" in config file "+file.getName());
+    }
 
-			Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
+    public int downloadImages(String searchTerm, int numOfImages) {
+        int numOfImagesDwn = 0;
 
-			int page = 0;
-			
-			File dir = new File(".temp/downloads");
-			dir.mkdir();
+        try {
+            String apiKey = getAPIKey("apiKey");
+            String sharedSecret = getAPIKey("sharedSecret");
 
-			PhotosInterface photos = flickr.getPhotosInterface();
-			SearchParameters params = new SearchParameters();
-			params.setSort(SearchParameters.RELEVANCE);
-			params.setMedia("photos"); 
-			params.setText(searchTerm);
+            Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
 
-			PhotoList<Photo> results = photos.search(params, numOfImages, page);
-			
+            int page = 0;
 
-			for (Photo photo: results) {
-				try {
-					BufferedImage image = photos.getImage(photo,Size.LARGE);
-					String filename = searchTerm.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
-					File outputfile = new File(".temp/downloads",filename);
-					ImageIO.write(image, "jpg", outputfile);
-					
-					numOfImagesDwn++;
-				} catch (FlickrException fe) {
-					System.err.println("Ignoring image " +photo.getId() +": "+ fe.getMessage());
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return numOfImagesDwn;
+            File dir = new File(".temp/images");
+            dir.mkdir();
 
-	}
+            PhotosInterface photos = flickr.getPhotosInterface();
+            SearchParameters params = new SearchParameters();
+            params.setSort(SearchParameters.RELEVANCE);
+            params.setMedia("photos");
+            params.setText(searchTerm);
+
+            PhotoList<Photo> results = photos.search(params, numOfImages, page);
+
+
+            for (Photo photo: results) {
+                try {
+                    BufferedImage image = photos.getImage(photo,Size.LARGE);
+                    String filename = searchTerm.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
+                    File outputfile = new File(".temp/images",filename);
+                    ImageIO.write(image, "jpg", outputfile);
+
+                    numOfImagesDwn++;
+                } catch (FlickrException fe) {
+                    System.err.println("Ignoring image " +photo.getId() +": "+ fe.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return numOfImagesDwn;
+
+    }
 }

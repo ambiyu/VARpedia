@@ -10,21 +10,21 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button fx:id="createBtn" layoutX="251.0" layoutY="299.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="25.0" prefWidth="100.0" text="Create" AnchorPane.bottomAnchor="75.0" AnchorPane.rightAnchor="249.0" />
-      <Button fx:id="backBtn" layoutX="148.0" layoutY="342.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="25.0" prefWidth="100.0" text="Back" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="148.0" />
-      <TextField fx:id="fileNameInput" layoutX="180.0" layoutY="141.0" onKeyReleased="#allowCreation" prefHeight="26.0" prefWidth="227.0" promptText="Please enter a unique file name" AnchorPane.bottomAnchor="233.0" AnchorPane.leftAnchor="180.0" AnchorPane.topAnchor="141.0" />
-      <Spinner fx:id="numberChoice" layoutX="248.0" layoutY="222.0" prefHeight="26.0" prefWidth="91.0" AnchorPane.bottomAnchor="152.0" AnchorPane.rightAnchor="261.0" AnchorPane.topAnchor="222.0" />
-      <Label layoutX="236.0" layoutY="123.0" prefHeight="18.0" prefWidth="160.0" text="Name of File" AnchorPane.leftAnchor="236.0" AnchorPane.rightAnchor="204.0" AnchorPane.topAnchor="123.0" />
-      <Label layoutX="240.0" layoutY="191.0" prefHeight="18.0" prefWidth="121.0" text="Number of images" AnchorPane.topAnchor="191.0" />
-      <Label layoutX="9.0" layoutY="30.0" prefHeight="40.0" prefWidth="410.0" text="File Name and Images" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="73.0">
+      <Button fx:id="createBtn" layoutX="252.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="25.0" prefWidth="100.0" text="Create" AnchorPane.bottomAnchor="81.0" AnchorPane.rightAnchor="248.0" />
+      <Button fx:id="backBtn" layoutX="191.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="25.0" prefWidth="100.0" text="Back" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="191.0" />
+      <TextField fx:id="fileNameInput" layoutX="188.0" layoutY="141.0" onKeyReleased="#allowCreation" prefHeight="26.0" prefWidth="227.0" promptText="Please enter a unique file name" AnchorPane.bottomAnchor="233.0" AnchorPane.leftAnchor="188.0" AnchorPane.topAnchor="141.0" />
+      <Spinner fx:id="numberChoice" layoutX="256.0" layoutY="216.0" prefHeight="26.0" prefWidth="91.0" AnchorPane.bottomAnchor="158.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="216.0" />
+      <Label layoutX="250.0" layoutY="116.0" prefHeight="18.0" prefWidth="100.0" text="Creation name" textAlignment="CENTER" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" AnchorPane.topAnchor="116.0" />
+      <Label layoutX="241.0" layoutY="191.0" prefHeight="18.0" prefWidth="121.0" text="Number of images" AnchorPane.topAnchor="191.0" />
+      <Label layoutX="114.0" layoutY="38.0" prefHeight="40.0" prefWidth="394.0" text="Creation Name and Images" textAlignment="CENTER" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="92.0">
          <font>
-            <Font name="System Bold" size="32.0" />
+            <Font name="System Bold" size="25.0" />
          </font>
          <effect>
             <Bloom />
          </effect>
       </Label>
-      <Button fx:id="returnToMenuBtn" layoutX="347.0" layoutY="342.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="26.0" prefWidth="133.0" text="Return to Menu" AnchorPane.leftAnchor="347.0" />
-      <Label fx:id="progress" layoutX="244.0" layoutY="272.0" prefHeight="16.0" prefWidth="133.0" text="Making Creation..." />
+      <Button fx:id="returnToMenuBtn" layoutX="302.0" layoutY="355.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="26.0" prefWidth="133.0" text="Return to Menu" AnchorPane.leftAnchor="302.0" />
+      <Label fx:id="progress" layoutX="198.0" layoutY="264.0" prefHeight="16.0" prefWidth="207.0" text="Making creation, please wait..." />
    </children>
 </AnchorPane>

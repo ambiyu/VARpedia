@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng206a3.SearchController">
    <children>
-      <Text fx:id="text" layoutX="237.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter search term:" />
-      <TextField fx:id="textField" layoutX="192.0" layoutY="187.0" onAction="#searchWiki" onKeyReleased="#allowSearch" promptText="Search term" />
-      <Button fx:id="searchBtn" layoutX="380.0" layoutY="187.0" mnemonicParsing="false" onAction="#searchWiki" text="Search" />
-      <Button fx:id="backBtn" layoutX="247.0" layoutY="274.0" mnemonicParsing="false" onAction="#back" text="Back" />
+      <Text fx:id="text" layoutX="236.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter search term:" textAlignment="CENTER" />
+      <TextField fx:id="textField" layoutX="192.0" layoutY="187.0" onAction="#searchWiki" promptText="Search term" />
+      <Button fx:id="searchBtn" layoutX="373.0" layoutY="187.0" mnemonicParsing="false" onAction="#searchWiki" text="Search" />
+      <Button fx:id="backBtn" layoutX="238.0" layoutY="337.0" mnemonicParsing="false" onAction="#back" text="Return to Menu" />
+      <Label layoutX="192.0" layoutY="69.0" text="Wikipedia Search">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

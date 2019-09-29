@@ -45,7 +45,7 @@ public class MediaPlayerController implements Initializable {
         mediaView.fitWidthProperty().bind(borderPane.widthProperty());
 
         player.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
-            currentTime.setText("" + newTime.toSeconds());
+            currentTime.setText(String.format("%.1f", newTime.toSeconds()));
         });
     }
 

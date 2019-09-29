@@ -108,3 +108,5 @@ modules.xml
 *.tar.gz
 *.rar
 .temp/
+
+resources/
