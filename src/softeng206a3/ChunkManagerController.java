@@ -114,11 +114,12 @@ public class ChunkManagerController implements Initializable {
     }
 
     private void swapChunks(Chunk selected, Chunk other, int selectedIndex, int d) {
-        tableView.getItems().set(selectedIndex, other);
-        tableView.getItems().set(selectedIndex+d, selected);
-
         _chunks.set(selectedIndex, other);
         _chunks.set(selectedIndex+d, selected);
+
+        tableView.getItems().set(selectedIndex, other);
+        tableView.getItems().set(selectedIndex+d, selected);
+        tableView.getSelectionModel().select(selected);
     }
 
     @FXML
