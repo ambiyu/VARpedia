@@ -29,6 +29,12 @@ public class CreationsListController implements Initializable {
     @FXML
     private TableColumn<Creation, String> creationNameCol;
 
+    @FXML
+    private Button playBtn;
+
+    @FXML
+    private Button deleteBtn;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         creationIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -62,50 +68,59 @@ public class CreationsListController implements Initializable {
         }
     }
 
+    /**
+     * Checks mouse clicks and see whether a creation is selected or not
+     */
+    @FXML
+    private void handleClick() {
+        Creation selected = tableView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            playBtn.setDisable(false);
+            deleteBtn.setDisable(false);
+        } else {
+            playBtn.setDisable(true);
+            deleteBtn.setDisable(true);
+        }
+    }
+
     @FXML
     private void handlePlay() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
-                MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
-                loader.setController(controller);
 
-                Parent parent = loader.load();
-                Scene createScene = new Scene(parent);
-                Stage window = Main.getPrimaryStage();
-                window.setScene(createScene);
-                window.show();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
+            MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
+            loader.setController(controller);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            dispSelectionError();
+            Parent parent = loader.load();
+            Scene createScene = new Scene(parent);
+            Stage window = Main.getPrimaryStage();
+            window.setScene(createScene);
+            window.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     private void handleDelete() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Warning");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to delete \"" + selected.getName() + "\"?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK){
-                tableView.getItems().removeAll(selected);
-                _creations.remove(selected.getName());
 
-                // repopulate table to reset ids
-                tableView.getItems().clear();
-                populateTable();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete \"" + selected.getName() + "\"?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            tableView.getItems().removeAll(selected);
+            _creations.remove(selected.getName());
 
-                Main.execCmd("rm creations/" + selected.getName() + ".mp4");
-            }
-        } else {
-            dispSelectionError();
+            // repopulate table to reset ids
+            tableView.getItems().clear();
+            populateTable();
+
+            Main.execCmd("rm creations/" + selected.getName() + ".mp4");
         }
     }
 
@@ -120,13 +135,4 @@ public class CreationsListController implements Initializable {
             tableView.getItems().add(creation);
         }
     }
-
-    private void dispSelectionError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText(null);
-        alert.setContentText("No creation selected");
-        alert.showAndWait();
-    }
-
 }

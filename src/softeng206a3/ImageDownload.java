@@ -12,9 +12,6 @@ import com.flickr4java.flickr.photos.*;
 
 public class ImageDownload {
 
-    public ImageDownload() {
-
-    }
     public static String getAPIKey(String key) throws Exception {
 
         String config = System.getProperty("user.dir")

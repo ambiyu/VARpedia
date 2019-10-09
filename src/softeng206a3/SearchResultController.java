@@ -56,6 +56,7 @@ public class SearchResultController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // display search result
         textArea.setText(_text);
+
         ObservableList<String> voices = FXCollections.observableArrayList(
                 "kal_diphone",
                 "akl_nz_jdt_diphone",
@@ -72,6 +73,7 @@ public class SearchResultController implements Initializable {
     @FXML
     private void preview() {
         String[] words = textArea.getSelectedText().split("\\s+");
+
         if (textArea.getSelectedText().trim().isEmpty()) {
             displayError("No text selected. Please highlight a part of the text.");
         } else if (words.length > 30) {
@@ -82,7 +84,7 @@ public class SearchResultController implements Initializable {
                 try {
                     String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
 
-
+                    // create .scm file in order to use festival to play different voices
                     Main.execCmd("echo \"(voice_" + comboBox.getValue() + ")\" > .temp/voice.scm");
                     Main.execCmd("echo \"(SayText " + selectedText + ")\" >> .temp/voice.scm");
                     int exitCode = Main.execCmd("festival -b .temp/voice.scm");
@@ -106,8 +108,8 @@ public class SearchResultController implements Initializable {
 
     @FXML
     private void saveChunk() {
-
         String[] words = textArea.getSelectedText().split("\\s+");
+
         if (textArea.getSelectedText().trim().isEmpty()) {
             displayError("No text selected. Please highlight a part of the text.");
         } else if (words.length > 30) {

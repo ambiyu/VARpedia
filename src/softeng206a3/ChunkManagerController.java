@@ -37,6 +37,9 @@ public class ChunkManagerController implements Initializable {
     private Button playBtn;
 
     @FXML
+    private Button deleteBtn;
+
+    @FXML
     private Button createBtn;
 
 
@@ -66,50 +69,56 @@ public class ChunkManagerController implements Initializable {
     }
 
     @FXML
+    private void handleClick() {
+        Chunk selected = tableView.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            playBtn.setDisable(false);
+            deleteBtn.setDisable(false);
+        } else {
+            playBtn.setDisable(true);
+            deleteBtn.setDisable(true);
+        }
+    }
+
+    @FXML
     private void handlePlay() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            playBtn.setDisable(true);
-            new Thread(() -> {
-                try {
 
-                    Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
-                    Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
-                    Main.execCmd("festival -b .temp/voice.scm");
+        playBtn.setDisable(true);
+        new Thread(() -> {
+            try {
 
-                    Platform.runLater(() -> {
-                        playBtn.setDisable(false);
-                    });
+                Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
+                Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
+                Main.execCmd("festival -b .temp/voice.scm");
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
+                Platform.runLater(() -> {
+                    playBtn.setDisable(false);
+                });
 
-        } else {
-            dispSelectionError();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     @FXML
     private void handleDelete() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Warning");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to delete Chunk " + selected.getChunkNumber() + "?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                tableView.getItems().removeAll(selected);
-                _chunks.remove(selected);
-                Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
-                if (_chunks.isEmpty()) {
-                    createBtn.setDisable(true);
-                }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete Chunk " + selected.getChunkNumber() + "?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            tableView.getItems().removeAll(selected);
+            _chunks.remove(selected);
+            Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
+            if (_chunks.isEmpty()) {
+                createBtn.setDisable(true);
             }
-        } else {
-            dispSelectionError();
         }
     }
 
@@ -154,14 +163,6 @@ public class ChunkManagerController implements Initializable {
         Main.switchScene(getClass().getResource("Menu.fxml"));
     }
 
-    private void dispSelectionError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText(null);
-        alert.setContentText("No chunk selected");
-        alert.showAndWait();
-    }
-
     private void displayError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
@@ -169,5 +170,4 @@ public class ChunkManagerController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
 }

@@ -68,8 +68,6 @@ public class ImageSelectController implements Initializable {
             new Thread(() -> {
                 try {
 
-                    //Main.execCmd("mkdir .temp/" + _creationName);
-
                     //Download Images
                     ImageDownload downloader = new ImageDownload();
                     numOfImages = downloader.downloadImages(_searchTerm, numberChoice.getValue());
