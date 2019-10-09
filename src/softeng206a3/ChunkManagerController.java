@@ -168,7 +168,7 @@ public class ChunkManagerController implements Initializable {
         try {
             FXMLLoader newLoader = new FXMLLoader(getClass().getResource("ImageSelect.fxml"));
 
-            ImageSelectController imageScene = new ImageSelectController(_searchTerm, this);
+            ImageSelectController imageScene = new ImageSelectController(_searchTerm, this, _chunks);
             newLoader.setController(imageScene);
 
             Parent parent = newLoader.load();

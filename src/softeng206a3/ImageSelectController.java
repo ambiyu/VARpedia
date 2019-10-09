@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -25,6 +26,7 @@ public class ImageSelectController implements Initializable {
 
     private String _searchTerm;
     private ChunkManagerController _previousScene;
+    private List<Chunk> _chunks;
     private int numOfImages;
 
     @FXML
@@ -40,9 +42,10 @@ public class ImageSelectController implements Initializable {
     private Label progress;
 
 
-    public ImageSelectController(String searchTerm, ChunkManagerController reference) {
+    public ImageSelectController(String searchTerm, ChunkManagerController reference, List<Chunk> chunks) {
         _searchTerm = searchTerm;
         _previousScene = reference;
+        _chunks = chunks;
     }
 
 
@@ -72,8 +75,14 @@ public class ImageSelectController implements Initializable {
                     ImageDownload downloader = new ImageDownload();
                     numOfImages = downloader.downloadImages(_searchTerm, numberChoice.getValue());
 
+                    // get chunks in the correct order
+                    StringBuilder chunkList = new StringBuilder();
+                    for (Chunk chunk : _chunks) {
+                        chunkList.append(".temp/chunks/chunk").append(chunk.getChunkNumber()).append(".wav ");
+                    }
+
                     // combine chunks into a single audio file
-                    String combineAudioCmd = "sox .temp/chunks/*.wav .temp/combinedAudio.wav";
+                    String combineAudioCmd = "sox " + chunkList.toString() + " .temp/combinedAudio.wav";
                     Main.execCmd(combineAudioCmd);
 
                     // get length of audio
@@ -108,6 +117,8 @@ public class ImageSelectController implements Initializable {
                     } else {
                         Platform.runLater(() -> {
                             displayError("An error occurred while attempting to generate creation");
+                            createBtn.setDisable(false);
+                            progress.setVisible(false);
                         });
                     }
 
@@ -118,7 +129,6 @@ public class ImageSelectController implements Initializable {
         }
 
     }
-
 
 
     @FXML
