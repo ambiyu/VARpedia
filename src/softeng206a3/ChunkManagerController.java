@@ -126,40 +126,52 @@ public class ChunkManagerController implements Initializable {
     private void handlePlay() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
 
-        playBtn.setDisable(true);
-        new Thread(() -> {
-            try {
+        if (selected != null) {
+            playBtn.setDisable(true);
+            new Thread(() -> {
+                try {
 
-                Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
-                Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
-                Main.execCmd("festival -b .temp/voice.scm");
+                    Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
+                    Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
+                    Main.execCmd("festival -b .temp/voice.scm");
 
-                Platform.runLater(() -> {
-                    playBtn.setDisable(false);
-                });
+                    Platform.runLater(() -> {
+                        playBtn.setDisable(false);
+                    });
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+        } else {
+            displayError("No chunk selected");
+        }
     }
 
     @FXML
     private void handleDelete() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Warning");
-        alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to delete Chunk " + selected.getChunkNumber() + "?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            tableView.getItems().removeAll(selected);
-            _chunks.remove(selected);
-            Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
-            if (_chunks.isEmpty()) {
-                createBtn.setDisable(true);
+        if (selected != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to delete Chunk " + selected.getChunkNumber() + "?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                tableView.getItems().removeAll(selected);
+                _chunks.remove(selected);
+                Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
+                if (_chunks.isEmpty()) {
+                    createBtn.setDisable(true);
+                }
+
+                playBtn.setDisable(true);
+                deleteBtn.setDisable(true);
             }
+        } else {
+            displayError("No chunk selected");
         }
     }
 

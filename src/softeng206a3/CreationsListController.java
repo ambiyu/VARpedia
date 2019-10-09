@@ -87,41 +87,54 @@ public class CreationsListController implements Initializable {
     private void handlePlay() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
 
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
-            MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
-            loader.setController(controller);
+        if (selected != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
+                MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
+                loader.setController(controller);
 
-            Parent parent = loader.load();
-            Scene createScene = new Scene(parent);
-            Stage window = Main.getPrimaryStage();
-            window.setScene(createScene);
-            window.show();
+                Parent parent = loader.load();
+                Scene createScene = new Scene(parent);
+                Stage window = Main.getPrimaryStage();
+                window.setScene(createScene);
+                window.show();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            displaySelectionError();
         }
+
     }
 
     @FXML
     private void handleDelete() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Warning");
-        alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to delete \"" + selected.getName() + "\"?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            tableView.getItems().removeAll(selected);
-            _creations.remove(selected.getName());
+        if (selected != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to delete \"" + selected.getName() + "\"?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                tableView.getItems().removeAll(selected);
+                _creations.remove(selected.getName());
 
-            // repopulate table to reset ids
-            tableView.getItems().clear();
-            populateTable();
+                // repopulate table to reset ids
+                tableView.getItems().clear();
+                populateTable();
 
-            Main.execCmd("rm creations/" + selected.getName() + ".mp4");
+                Main.execCmd("rm creations/" + selected.getName() + ".mp4");
+
+                playBtn.setDisable(true);
+                deleteBtn.setDisable(true);
+            }
+        } else {
+            displaySelectionError();
         }
+
     }
 
     @FXML
@@ -134,5 +147,13 @@ public class CreationsListController implements Initializable {
             Creation creation = new Creation(i+1, _creations.get(i));
             tableView.getItems().add(creation);
         }
+    }
+
+    private void displaySelectionError() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText(null);
+        alert.setContentText("No chunk selected");
+        alert.showAndWait();
     }
 }
