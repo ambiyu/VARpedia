@@ -31,5 +31,7 @@
         <Button fx:id="deleteBtn" disable="true" layoutX="424.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
       <Button fx:id="createBtn" layoutX="244.0" layoutY="313.0" mnemonicParsing="false" onAction="#makeCreation" text="Make Creation" />
       <Button layoutX="184.0" layoutY="361.0" mnemonicParsing="false" onAction="#back" prefHeight="26.0" prefWidth="120.0" text="Back" />
+      <Button fx:id="upBtn" disable="true" layoutX="40.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="26.0" prefWidth="55.0" text="Up" />
+      <Button fx:id="downBtn" disable="true" layoutX="107.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleDown" text="Down" />
     </children>
 </AnchorPane>

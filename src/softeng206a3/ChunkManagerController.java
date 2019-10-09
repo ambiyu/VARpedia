@@ -42,6 +42,12 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private Button createBtn;
 
+    @FXML
+    private Button upBtn;
+
+    @FXML
+    private Button downBtn;
+
 
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
         _searchTerm = searchTerm;
@@ -75,10 +81,44 @@ public class ChunkManagerController implements Initializable {
         if (selected != null) {
             playBtn.setDisable(false);
             deleteBtn.setDisable(false);
+            upBtn.setDisable(false);
+            downBtn.setDisable(false);
         } else {
             playBtn.setDisable(true);
             deleteBtn.setDisable(true);
+            upBtn.setDisable(true);
+            downBtn.setDisable(true);
         }
+    }
+
+    @FXML
+    private void handleUp() {
+        Chunk selected = tableView.getSelectionModel().getSelectedItem();
+        int index = _chunks.indexOf(selected);
+
+        if (index != 0) {
+            Chunk above = _chunks.get(index-1);
+            swapChunks(selected, above, index, -1);
+        }
+    }
+
+    @FXML
+    private void handleDown() {
+        Chunk selected = tableView.getSelectionModel().getSelectedItem();
+        int index = _chunks.indexOf(selected);
+
+        if (index != _chunks.size()-1) {
+            Chunk below = _chunks.get(index+1);
+            swapChunks(selected, below, index, 1);
+        }
+    }
+
+    private void swapChunks(Chunk selected, Chunk other, int selectedIndex, int d) {
+        tableView.getItems().set(selectedIndex, other);
+        tableView.getItems().set(selectedIndex+d, selected);
+
+        _chunks.set(selectedIndex, other);
+        _chunks.set(selectedIndex+d, selected);
     }
 
     @FXML
@@ -122,7 +162,6 @@ public class ChunkManagerController implements Initializable {
         }
     }
 
-    
     @FXML
     private void makeCreation() {
         try {
