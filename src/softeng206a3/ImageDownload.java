@@ -31,8 +31,8 @@ public class ImageDownload {
         throw new RuntimeException("Couldn't find " + key +" in config file "+file.getName());
     }
 
-    public int downloadImages(String searchTerm, int numOfImages) {
-        int numOfImagesDwn = 0;
+    public void downloadImages(String searchTerm, int numOfImages) {
+        int imageNum = 0;
 
         try {
             String apiKey = getAPIKey("apiKey");
@@ -57,11 +57,11 @@ public class ImageDownload {
             for (Photo photo: results) {
                 try {
                     BufferedImage image = photos.getImage(photo,Size.LARGE);
-                    String filename = searchTerm.trim().replace(' ', '-')+"-"+System.currentTimeMillis()+"-"+photo.getId()+".jpg";
+                    String filename = searchTerm + "-" + imageNum  + ".jpg";
                     File outputfile = new File(".temp/images",filename);
                     ImageIO.write(image, "jpg", outputfile);
 
-                    numOfImagesDwn++;
+                    imageNum++;
                 } catch (FlickrException fe) {
                     System.err.println("Ignoring image " +photo.getId() +": "+ fe.getMessage());
                 }
@@ -69,7 +69,6 @@ public class ImageDownload {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return numOfImagesDwn;
 
     }
 }

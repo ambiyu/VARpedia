@@ -177,20 +177,35 @@ public class ChunkManagerController implements Initializable {
 
     @FXML
     private void makeCreation() {
-        try {
-            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("ImageSelect.fxml"));
+      
+    	
+    	new Thread(() -> {  	
+    		// Download images for user to select from
+    		
+    		ImageDownload downloader = new ImageDownload();
+            downloader.downloadImages(_searchTerm, 15);
+                      
+            Platform.runLater(() -> {
+            	
+            	try {
+                    FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageChoice.fxml"));
 
-            ImageSelectController imageScene = new ImageSelectController(_searchTerm, this, _chunks);
-            newLoader.setController(imageScene);
+                   // ImageSelectController imageScene = new ImageSelectController(_searchTerm, this, _chunks);
+                   ImageChoiceController imageScene = new ImageChoiceController(_chunks, _searchTerm, this);
+                    newLoader.setController(imageScene);
 
-            Parent parent = newLoader.load();
-            Scene createNewScene = new Scene(parent);
-            Stage newWindow = Main.getPrimaryStage();
-            newWindow.setScene(createNewScene);
-            newWindow.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    Parent parent = newLoader.load();
+                    Scene createNewScene = new Scene(parent);
+                    Stage newWindow = Main.getPrimaryStage();
+                    newWindow.setScene(createNewScene);
+                    newWindow.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            	
+            });
+    	}).start();;  	
+    	
     }
 
     @FXML
