@@ -25,6 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ProgressIndicator;
@@ -54,7 +55,9 @@ public class ImageChoiceController implements Initializable {
 	private Pane pane;
 	@FXML
 	private AnchorPane anchor;
-
+	@FXML
+	private CheckBox musicOption;
+	
 	private ProgressIndicator progress = new ProgressIndicator();
 	private Label progressLabel = new Label("Retrieving Images...");
 	
@@ -169,6 +172,12 @@ public class ImageChoiceController implements Initializable {
 					String combineAudioCmd = "sox " + chunkList.toString() + " .temp/combinedAudio.wav";
 					Main.execCmd(combineAudioCmd);
 
+					//adds background music
+					if (musicOption.isSelected()) {
+						System.out.println("HERE");
+						String combineMusic = "ffmpeg -y -i .temp/combinedAudio.wav -i resources/destinazione_altrove_-_Billions_of_stars_1.mp3 -filter_complex amix=inputs=2:duration=shortest .temp/combinedAudio.mp3";
+						Main.execCmd(combineMusic);
+					}
 					String cmd = "soxi -D '.temp/combinedAudio.wav'";
 					Process process = new ProcessBuilder("bash", "-c", cmd).start();
 					int exitCode = process.waitFor();
@@ -188,8 +197,14 @@ public class ImageChoiceController implements Initializable {
 
 						// create video and then combine audio/video into one
 						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
-						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
-
+						
+						//checks if it needs to combine .mp3 or .wav
+						if(musicOption.isSelected()) {
+						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.mp3\" -shortest creations/" + creationName + ".mp4");
+						}
+						else {
+							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
+						}
 						// QUIZ stuff
 						File dir = new File(".quiz/" + creationName);
 						dir.mkdir();
