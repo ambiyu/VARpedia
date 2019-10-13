@@ -77,10 +77,8 @@ public class QuizController implements Initializable {
                 }
             }
 
-            cmd = "ls -1 creations/*.mp4 | sed -n '1p'";
-            process = new ProcessBuilder("bash", "-c", cmd).start();
-            stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            File fileUrl = new File(stdout.readLine());
+            String firstCreation = _creations.get(0).getName();
+            File fileUrl = new File(".quiz/" + firstCreation + "/" + firstCreation + ".mp4");
 
             Media video = new Media(fileUrl.toURI().toString());
             player = new MediaPlayer(video);
@@ -96,7 +94,7 @@ public class QuizController implements Initializable {
         welcomePane.setVisible(false);
         quizPane.setVisible(true);
         player.play();
-        setButtons(0);
+        setButtons(_creations.get(0));
     }
 
     @FXML
@@ -110,21 +108,27 @@ public class QuizController implements Initializable {
         Main.switchScene(getClass().getResource("Menu.fxml"));
     }
 
-    private void setButtons(int correctId) {
-        Button correctButton = _options.get(correctId);
-        correctButton.setText(_creations.get(correctId).getName());
+    private void setButtons(Creation correct) {
+        int correctOption = (int)(Math.random() * 4);
+        Button correctButton = _options.get(correctOption);
+        String creationName = correct.getName();
+
+        correctButton.setText(getSearchTerm(creationName));
         correctButton.setOnAction(event -> {
             status.setText("Correct!");
             nextCreation();
         });
 
+        // temp fix
         List<Creation> remaining = new ArrayList<>(_creations);
-        remaining.remove(_creations.get(correctId));
+        remaining.remove(correct);
+        List<Button> buttons = new ArrayList<>(_options);
+        buttons.remove(correctButton);
 
         // get three other random creations
         for (int i = 0; i < 3; i++) {
             int rand = (int)(Math.random() * remaining.size());
-            Button falseButton = _options.get(rand);
+            Button falseButton = buttons.get(0);
             falseButton.setOnAction(event -> {
                 status.setText("Incorrect!");
                 nextCreation();
@@ -132,19 +136,35 @@ public class QuizController implements Initializable {
 
             Creation creation = remaining.get(rand);
 
-            falseButton.setText(creation.getName());
+            falseButton.setText(getSearchTerm(creation.getName()));
             remaining.remove(creation);
+            buttons.remove(falseButton);
         }
     }
 
     private void nextCreation() {
         int nextId = (int)(Math.random() * _creations.size());
-        File fileUrl = new File("creations/" + _creations.get(nextId).getName() + ".mp4");
+        String creationName = _creations.get(nextId).getName();
+        File fileUrl = new File(".quiz/" + creationName + "/" + creationName + ".mp4");
 
         Media video = new Media(fileUrl.toURI().toString());
+        player.dispose();
         player = new MediaPlayer(video);
         mediaView.setMediaPlayer(player);
+        player.setAutoPlay(true);
 
-        setButtons(nextId);
+        setButtons(_creations.get(nextId));
+    }
+
+    private String getSearchTerm(String creationName) {
+        try {
+            String cmd = "cat .quiz/" + creationName + "/searchTerm.txt";
+            Process process = new ProcessBuilder("bash", "-c", cmd).start();
+            BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            return stdout.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

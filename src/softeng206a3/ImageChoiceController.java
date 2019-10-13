@@ -156,7 +156,7 @@ public class ImageChoiceController implements Initializable {
 						File dir = new File(".quiz/" + creationName);
 						dir.mkdir();
 						Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
-						Main.execCmd("echo \"" + creationName + "\" > creationName.txt");
+						Main.execCmd("echo \"" + _searchTerm + "\" > .quiz/" + creationName + "/searchTerm.txt");
 
 
 						Platform.runLater(() -> {
