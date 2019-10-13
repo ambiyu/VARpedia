@@ -69,7 +69,6 @@ public class MediaPlayerController implements Initializable {
         	player.pause();
             playPauseBtn.setText("Play");
         }
-        
         else {
             player.play();
             playPauseBtn.setText("Pause");

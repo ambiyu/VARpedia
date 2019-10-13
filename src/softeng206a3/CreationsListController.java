@@ -94,7 +94,6 @@ public class CreationsListController implements Initializable {
         } else {
             displaySelectionError();
         }
-
     }
 
     @FXML
@@ -148,9 +147,6 @@ public class CreationsListController implements Initializable {
 
                 Main.execCmd("rm creations/" + selected.getName() + ".mp4");
                 Main.execCmd("rm -r .quiz/" + selected.getName());
-
-                playBtn.setDisable(true);
-                deleteBtn.setDisable(true);
             }
         } else {
             displaySelectionError();

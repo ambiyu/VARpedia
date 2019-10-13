@@ -13,7 +13,7 @@
     <children>
         <Button layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
         <Button fx:id="createBtn" layoutX="377.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleCreate" text="Create" />
-        <Button layoutX="491.0" layoutY="360.0" mnemonicParsing="false" onAction="#returnToMenu" text="Exit to Main" />
+        <Button layoutX="467.0" layoutY="360.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu" />
         <Label layoutX="165.0" prefHeight="48.0" prefWidth="274.0" text="Image Selector">
             <font>
                 <Font name="System Bold" size="31.0" />

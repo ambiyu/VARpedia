@@ -17,16 +17,16 @@
             <Button fx:id="option2" layoutX="418.0" layoutY="139.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
             <Button fx:id="option3" layoutX="418.0" layoutY="191.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
             <Button fx:id="option4" layoutX="418.0" layoutY="241.0" maxHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
-            <Text fx:id="status" layoutX="286.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text fx:id="status" layoutX="286.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" />
             <Text fx:id="correctText" layoutX="412.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct: 0" />
             <Text fx:id="incorrectText" layoutX="511.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect: 0" />
             <Text layoutX="412.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the option that matches the creation" textAlignment="CENTER" wrappingWidth="161.46826171875" />
          </children>
       </Pane>
-      <Pane fx:id="welcomePane" layoutX="10.0" layoutY="10.0" prefHeight="340.0" prefWidth="600.0">
+      <Pane fx:id="welcomePane" layoutY="14.0" prefHeight="340.0" prefWidth="600.0">
          <children>
-            <Button layoutX="275.0" layoutY="195.0" mnemonicParsing="false" onAction="#handleStart" text="Start" />
-            <Text layoutX="137.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the quiz! Press start to begin the quiz" />
+            <Button layoutX="259.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleStart" text="Start Quiz" />
+            <Text layoutX="206.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Press start to begin the quiz!" textAlignment="CENTER" />
          </children>
       </Pane>
    </children>
