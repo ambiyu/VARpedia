@@ -172,6 +172,7 @@ public class ImageChoiceController implements Initializable {
 						String combineMusic = "ffmpeg -y -i .temp/combinedAudio.wav -i resources/destinazione_altrove_-_Billions_of_stars_1.mp3 -filter_complex amix=inputs=2:duration=shortest .temp/combinedAudio.mp3";
 						Main.execCmd(combineMusic);
 					}
+
 					String cmd = "soxi -D '.temp/combinedAudio.wav'";
 					Process process = new ProcessBuilder("bash", "-c", cmd).start();
 					int exitCode = process.waitFor();
@@ -193,12 +194,12 @@ public class ImageChoiceController implements Initializable {
 						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
 						
 						//checks if it needs to combine .mp3 or .wav
-						if(musicOption.isSelected()) {
-						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.mp3\" -shortest creations/" + creationName + ".mp4");
-						}
-						else {
+						if (musicOption.isSelected()) {
+							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.mp3\" -shortest creations/" + creationName + ".mp4");
+						} else {
 							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
 						}
+
 						// QUIZ stuff
 						File dir = new File(".quiz/" + creationName);
 						dir.mkdir();

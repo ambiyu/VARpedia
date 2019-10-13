@@ -18,7 +18,7 @@
         </Text>
         <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="180.0" layoutY="53.0" prefHeight="260.0" prefWidth="250.0">
             <content>
-                <TableView fx:id="tableView" onMouseClicked="#handleClick" prefWidth="248.0">
+                <TableView fx:id="tableView" prefWidth="248.0">
                     <columns>
                         <TableColumn fx:id="creationIdCol" maxWidth="30.0" minWidth="30.0" prefWidth="30.0" resizable="false" />
                         <TableColumn fx:id="creationNameCol" maxWidth="216.0" minWidth="216.0" prefWidth="216.0" text="Creation Name" />
@@ -26,8 +26,8 @@
                 </TableView>
             </content>
         </ScrollPane>
-        <Button fx:id="playAudioBtn" disable="true" layoutX="255.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlayAudio" prefHeight="26.0" prefWidth="90.0" text="Play Audio" />
-        <Button fx:id="deleteBtn" disable="true" layoutX="167.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
-      <Button fx:id="playBtn" disable="true" layoutX="367.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="26.0" prefWidth="90.0" text="Play Video" />
+        <Button fx:id="playAudioBtn" layoutX="255.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlayAudio" prefHeight="26.0" prefWidth="90.0" text="Play Audio" />
+        <Button fx:id="deleteBtn" layoutX="167.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+      <Button fx:id="playBtn" layoutX="367.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="26.0" prefWidth="90.0" text="Play Video" />
     </children>
 </AnchorPane>

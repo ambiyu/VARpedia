@@ -72,23 +72,6 @@ public class CreationsListController implements Initializable {
         }
     }
 
-    /**
-     * Checks mouse clicks and see whether a creation is selected or not
-     */
-    @FXML
-    private void handleClick() {
-        Creation selected = tableView.getSelectionModel().getSelectedItem();
-        if (selected != null) {
-            playBtn.setDisable(false);
-            playAudioBtn.setDisable(false);
-            deleteBtn.setDisable(false);
-        } else {
-            playBtn.setDisable(true);
-            playAudioBtn.setDisable(true);
-            deleteBtn.setDisable(true);
-        }
-    }
-
     @FXML
     private void handlePlay() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
@@ -124,7 +107,13 @@ public class CreationsListController implements Initializable {
 
             new Thread(() -> {
                 try {
-                    Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/" + creationName + ".wav");
+                    // check if audio file already exists, otherwise create one
+                    int exitCode = Main.execCmd("test -f .temp/" + creationName + ".wav");
+                    if (exitCode != 0) {
+                        Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/" + creationName + ".wav");
+                    }
+
+                    Main.execCmd("play .temp/" + creationName + ".wav");
 
                     Platform.runLater(() -> {
                         playAudioBtn.setDisable(false);
@@ -133,7 +122,6 @@ public class CreationsListController implements Initializable {
                     e.printStackTrace();
                 }
             }).start();
-            Main.execCmd("play .temp/" + creationName + ".wav");
 
         } else {
             displaySelectionError();

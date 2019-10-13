@@ -74,6 +74,9 @@ public class ChunkManagerController implements Initializable {
         }
     }
 
+    /**
+     * Checks mouse clicks to see whether a chunk is selected or not
+     */
     @FXML
     private void handleClick() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
@@ -178,7 +181,7 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private void makeCreation() {
         try {
-            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("ImageChoice.fxml"));
+            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageChoice.fxml"));
             ImageChoiceController imageScene = new ImageChoiceController(_chunks, _searchTerm, this);
             newLoader.setController(imageScene);
 
