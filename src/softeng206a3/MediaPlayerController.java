@@ -63,7 +63,7 @@ public class MediaPlayerController implements Initializable {
     private void playPause() {
         if (playPauseBtn.getText().equals("Replay")) {
             player.seek(new Duration(0));
-            playPauseBtn.setText("Play");
+            playPauseBtn.setText("Pause");
         }
         else if(player.getStatus() == MediaPlayer.Status.PLAYING) {
         	player.pause();
