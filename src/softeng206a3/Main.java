@@ -68,7 +68,7 @@ public class Main extends Application {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Warning");
         alert.setHeaderText(null);
-        alert.setContentText("Are you sure you want to return to the main menu?");
+        alert.setContentText("Are you sure you want to return to the main menu? All progress will be lost.");
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }

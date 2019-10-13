@@ -13,11 +13,14 @@
          <children>
             <MediaView fx:id="mediaView" fitHeight="300.0" fitWidth="350.0" layoutX="14.0" layoutY="15.0" />
             <Button layoutX="158.0" layoutY="323.0" mnemonicParsing="false" onAction="#replayVideo" text="Replay" />
-            <Button fx:id="option1" layoutX="462.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
-            <Button fx:id="option2" layoutX="462.0" layoutY="137.0" mnemonicParsing="false" text="Button" />
-            <Button fx:id="option3" layoutX="462.0" layoutY="188.0" mnemonicParsing="false" text="Button" />
-            <Button fx:id="option4" layoutX="462.0" layoutY="237.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="option1" layoutX="418.0" layoutY="87.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
+            <Button fx:id="option2" layoutX="418.0" layoutY="139.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
+            <Button fx:id="option3" layoutX="418.0" layoutY="191.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
+            <Button fx:id="option4" layoutX="418.0" layoutY="241.0" maxHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
             <Text fx:id="status" layoutX="286.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+            <Text fx:id="correctText" layoutX="412.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct: 0" />
+            <Text fx:id="incorrectText" layoutX="511.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect: 0" />
+            <Text layoutX="412.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the option that matches the creation" textAlignment="CENTER" wrappingWidth="161.46826171875" />
          </children>
       </Pane>
       <Pane fx:id="welcomePane" layoutX="10.0" layoutY="10.0" prefHeight="340.0" prefWidth="600.0">

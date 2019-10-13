@@ -23,6 +23,9 @@ public class QuizController implements Initializable {
     private MediaPlayer player;
     private List<Creation> _creations;
     private List<Button> _options;
+    private int _correctCount;
+    private int _incorrectCount;
+
 
     @FXML
     private Pane welcomePane;
@@ -44,6 +47,12 @@ public class QuizController implements Initializable {
 
     @FXML
     private Text status;
+
+    @FXML
+    private Text correctText;
+
+    @FXML
+    private Text incorrectText;
 
     @FXML
     private MediaView mediaView;
@@ -115,6 +124,7 @@ public class QuizController implements Initializable {
 
         correctButton.setText(getSearchTerm(creationName));
         correctButton.setOnAction(event -> {
+            correctText.setText("Correct: " + ++_correctCount);
             status.setText("Correct!");
             nextCreation();
         });
@@ -130,6 +140,7 @@ public class QuizController implements Initializable {
             int rand = (int)(Math.random() * remaining.size());
             Button falseButton = buttons.get(0);
             falseButton.setOnAction(event -> {
+                incorrectText.setText("Incorrect: " + ++_incorrectCount);
                 status.setText("Incorrect!");
                 nextCreation();
             });
