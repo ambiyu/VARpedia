@@ -221,7 +221,9 @@ public class ImageChoiceController implements Initializable {
 
 	@FXML
 	private void returnToMenu() {
-		Main.switchScene(getClass().getResource("Menu.fxml"));
+		if (Main.returnToMenuWarning()) {
+			Main.switchScene(getClass().getResource("Menu.fxml"));
+		}
 	}
 
 	private void displayError(String message) {
