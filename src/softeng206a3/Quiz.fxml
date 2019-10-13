@@ -11,8 +11,8 @@
       <Button layoutX="241.0" layoutY="360.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu" />
       <Pane fx:id="quizPane" prefHeight="350.0" prefWidth="600.0" visible="false">
          <children>
-            <MediaView fitHeight="300.0" fitWidth="350.0" layoutX="14.0" layoutY="15.0" />
-            <Button layoutX="158.0" layoutY="323.0" mnemonicParsing="false" text="Replay" />
+            <MediaView fx:id="mediaView" fitHeight="300.0" fitWidth="350.0" layoutX="14.0" layoutY="15.0" />
+            <Button layoutX="158.0" layoutY="323.0" mnemonicParsing="false" onAction="#replayVideo" text="Replay" />
             <Button fx:id="option1" layoutX="462.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
             <Button fx:id="option2" layoutX="462.0" layoutY="137.0" mnemonicParsing="false" text="Button" />
             <Button fx:id="option3" layoutX="462.0" layoutY="188.0" mnemonicParsing="false" text="Button" />
@@ -21,7 +21,7 @@
       </Pane>
       <Pane fx:id="welcomePane" layoutX="10.0" layoutY="10.0" prefHeight="340.0" prefWidth="600.0">
          <children>
-            <Button layoutX="275.0" layoutY="195.0" mnemonicParsing="false" onAction="#startQuiz" text="Start" />
+            <Button layoutX="275.0" layoutY="195.0" mnemonicParsing="false" onAction="#handleStart" text="Start" />
             <Text layoutX="137.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the quiz! Press start to begin the quiz" />
          </children>
       </Pane>
