@@ -12,7 +12,7 @@
       <Text fx:id="text" layoutX="236.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter search term:" textAlignment="CENTER" />
       <TextField fx:id="textField" layoutX="192.0" layoutY="187.0" onAction="#searchWiki" promptText="Search term" />
       <Button fx:id="searchBtn" layoutX="373.0" layoutY="187.0" mnemonicParsing="false" onAction="#searchWiki" text="Search" />
-      <Button fx:id="backBtn" layoutX="238.0" layoutY="337.0" mnemonicParsing="false" onAction="#back" text="Return to Menu" />
+      <Button fx:id="backBtn" layoutX="238.0" layoutY="360.0" mnemonicParsing="false" onAction="#back" text="Return to Menu" />
       <Label layoutX="192.0" layoutY="69.0" text="Wikipedia Search">
          <font>
             <Font size="25.0" />

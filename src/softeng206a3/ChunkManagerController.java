@@ -37,7 +37,16 @@ public class ChunkManagerController implements Initializable {
     private Button playBtn;
 
     @FXML
+    private Button deleteBtn;
+
+    @FXML
     private Button createBtn;
+
+    @FXML
+    private Button upBtn;
+
+    @FXML
+    private Button downBtn;
 
 
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
@@ -65,9 +74,61 @@ public class ChunkManagerController implements Initializable {
         }
     }
 
+    /**
+     * Checks mouse clicks to see whether a chunk is selected or not
+     */
+    @FXML
+    private void handleClick() {
+        Chunk selected = tableView.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            playBtn.setDisable(false);
+            deleteBtn.setDisable(false);
+            upBtn.setDisable(false);
+            downBtn.setDisable(false);
+        } else {
+            playBtn.setDisable(true);
+            deleteBtn.setDisable(true);
+            upBtn.setDisable(true);
+            downBtn.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void handleUp() {
+        Chunk selected = tableView.getSelectionModel().getSelectedItem();
+        int index = _chunks.indexOf(selected);
+
+        if (index != 0) {
+            Chunk above = _chunks.get(index-1);
+            swapChunks(selected, above, index, -1);
+        }
+    }
+
+    @FXML
+    private void handleDown() {
+        Chunk selected = tableView.getSelectionModel().getSelectedItem();
+        int index = _chunks.indexOf(selected);
+
+        if (index != _chunks.size()-1) {
+            Chunk below = _chunks.get(index+1);
+            swapChunks(selected, below, index, 1);
+        }
+    }
+
+    private void swapChunks(Chunk selected, Chunk other, int selectedIndex, int d) {
+        _chunks.set(selectedIndex, other);
+        _chunks.set(selectedIndex+d, selected);
+
+        tableView.getItems().set(selectedIndex, other);
+        tableView.getItems().set(selectedIndex+d, selected);
+        tableView.getSelectionModel().select(selected);
+    }
+
     @FXML
     private void handlePlay() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
+
         if (selected != null) {
             playBtn.setDisable(true);
             new Thread(() -> {
@@ -87,13 +148,14 @@ public class ChunkManagerController implements Initializable {
             }).start();
 
         } else {
-            dispSelectionError();
+            displayError("No chunk selected");
         }
     }
 
     @FXML
     private void handleDelete() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
+
         if (selected != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Warning");
@@ -107,19 +169,20 @@ public class ChunkManagerController implements Initializable {
                 if (_chunks.isEmpty()) {
                     createBtn.setDisable(true);
                 }
+
+                playBtn.setDisable(true);
+                deleteBtn.setDisable(true);
             }
         } else {
-            dispSelectionError();
+            displayError("No chunk selected");
         }
     }
 
-    
     @FXML
     private void makeCreation() {
         try {
-            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("ImageSelect.fxml"));
-
-            ImageSelectController imageScene = new ImageSelectController(_searchTerm, this);
+            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageChoice.fxml"));
+            ImageChoiceController imageScene = new ImageChoiceController(_chunks, _searchTerm, this);
             newLoader.setController(imageScene);
 
             Parent parent = newLoader.load();
@@ -151,15 +214,9 @@ public class ChunkManagerController implements Initializable {
 
     @FXML
     private void returnToMenu() {
-        Main.switchScene(getClass().getResource("Menu.fxml"));
-    }
-
-    private void dispSelectionError() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("ERROR");
-        alert.setHeaderText(null);
-        alert.setContentText("No chunk selected");
-        alert.showAndWait();
+        if (Main.returnToMenuWarning()) {
+            Main.switchScene(getClass().getResource("Menu.fxml"));
+        }
     }
 
     private void displayError(String message) {
@@ -169,5 +226,4 @@ public class ChunkManagerController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
 }

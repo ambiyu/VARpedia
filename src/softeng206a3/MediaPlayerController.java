@@ -43,7 +43,11 @@ public class MediaPlayerController implements Initializable {
         mediaView.setMediaPlayer(player);
         mediaView.fitHeightProperty().bind(borderPane.heightProperty());
         mediaView.fitWidthProperty().bind(borderPane.widthProperty());
-
+        
+        player.setOnEndOfMedia(() -> {
+        	playPauseBtn.setText("Replay");
+        });
+        
         player.currentTimeProperty().addListener((obs, oldTime, newTime) -> {
             currentTime.setText(String.format("%.1f", newTime.toSeconds()));
         });
@@ -57,10 +61,16 @@ public class MediaPlayerController implements Initializable {
 
     @FXML
     private void playPause() {
-        if (player.getStatus() == MediaPlayer.Status.PLAYING) {
-            player.pause();
+        if (playPauseBtn.getText().equals("Replay")) {
+            player.seek(new Duration(0));
+            playPauseBtn.setText("Pause");
+        }
+        else if(player.getStatus() == MediaPlayer.Status.PLAYING) {
+        	player.pause();
             playPauseBtn.setText("Play");
-        } else {
+        }
+        
+        else {
             player.play();
             playPauseBtn.setText("Pause");
         }

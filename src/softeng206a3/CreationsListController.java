@@ -1,5 +1,6 @@
 package softeng206a3;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,6 +29,15 @@ public class CreationsListController implements Initializable {
 
     @FXML
     private TableColumn<Creation, String> creationNameCol;
+
+    @FXML
+    private Button playBtn;
+
+    @FXML
+    private Button playAudioBtn;
+
+    @FXML
+    private Button deleteBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -65,6 +75,7 @@ public class CreationsListController implements Initializable {
     @FXML
     private void handlePlay() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
+
         if (selected != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
@@ -81,13 +92,46 @@ public class CreationsListController implements Initializable {
                 e.printStackTrace();
             }
         } else {
-            dispSelectionError();
+            displaySelectionError();
+        }
+
+    }
+
+    @FXML
+    private void handlePlayAudio() {
+        Creation selected = tableView.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            playAudioBtn.setDisable(true);
+            String creationName = selected.getName();
+
+            new Thread(() -> {
+                try {
+                    // check if audio file already exists, otherwise create one
+                    int exitCode = Main.execCmd("test -f .temp/" + creationName + ".wav");
+                    if (exitCode != 0) {
+                        Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/" + creationName + ".wav");
+                    }
+
+                    Main.execCmd("play .temp/" + creationName + ".wav");
+
+                    Platform.runLater(() -> {
+                        playAudioBtn.setDisable(false);
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+        } else {
+            displaySelectionError();
         }
     }
 
     @FXML
     private void handleDelete() {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
+
         if (selected != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Warning");
@@ -103,10 +147,15 @@ public class CreationsListController implements Initializable {
                 populateTable();
 
                 Main.execCmd("rm creations/" + selected.getName() + ".mp4");
+                Main.execCmd("rm -r .quiz/" + selected.getName());
+
+                playBtn.setDisable(true);
+                deleteBtn.setDisable(true);
             }
         } else {
-            dispSelectionError();
+            displaySelectionError();
         }
+
     }
 
     @FXML
@@ -121,12 +170,11 @@ public class CreationsListController implements Initializable {
         }
     }
 
-    private void dispSelectionError() {
+    private void displaySelectionError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
         alert.setHeaderText(null);
-        alert.setContentText("No creation selected");
+        alert.setContentText("No chunk selected");
         alert.showAndWait();
     }
-
 }

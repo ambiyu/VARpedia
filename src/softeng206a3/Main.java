@@ -4,10 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 public class Main extends Application {
     private static Stage _primaryStage;
@@ -26,6 +29,8 @@ public class Main extends Application {
         String cmd = "mkdir creations";
         new ProcessBuilder("bash", "-c", cmd).start();
         cmd = "mkdir .temp";
+        new ProcessBuilder("bash", "-c", cmd).start();
+        cmd = "mkdir .quiz";
         new ProcessBuilder("bash", "-c", cmd).start();
     }
 
@@ -57,5 +62,14 @@ public class Main extends Application {
             System.out.println("error executing command");
         }
         return 1;
+    }
+
+    public static boolean returnToMenuWarning() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Warning");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to return to the main menu? All progress will be lost.");
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.get() == ButtonType.OK;
     }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="softeng206a3.CreationsListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng206a3.CreationsListController">
     <children>
         <Button layoutX="228.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="25.0" prefWidth="145.0" text="Return to Menu" />
         <Text layoutX="222.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your Creations">
@@ -26,8 +26,8 @@
                 </TableView>
             </content>
         </ScrollPane>
-        <Button layoutX="305.0" layoutY="323.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="60.0" text="Play" />
-        <Button layoutX="236.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+        <Button fx:id="playAudioBtn" layoutX="255.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlayAudio" prefHeight="26.0" prefWidth="90.0" text="Play Audio" />
+        <Button fx:id="deleteBtn" layoutX="167.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+      <Button fx:id="playBtn" layoutX="367.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="26.0" prefWidth="90.0" text="Play Video" />
     </children>
 </AnchorPane>
-

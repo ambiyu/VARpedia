@@ -111,3 +111,5 @@ modules.xml
 .temp/
 
 resources/
+
+.quiz/
