@@ -124,7 +124,6 @@ public class ImageChoiceController implements Initializable {
 		createBtn.setDisable(true);
 
 		if(imagesToMerge.size() > 10) {
-
 			int exceedingImages = imagesToMerge.size() - 10;
 			displayError("Only 10 images may be selected, please unselect " +  exceedingImages + " image(s)");
 			createBtn.setDisable(false);
@@ -138,30 +137,27 @@ public class ImageChoiceController implements Initializable {
 			createBtn.setDisable(false);
 		} 
 		else {
-			int count = 0;
-
-			//put selected images in a temporary folder
-			for(Image im : imagesToMerge) {
-
-				File dir = new File(".temp/selectedImages");
-				dir.mkdir();
-
-				File outputFile = new File(".temp/selectedImages", _searchTerm + count + ".jpg");
-				try {
-
-					BufferedImage bim = SwingFXUtils.fromFXImage(im, null);
-					ImageIO.write(bim, "jpg",outputFile);
-					count++;
-				} 
-				catch(IOException e) {
-					e.printStackTrace();
-				}
-
-			}
-
 			new Thread(() -> {
 
 				try {
+					int count = 0;
+
+					//put selected images in a temporary folder
+					for(Image im : imagesToMerge) {
+
+						File dir = new File(".temp/selectedImages");
+						dir.mkdir();
+
+						File outputFile = new File(".temp/selectedImages", _searchTerm + count + ".jpg");
+						try {
+							BufferedImage bim = SwingFXUtils.fromFXImage(im, null);
+							ImageIO.write(bim, "jpg",outputFile);
+							count++;
+
+						} catch(IOException e) {
+							e.printStackTrace();
+						}
+					}
 
 					// get chunks in the correct order
 					StringBuilder chunkList = new StringBuilder();

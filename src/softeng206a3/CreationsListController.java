@@ -127,6 +127,7 @@ public class CreationsListController implements Initializable {
                 populateTable();
 
                 Main.execCmd("rm creations/" + selected.getName() + ".mp4");
+                Main.execCmd("rm -r .quiz/" + selected.getName());
 
                 playBtn.setDisable(true);
                 deleteBtn.setDisable(true);
