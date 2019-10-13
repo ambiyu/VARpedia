@@ -20,16 +20,21 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
@@ -45,8 +50,14 @@ public class ImageChoiceController implements Initializable {
 	private Button createBtn;
 	@FXML
 	private TextField fileNameInput;
+	@FXML
+	private Pane pane;
+	@FXML
+	private AnchorPane anchor;
 
-
+	private ProgressIndicator progress = new ProgressIndicator();
+	private Label progressLabel = new Label("Retrieving Images...");
+	
 	private ArrayList<ImageView> listOfImages = new ArrayList<>();
 	private ArrayList<Image> imagesToMerge = new ArrayList<>();
 
@@ -54,34 +65,58 @@ public class ImageChoiceController implements Initializable {
 	private List<Chunk> _chunks;
 	private ChunkManagerController _previousScene;
 
+	
 	public ImageChoiceController(List<Chunk> allChunks, String name, ChunkManagerController scene) {
 		_searchTerm = name;
 		_chunks = allChunks;
 		_previousScene = scene;
 
+
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		FileInputStream file;
-
+		
+		//create spinning loading thing and label
+		progress.setMinSize(100, 100);;
+		progress.setLayoutY(anchor.getPrefHeight()/2 - 50);
+		progress.setLayoutX(anchor.getPrefWidth()/2 - 50);
+		progressLabel.setMinSize(100, 100);
+		progressLabel.setLayoutY(anchor.getPrefHeight()/2 + 25);
+		progressLabel.setLayoutX(anchor.getPrefWidth()/2 - 60);
+		anchor.getChildren().add(progress);
+		anchor.getChildren().add(progressLabel);
+		
 		createBtn.setDisable(true);
 		setUpList();
+		
+			pane.setVisible(false);
+			new Thread(() ->{
+				ImageDownload downloader = new ImageDownload();
+				downloader.downloadImages(_searchTerm, 15);
+				
+				
+				Platform.runLater(() -> {
+					try {
+						FileInputStream file;
+						int numOfImages = new File(".temp/images").list().length;
 
-		try {
+						for(int i = 0; i < numOfImages; i++) {
+							file = new FileInputStream(".temp/images/"+ _searchTerm +"-" + i +".jpg");
+							Image image = new Image(file);
 
-			int numOfImages = new File(".temp/images").list().length;
+							listOfImages.get(i).setImage(image);
 
-			for(int i = 0; i < numOfImages; i++) {
-				file = new FileInputStream(".temp/images/"+ _searchTerm +"-" + i +".jpg");
-				Image image = new Image(file);
+						}
+						progress.setVisible(false);
+						progressLabel.setVisible(false);
+						pane.setVisible(true);
+					}
+					catch (FileNotFoundException e) {
 
-				listOfImages.get(i).setImage(image);
-
-			}
-		} catch (FileNotFoundException e) {
-
-			e.printStackTrace();
-		}
+						e.printStackTrace();
+					}
+				});
+			}).start();
 	}
 
 	@FXML
@@ -241,7 +276,7 @@ public class ImageChoiceController implements Initializable {
 
 	@FXML
 	public void enableCreate() {
-		if(!fileNameInput.getText().trim().isEmpty()) {
+		if(!fileNameInput.getText().trim().isEmpty() && imagesToMerge.size() > 0) {
 			createBtn.setDisable(false);
 		}
 		else {

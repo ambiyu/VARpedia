@@ -182,8 +182,7 @@ public class ChunkManagerController implements Initializable {
     	new Thread(() -> {  	
     		// Download images for user to select from
     		
-    		ImageDownload downloader = new ImageDownload();
-            downloader.downloadImages(_searchTerm, 15);
+    		
                       
             Platform.runLater(() -> {
             	
