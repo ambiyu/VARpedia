@@ -1,4 +1,4 @@
-package softeng206a3;
+package varpedia;
 
 public class Chunk {
     private int _chunkNumber;

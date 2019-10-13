@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng206a3.SearchController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.SearchController">
    <children>
       <Text fx:id="text" layoutX="236.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter search term:" textAlignment="CENTER" />
       <TextField fx:id="textField" layoutX="192.0" layoutY="187.0" onAction="#searchWiki" promptText="Search term" />

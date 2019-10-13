@@ -1,4 +1,4 @@
-package softeng206a3;
+package varpedia;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
