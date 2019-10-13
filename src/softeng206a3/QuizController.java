@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.BufferedReader;
@@ -40,6 +41,9 @@ public class QuizController implements Initializable {
 
     @FXML
     private Button option4;
+
+    @FXML
+    private Text status;
 
     @FXML
     private MediaView mediaView;
@@ -92,7 +96,7 @@ public class QuizController implements Initializable {
         welcomePane.setVisible(false);
         quizPane.setVisible(true);
         player.play();
-        nextCreation();
+        setButtons(0);
     }
 
     @FXML
@@ -106,25 +110,41 @@ public class QuizController implements Initializable {
         Main.switchScene(getClass().getResource("Menu.fxml"));
     }
 
-    private void nextCreation() {
-        int correct = (int)(Math.random() * _creations.size());
-        System.out.println(correct);
-
-        Button correctButton = _options.get(correct);
-        correctButton.setText(_creations.get(correct).getName());
-
+    private void setButtons(int correctId) {
+        Button correctButton = _options.get(correctId);
+        correctButton.setText(_creations.get(correctId).getName());
+        correctButton.setOnAction(event -> {
+            status.setText("Correct!");
+            nextCreation();
+        });
 
         List<Creation> remaining = new ArrayList<>(_creations);
-        remaining.remove(_creations.get(correct));
+        remaining.remove(_creations.get(correctId));
 
         // get three other random creations
         for (int i = 0; i < 3; i++) {
             int rand = (int)(Math.random() * remaining.size());
             Button falseButton = _options.get(rand);
+            falseButton.setOnAction(event -> {
+                status.setText("Incorrect!");
+                nextCreation();
+            });
 
             Creation creation = remaining.get(rand);
+
             falseButton.setText(creation.getName());
             remaining.remove(creation);
         }
+    }
+
+    private void nextCreation() {
+        int nextId = (int)(Math.random() * _creations.size());
+        File fileUrl = new File("creations/" + _creations.get(nextId).getName() + ".mp4");
+
+        Media video = new Media(fileUrl.toURI().toString());
+        player = new MediaPlayer(video);
+        mediaView.setMediaPlayer(player);
+
+        setButtons(nextId);
     }
 }

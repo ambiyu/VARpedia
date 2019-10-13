@@ -17,6 +17,7 @@
             <Button fx:id="option2" layoutX="462.0" layoutY="137.0" mnemonicParsing="false" text="Button" />
             <Button fx:id="option3" layoutX="462.0" layoutY="188.0" mnemonicParsing="false" text="Button" />
             <Button fx:id="option4" layoutX="462.0" layoutY="237.0" mnemonicParsing="false" text="Button" />
+            <Text fx:id="status" layoutX="286.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
          </children>
       </Pane>
       <Pane fx:id="welcomePane" layoutX="10.0" layoutY="10.0" prefHeight="340.0" prefWidth="600.0">
