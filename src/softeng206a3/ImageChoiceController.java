@@ -73,9 +73,8 @@ public class ImageChoiceController implements Initializable {
 		_searchTerm = name;
 		_chunks = allChunks;
 		_previousScene = scene;
-
-
 	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
@@ -88,38 +87,35 @@ public class ImageChoiceController implements Initializable {
 		progressLabel.setLayoutX(anchor.getPrefWidth()/2 - 60);
 		anchor.getChildren().add(progress);
 		anchor.getChildren().add(progressLabel);
-		
-		createBtn.setDisable(true);
+
 		setUpList();
-		
-			pane.setVisible(false);
-			new Thread(() ->{
-				ImageDownload downloader = new ImageDownload();
-				downloader.downloadImages(_searchTerm, 15);
-				
-				
-				Platform.runLater(() -> {
-					try {
-						FileInputStream file;
-						int numOfImages = new File(".temp/images").list().length;
+		createBtn.setDisable(true);
+		pane.setVisible(false);
 
-						for(int i = 0; i < numOfImages; i++) {
-							file = new FileInputStream(".temp/images/"+ _searchTerm +"-" + i +".jpg");
-							Image image = new Image(file);
+		new Thread(() ->{
+			ImageDownload downloader = new ImageDownload();
+			downloader.downloadImages(_searchTerm, 15);
 
-							listOfImages.get(i).setImage(image);
+			FileInputStream file;
+			int numOfImages = new File(".temp/images").list().length;
 
-						}
-						progress.setVisible(false);
-						progressLabel.setVisible(false);
-						pane.setVisible(true);
-					}
-					catch (FileNotFoundException e) {
+			try {
+				for (int i = 0; i < numOfImages; i++) {
+					file = new FileInputStream(".temp/images/" + _searchTerm + "-" + i + ".jpg");
+					Image image = new Image(file);
 
-						e.printStackTrace();
-					}
-				});
-			}).start();
+					listOfImages.get(i).setImage(image);
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+			Platform.runLater(() -> {
+				progress.setVisible(false);
+				progressLabel.setVisible(false);
+				pane.setVisible(true);
+			});
+		}).start();
 	}
 
 	@FXML
@@ -141,7 +137,6 @@ public class ImageChoiceController implements Initializable {
 		} 
 		else {
 			new Thread(() -> {
-
 				try {
 					int count = 0;
 
@@ -225,7 +220,6 @@ public class ImageChoiceController implements Initializable {
 						Platform.runLater(() -> {
 							displayError("An error occurred while attempting to generate creation");
 							createBtn.setDisable(false);
-							// progress.setVisible(false);
 						});
 					}
 				} catch(Exception e) {

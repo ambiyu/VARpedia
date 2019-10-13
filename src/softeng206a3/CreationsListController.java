@@ -1,5 +1,6 @@
 package softeng206a3;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +32,9 @@ public class CreationsListController implements Initializable {
 
     @FXML
     private Button playBtn;
+
+    @FXML
+    private Button playAudioBtn;
 
     @FXML
     private Button deleteBtn;
@@ -76,9 +80,11 @@ public class CreationsListController implements Initializable {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
         if (selected != null) {
             playBtn.setDisable(false);
+            playAudioBtn.setDisable(false);
             deleteBtn.setDisable(false);
         } else {
             playBtn.setDisable(true);
+            playAudioBtn.setDisable(true);
             deleteBtn.setDisable(true);
         }
     }
@@ -106,6 +112,32 @@ public class CreationsListController implements Initializable {
             displaySelectionError();
         }
 
+    }
+
+    @FXML
+    private void handlePlayAudio() {
+        Creation selected = tableView.getSelectionModel().getSelectedItem();
+
+        if (selected != null) {
+            playAudioBtn.setDisable(true);
+            String creationName = selected.getName();
+
+            new Thread(() -> {
+                try {
+                    Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/" + creationName + ".wav");
+
+                    Platform.runLater(() -> {
+                        playAudioBtn.setDisable(false);
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            Main.execCmd("play .temp/" + creationName + ".wav");
+
+        } else {
+            displaySelectionError();
+        }
     }
 
     @FXML

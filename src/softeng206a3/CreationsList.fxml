@@ -26,7 +26,8 @@
                 </TableView>
             </content>
         </ScrollPane>
-        <Button fx:id="playBtn" disable="true" layoutX="305.0" layoutY="323.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="60.0" text="Play" />
-        <Button fx:id="deleteBtn" disable="true" layoutX="236.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+        <Button fx:id="playAudioBtn" disable="true" layoutX="255.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlayAudio" prefHeight="26.0" prefWidth="90.0" text="Play Audio" />
+        <Button fx:id="deleteBtn" disable="true" layoutX="167.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+      <Button fx:id="playBtn" disable="true" layoutX="367.0" layoutY="323.0" maxWidth="90.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="26.0" prefWidth="90.0" text="Play Video" />
     </children>
 </AnchorPane>
