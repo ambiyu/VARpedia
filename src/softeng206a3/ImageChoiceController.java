@@ -68,7 +68,7 @@ public class ImageChoiceController implements Initializable {
 		setUpList();
 
 		try {
-		
+
 			int numOfImages = new File(".temp/images").list().length;
 
 			for(int i = 0; i < numOfImages; i++) {
@@ -94,7 +94,12 @@ public class ImageChoiceController implements Initializable {
 			displayError("Only 10 images may be selected, please unselect " +  exceedingImages + " image(s)");
 			createBtn.setDisable(false);
 		}
-
+		else if (!fileNameInput.getText().matches("^[a-zA-Z0-9\\_-]+")) {
+			displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
+		} 
+		else if (isConflicting("creations", fileNameInput.getText(), "mp4")) {
+			displayError("Creation with the same name already exists. Please enter another name.");
+		} 
 		else {
 			int count = 0;
 
@@ -240,6 +245,21 @@ public class ImageChoiceController implements Initializable {
 		else {
 			createBtn.setDisable(true);
 		}
+	}
+
+	private boolean isConflicting(String folder, String name, String format) {
+		try {
+			String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
+			Process process = new ProcessBuilder("bash", "-c", cmd).start();
+			int exitStatus = process.waitFor();
+
+			if (exitStatus == 0) {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private void setUpList() {
