@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng206a3.MenuController">
    <children>
-      <Button layoutX="236.0" layoutY="181.0" mnemonicParsing="false" onAction="#handleMyCreations" text="My Creations">
+      <Button layoutX="235.0" layoutY="153.0" mnemonicParsing="false" onAction="#toMyCreations" text="My Creations">
          <font>
             <Font size="18.0" />
          </font></Button>
@@ -16,9 +16,14 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Text>
-      <Button layoutX="206.0" layoutY="253.0" mnemonicParsing="false" onAction="#handleCreate" text="Create New Creation">
+      <Button layoutX="201.0" layoutY="267.0" mnemonicParsing="false" onAction="#toCreate" text="Create New Creation">
          <font>
             <Font size="18.0" />
          </font></Button>
+      <Button fx:id="toQuiz" layoutX="231.0" layoutY="211.0" mnemonicParsing="false" onAction="#toQuiz" text="Matching Quiz">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
