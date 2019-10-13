@@ -96,9 +96,11 @@ public class ImageChoiceController implements Initializable {
 		}
 		else if (!fileNameInput.getText().matches("^[a-zA-Z0-9\\_-]+")) {
 			displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
+			createBtn.setDisable(false);
 		} 
 		else if (isConflicting("creations", fileNameInput.getText(), "mp4")) {
 			displayError("Creation with the same name already exists. Please enter another name.");
+			createBtn.setDisable(false);
 		} 
 		else {
 			int count = 0;
