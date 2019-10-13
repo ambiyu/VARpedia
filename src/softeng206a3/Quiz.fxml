@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softeng206a3.QuizController">
+   <children>
+      <Button layoutX="241.0" layoutY="360.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu" />
+      <Pane fx:id="quizPane" prefHeight="350.0" prefWidth="600.0" visible="false">
+         <children>
+            <MediaView fx:id="mediaView" fitHeight="300.0" fitWidth="350.0" layoutX="14.0" layoutY="15.0" />
+            <Button layoutX="158.0" layoutY="323.0" mnemonicParsing="false" onAction="#replayVideo" text="Replay" />
+            <Button fx:id="option1" layoutX="462.0" layoutY="88.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="option2" layoutX="462.0" layoutY="137.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="option3" layoutX="462.0" layoutY="188.0" mnemonicParsing="false" text="Button" />
+            <Button fx:id="option4" layoutX="462.0" layoutY="237.0" mnemonicParsing="false" text="Button" />
+            <Text fx:id="status" layoutX="286.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+         </children>
+      </Pane>
+      <Pane fx:id="welcomePane" layoutX="10.0" layoutY="10.0" prefHeight="340.0" prefWidth="600.0">
+         <children>
+            <Button layoutX="275.0" layoutY="195.0" mnemonicParsing="false" onAction="#handleStart" text="Start" />
+            <Text layoutX="137.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the quiz! Press start to begin the quiz" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

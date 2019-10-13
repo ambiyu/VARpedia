@@ -30,6 +30,8 @@ public class Main extends Application {
         new ProcessBuilder("bash", "-c", cmd).start();
         cmd = "mkdir .temp";
         new ProcessBuilder("bash", "-c", cmd).start();
+        cmd = "mkdir .quiz";
+        new ProcessBuilder("bash", "-c", cmd).start();
     }
 
     public static Stage getPrimaryStage() {

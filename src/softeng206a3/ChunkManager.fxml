@@ -29,7 +29,7 @@
         </ScrollPane>
         <Button fx:id="playBtn" disable="true" layoutX="500.0" layoutY="313.0" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefWidth="60.0" text="Play" />
         <Button fx:id="deleteBtn" disable="true" layoutX="424.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
-      <Button fx:id="createBtn" layoutX="244.0" layoutY="313.0" mnemonicParsing="false" onAction="#makeCreation" text="Make Creation" />
+      <Button fx:id="createBtn" layoutX="244.0" layoutY="313.0" mnemonicParsing="false" onAction="#makeCreation" text="Confirm Chunks" />
       <Button layoutX="146.0" layoutY="361.0" mnemonicParsing="false" onAction="#back" prefHeight="26.0" prefWidth="73.0" text="Back" />
       <Button fx:id="upBtn" disable="true" layoutX="40.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="26.0" prefWidth="55.0" text="Up" />
       <Button fx:id="downBtn" disable="true" layoutX="107.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleDown" text="Down" />

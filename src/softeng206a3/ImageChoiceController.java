@@ -140,7 +140,9 @@ public class ImageChoiceController implements Initializable {
 						double length = Double.parseDouble(stdout.readLine()) + 1;
 
 						int numOfImages = imagesToMerge.size();
-						double lengthOfImage = numOfImages/length; 
+						double lengthOfImage = numOfImages/length;
+
+						String creationName = fileNameInput.getText();
 
 						// combine images into a video
 						//Main.execCmd("cat .temp/images/*.jpg | ffmpeg -f image2pipe -framerate 1 -i - -i .temp/combinedAudio.wav -r " + lengthOfImage + " -pattern_type glob -c:v libx264 -pix_fmt yuv420p -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 -max_muxing_queue_size 1024 -y creations/" + fileNameInput.getText() + ".mp4");
@@ -148,12 +150,16 @@ public class ImageChoiceController implements Initializable {
 
 						// create video and then combine audio/video into one
 						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
-						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + fileNameInput.getText() + ".mp4");
+						Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
+
+						// QUIZ stuff
+						File dir = new File(".quiz/" + creationName);
+						dir.mkdir();
+						Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
+						Main.execCmd("echo \"" + _searchTerm + "\" > .quiz/" + creationName + "/searchTerm.txt");
 
 
 						Platform.runLater(() -> {
-
-
 							createBtn.setDisable(false);
 							//create a success alert
 							Alert alert = new Alert(Alert.AlertType.INFORMATION);
