@@ -169,7 +169,6 @@ public class ImageChoiceController implements Initializable {
 
 					//adds background music
 					if (musicOption.isSelected()) {
-						System.out.println("HERE");
 						String combineMusic = "ffmpeg -y -i .temp/combinedAudio.wav -i resources/destinazione_altrove_-_Billions_of_stars_1.mp3 -filter_complex amix=inputs=2:duration=shortest .temp/combinedAudio.mp3";
 						Main.execCmd(combineMusic);
 					}
