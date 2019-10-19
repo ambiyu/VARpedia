@@ -14,6 +14,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,18 +131,35 @@ public class SearchResultController implements Initializable {
                     // create .wav audio file with selected voice
                     Main.execCmd("echo \"" + selectedText + "\" | text2wave -eval '(voice_" + voice + ")' -o \".temp/chunks/chunk" + id + ".wav\"");
 
-                    Chunk chunk = new Chunk(id, selectedText, voice);
-                    _chunks.add(chunk);
+                    // check file size in case of any errors
+                    String cmd = "wc -c < .temp/chunks/chunk" + id + ".wav";
+                    Process process = new ProcessBuilder("bash", "-c", cmd).start();
+                    process.waitFor();
+                    BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    int size = Integer.parseInt(stdout.readLine());
+                    if (size > 0) {
+                        Chunk chunk = new Chunk(id, selectedText, voice);
+                        _chunks.add(chunk);
 
-                    Platform.runLater(() -> {
-                        manageBtn.setDisable(false);
-                        saveBtn.setDisable(false);
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Success");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Successfully saved chunk");
-                        alert.showAndWait();
-                    });
+                        Platform.runLater(() -> {
+                            manageBtn.setDisable(false);
+                            saveBtn.setDisable(false);
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Success");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Successfully saved chunk");
+                            alert.showAndWait();
+                        });
+
+                    } else {
+                        // remove invalid audio file
+                        Main.execCmd("rm .temp/chunks/chunk" + id +".wav");
+                        Platform.runLater(() -> {
+                            saveBtn.setDisable(false);
+                            displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"kal_diphone\"");
+                        });
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
