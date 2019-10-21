@@ -1,0 +1,11 @@
+#pane {
+    -fx-background-color: rgba(6,180,255,0.5);
+}
+
+#mainMenuBtn {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: black;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+}
