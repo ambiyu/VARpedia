@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.main;
 
 public enum Voice {
     kal_diphone("US Male"),

@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
@@ -44,6 +45,9 @@ public class SearchResultController implements Initializable {
     @FXML
     private Button manageBtn;
 
+    @FXML
+    private Text termText;
+
     public SearchResultController(String searchTerm, String text) {
         _searchTerm = searchTerm;
         _text = text;
@@ -60,6 +64,7 @@ public class SearchResultController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // display search result
         textArea.setText(_text);
+        termText.setText(_searchTerm);
 
         ObservableList<String> voices = FXCollections.observableArrayList(
                 "kal_diphone",
@@ -189,8 +194,12 @@ public class SearchResultController implements Initializable {
 
     @FXML
     private void returnToMenu() {
-        if (Main.returnToMenuWarning()) {
+        if (_chunks.size() == 0) {
             Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
+        } else {
+            if (Main.returnToMenuWarning()) {
+                Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
+            }
         }
     }
 

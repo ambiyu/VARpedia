@@ -9,11 +9,14 @@
 
 <AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@SearchResult.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button id="backBtn" layoutX="14.0" layoutY="540.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="50.0" prefWidth="130.0">
+      <Button id="backBtn" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="39.0" prefWidth="100.0" text="Back">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <TextArea fx:id="textArea" layoutX="25.0" layoutY="25.0" prefHeight="500.0" prefWidth="600.0" wrapText="true" />
+      <TextArea fx:id="textArea" layoutX="14.0" layoutY="54.0" prefHeight="450.0" prefWidth="600.0" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font></TextArea>
       <Button fx:id="previewBtn" layoutX="673.0" layoutY="160.0" mnemonicParsing="false" onAction="#preview" text="Preview Chunk">
          <font>
             <Font size="20.0" />
@@ -26,10 +29,15 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <ComboBox fx:id="comboBox" layoutX="674.0" layoutY="337.0" prefHeight="26.0" prefWidth="175.0" />
+      <ComboBox id="dropdown" fx:id="comboBox" layoutX="674.0" layoutY="337.0" prefHeight="26.0" prefWidth="175.0" />
       <Text layoutX="740.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voice">
          <font>
             <Font size="16.0" />
          </font></Text>
+      <Text fx:id="termText" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Term">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

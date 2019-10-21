@@ -1,6 +1,5 @@
 #pane {
 	-fx-background-color: rgba(6,180,255,0.5);
-
 }
 
 #manageBtn {
@@ -10,11 +9,25 @@
 
 #backBtn {
 	-fx-background-color: yellow;
-	-fx-border-color: white;
-	-fx-border-radius: 20;
-	-fx-background-radius: 20;
-	-fx-background-image: url('../../../resources/back.png');
-	-fx-background-size: 40px;
-	-fx-background-repeat: no-repeat;
-	-fx-background-position: 50%;
+	-fx-background-radius: 15;
+}
+
+#previewBtn {
+	-fx-background-color: white;
+	-fx-background-radius: 10;
+	-fx-border-color: black;
+	-fx-border-width: 1;
+	-fx-border-radius: 10;
+}
+
+#saveBtn {
+	-fx-background-color: white;
+	-fx-background-radius: 10;
+	-fx-border-color: black;
+	-fx-border-width: 1;
+	-fx-border-radius: 10;
+}
+
+#dropdown {
+	-fx-background-color: white;
 }
