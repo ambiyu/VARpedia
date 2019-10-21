@@ -4,19 +4,38 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="pane" prefHeight="600.0" prefWidth="900.0" stylesheets="@MediaPlayer.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-    <Button layoutX="22.0" layoutY="359.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
-      <Button fx:id="playPauseBtn" layoutX="259.0" layoutY="359.0" mnemonicParsing="false" onAction="#playPause" prefHeight="26.0" prefWidth="80.0" text="Pause" />
-      <Button layoutX="535.0" layoutY="359.0" mnemonicParsing="false" onAction="#handleMute" text="Mute" />
-      <Button layoutX="357.0" layoutY="359.0" mnemonicParsing="false" onAction="#handleForward" text="&gt;&gt;" />
-      <Button layoutX="203.0" layoutY="359.0" mnemonicParsing="false" onAction="#handleBackward" prefWidth="40.0" text="&lt;&lt;" />
-      <Text fx:id="currentTime" layoutX="286.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0:00" />
-      <BorderPane fx:id="borderPane" prefHeight="330.0" prefWidth="600.0">
+    <Button id="backBtn" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="39.0" prefWidth="100.0" text="Back">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button id="btn" fx:id="playPauseBtn" layoutX="400.0" layoutY="545.0" mnemonicParsing="false" onAction="#playPause" prefHeight="39.0" prefWidth="100.0" text="Pause">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button id="btn" layoutX="722.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleMute" text="Mute">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button id="btn" layoutX="515.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="39.0" prefWidth="65.0" text="&gt;&gt;">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button id="btn" layoutX="319.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleBackward" prefHeight="39.0" prefWidth="65.0" text="&lt;&lt;">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Text fx:id="currentTime" layoutX="430.0" layoutY="536.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0:00">
+         <font>
+            <Font size="18.0" />
+         </font></Text>
+      <BorderPane fx:id="borderPane" prefHeight="500.0" prefWidth="900.0">
          <top>
-            <MediaView fx:id="mediaView" fitHeight="330.0" fitWidth="600.0" BorderPane.alignment="CENTER" />
+            <MediaView fx:id="mediaView" fitHeight="500.0" fitWidth="900.0" BorderPane.alignment="CENTER" />
          </top>
       </BorderPane>
    </children>

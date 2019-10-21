@@ -75,9 +75,7 @@ public class CreationsListController implements Initializable {
                         if (exitCode == 0) {
                             stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
                             searchTerm = stdout.readLine();
-                            System.out.println(searchTerm);
                         }
-                        System.out.println();
 
                         _creations.add(new Creation(_creations.size()+1, file, searchTerm));
 

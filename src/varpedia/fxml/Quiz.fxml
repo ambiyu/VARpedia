@@ -5,30 +5,88 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.controllers.QuizController">
+<AnchorPane id="pane" prefHeight="600.0" prefWidth="900.0" stylesheets="@Quiz.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.controllers.QuizController">
    <children>
-      <Button layoutX="241.0" layoutY="360.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu" />
-      <Pane fx:id="quizPane" prefHeight="350.0" prefWidth="600.0" visible="false">
+      <Pane fx:id="quizPane" prefHeight="600.0" prefWidth="900.0" visible="false">
          <children>
-            <MediaView fx:id="mediaView" fitHeight="300.0" fitWidth="350.0" layoutX="14.0" layoutY="15.0" />
-            <Button layoutX="158.0" layoutY="323.0" mnemonicParsing="false" onAction="#replayVideo" text="Replay" />
-            <Button fx:id="option1" layoutX="418.0" layoutY="87.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
-            <Button fx:id="option2" layoutX="418.0" layoutY="139.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
-            <Button fx:id="option3" layoutX="418.0" layoutY="191.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
-            <Button fx:id="option4" layoutX="418.0" layoutY="241.0" maxHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="150.0" text="Button" textAlignment="CENTER" />
-            <Text fx:id="status" layoutX="286.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <Text fx:id="correctText" layoutX="412.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct: 0" />
-            <Text fx:id="incorrectText" layoutX="511.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect: 0" />
-            <Text layoutX="412.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the option that matches the creation" textAlignment="CENTER" wrappingWidth="161.46826171875" />
+            <Button id="backBtn" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="39.0" prefWidth="100.0" text="Back">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <MediaView id="mediaView" fx:id="mediaView" fitHeight="400.0" fitWidth="480.0" layoutX="14.0" layoutY="14.0" />
+            <Button id="btn" layoutX="206.0" layoutY="451.0" mnemonicParsing="false" onAction="#replayVideo" text="Replay">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button id="btn" fx:id="option1" layoutX="586.0" layoutY="147.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="Button" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button id="btn" fx:id="option2" layoutX="586.0" layoutY="204.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="Button" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button id="btn" fx:id="option3" layoutX="586.0" layoutY="258.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="Button" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Button id="btn" fx:id="option4" layoutX="586.0" layoutY="315.0" maxHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="250.0" text="Button" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Text fx:id="correctText" layoutX="586.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct: 0">
+               <font>
+                  <Font size="16.0" />
+               </font></Text>
+            <Text fx:id="incorrectText" layoutX="743.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Incorrect: 0">
+               <font>
+                  <Font size="16.0" />
+               </font></Text>
+            <Text layoutX="594.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the option that matches the creation" textAlignment="CENTER" wrappingWidth="233.46826171875">
+               <font>
+                  <Font size="16.0" />
+               </font></Text>
          </children>
       </Pane>
-      <Pane fx:id="welcomePane" layoutY="14.0" prefHeight="340.0" prefWidth="600.0">
+      <Pane fx:id="welcomePane" prefHeight="600.0" prefWidth="900.0" visible="false">
          <children>
-            <Button layoutX="259.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleStart" text="Start Quiz" />
-            <Text layoutX="140.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of questions for the quiz" textAlignment="CENTER" />
-            <Spinner fx:id="spinner" layoutX="215.0" layoutY="157.0" />
+            <Button id="backBtn" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="39.0" prefWidth="100.0" text="Back">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button layoutX="386.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleStart" text="Start Quiz">
+               <font>
+                  <Font size="20.0" />
+               </font></Button>
+            <Text layoutX="254.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of questions for the quiz" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <Spinner fx:id="spinner" layoutX="364.0" layoutY="257.0" prefHeight="39.0" prefWidth="170.0" />
+         </children>
+      </Pane>
+      <Pane fx:id="answeredPane" prefHeight="600.0" prefWidth="900.0">
+         <children>
+            <Text fx:id="resultText" layoutX="368.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct!">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Text>
+            <Button id="continueBtn" layoutX="391.0" layoutY="300.0" mnemonicParsing="false" text="Continue">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Text fx:id="correctAnswer" layoutX="210.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer: " textAlignment="CENTER" wrappingWidth="480.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>

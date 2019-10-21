@@ -1,0 +1,16 @@
+#pane {
+    -fx-background-color: rgba(6,180,255,0.5);
+}
+
+#backBtn {
+    -fx-background-color: yellow;
+    -fx-background-radius: 15;
+}
+
+#btn {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: black;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+}
