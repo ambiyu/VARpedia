@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 public class QuizResultController {
 }

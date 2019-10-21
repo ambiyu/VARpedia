@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.main;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -15,7 +15,7 @@ public class ImageDownload {
     public static String getAPIKey(String key) throws Exception {
 
         String config = System.getProperty("user.dir")
-                + System.getProperty("file.separator")+ "resources/flickr-api-keys.txt";
+                + System.getProperty("file.separator")+ "/resources/flickr-api-keys.txt";
 
         File file = new File(config);
         BufferedReader br = new BufferedReader(new FileReader(file));

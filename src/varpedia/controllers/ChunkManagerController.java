@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import varpedia.main.Chunk;
+import varpedia.main.Main;
 
 import java.net.URL;
 import java.util.List;
@@ -181,7 +183,7 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private void makeCreation() {
         try {
-            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageChoice.fxml"));
+            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("/varpedia/fxml/ImageChoice.fxml"));
             ImageChoiceController imageScene = new ImageChoiceController(_chunks, _searchTerm, this);
             newLoader.setController(imageScene);
 
@@ -198,7 +200,7 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private void back() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SearchResult.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/SearchResult.fxml"));
             SearchResultController controller = new SearchResultController(_searchTerm, _text, _chunks);
             loader.setController(controller);
 
@@ -215,7 +217,7 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private void returnToMenu() {
         if (Main.returnToMenuWarning()) {
-            Main.switchScene(getClass().getResource("Menu.fxml"));
+            Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
         }
     }
 

@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +11,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import varpedia.main.Creation;
+import varpedia.main.Main;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -121,7 +123,7 @@ public class QuizController implements Initializable {
     @FXML
     private void returnToMenu() {
         player.dispose();
-        Main.switchScene(getClass().getResource("Menu.fxml"));
+        Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
     }
 
     private void setButtons(Creation correct) {

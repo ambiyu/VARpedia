@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.main;
 
 public class Chunk {
     private int _chunkNumber;

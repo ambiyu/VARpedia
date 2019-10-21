@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -13,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import varpedia.main.Chunk;
+import varpedia.main.Main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -171,7 +173,7 @@ public class SearchResultController implements Initializable {
     @FXML
     private void toChunkManager() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/ChunkManager.fxml"));
             ChunkManagerController controller = new ChunkManagerController(_searchTerm, textArea.getText(), _chunks);
             loader.setController(controller);
 
@@ -188,7 +190,7 @@ public class SearchResultController implements Initializable {
     @FXML
     private void returnToMenu() {
         if (Main.returnToMenuWarning()) {
-            Main.switchScene(getClass().getResource("Menu.fxml"));
+            Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
         }
     }
 

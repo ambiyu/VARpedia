@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import varpedia.main.Creation;
+import varpedia.main.Main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -78,7 +80,7 @@ public class CreationsListController implements Initializable {
 
         if (selected != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/MediaPlayer.fxml"));
                 MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
                 loader.setController(controller);
 
@@ -156,7 +158,7 @@ public class CreationsListController implements Initializable {
 
     @FXML
     private void returnToMenu() {
-        Main.switchScene(getClass().getResource("Menu.fxml"));
+        Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
     }
 
     private void populateTable() {

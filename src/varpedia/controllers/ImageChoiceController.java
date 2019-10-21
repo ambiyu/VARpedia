@@ -1,4 +1,5 @@
-package softeng206a3;
+package varpedia.controllers;
+
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -19,7 +20,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,14 +31,13 @@ import javafx.scene.control.TextField;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import varpedia.main.Chunk;
+import varpedia.main.ImageDownload;
+import varpedia.main.Main;
 
 
 public class ImageChoiceController implements Initializable {
@@ -283,7 +282,7 @@ public class ImageChoiceController implements Initializable {
 public void handleBack() {
 
 	try {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));           
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/ChunkManager.fxml"));
 		loader.setController(_previousScene);
 
 		Parent parent = loader.load();
@@ -299,7 +298,7 @@ public void handleBack() {
 @FXML
 private void returnToMenu() {
 	if (Main.returnToMenuWarning()) {
-		Main.switchScene(getClass().getResource("Menu.fxml"));
+		Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
 	}
 }
 

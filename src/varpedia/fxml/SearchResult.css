@@ -1,0 +1,20 @@
+#pane {
+	-fx-background-color: rgba(6,180,255,0.5);
+
+}
+
+#manageBtn {
+    -fx-background-color: yellow;
+	-fx-background-radius: 15;
+}
+
+#backBtn {
+	-fx-background-color: yellow;
+	-fx-border-color: white;
+	-fx-border-radius: 20;
+	-fx-background-radius: 20;
+	-fx-background-image: url('../../../resources/back.png');
+	-fx-background-size: 40px;
+	-fx-background-repeat: no-repeat;
+	-fx-background-position: 50%;
+}

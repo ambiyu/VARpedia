@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@SearchResult.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button id="backBtn" layoutX="14.0" layoutY="540.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="50.0" prefWidth="130.0">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <TextArea fx:id="textArea" layoutX="25.0" layoutY="25.0" prefHeight="500.0" prefWidth="600.0" wrapText="true" />
+      <Button fx:id="previewBtn" layoutX="673.0" layoutY="160.0" mnemonicParsing="false" onAction="#preview" text="Preview Chunk">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button fx:id="saveBtn" layoutX="674.0" layoutY="232.0" mnemonicParsing="false" onAction="#saveChunk" prefHeight="39.0" prefWidth="177.0" text="Save Chunk">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button fx:id="manageBtn" layoutX="802.0" layoutY="549.0" mnemonicParsing="false" onAction="#toChunkManager" prefHeight="39.0" prefWidth="85.0" text="Next">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <ComboBox fx:id="comboBox" layoutX="674.0" layoutY="337.0" prefHeight="26.0" prefWidth="175.0" />
+      <Text layoutX="740.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voice">
+         <font>
+            <Font size="16.0" />
+         </font></Text>
+   </children>
+</AnchorPane>

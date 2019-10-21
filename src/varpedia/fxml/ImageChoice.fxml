@@ -29,7 +29,7 @@
                       <ImageView fx:id="imageView0" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView0" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -39,7 +39,7 @@
                       <ImageView fx:id="imageView1" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView1" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -49,7 +49,7 @@
                       <ImageView fx:id="imageView2" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView2" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                         <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -59,7 +59,7 @@
                       <ImageView fx:id="imageView3" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView3" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -69,7 +69,7 @@
                       <ImageView fx:id="imageView4" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView4" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -79,7 +79,7 @@
                       <ImageView fx:id="imageView5" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView5" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -89,7 +89,7 @@
                       <ImageView fx:id="imageView6" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView6" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -99,7 +99,7 @@
                       <ImageView fx:id="imageView7" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView7" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -109,7 +109,7 @@
                       <ImageView fx:id="imageView8" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView8" fitHeight="45.0" fitWidth="41.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -119,7 +119,7 @@
                       <ImageView fx:id="imageView9" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView9" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -129,7 +129,7 @@
                       <ImageView fx:id="imageView10" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView10" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -139,7 +139,7 @@
                       <ImageView fx:id="imageView11" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView11" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -149,7 +149,7 @@
                       <ImageView fx:id="imageView12" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView12" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -159,7 +159,7 @@
                       <ImageView fx:id="imageView13" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView13" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
@@ -169,7 +169,7 @@
                       <ImageView fx:id="imageView14" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView14" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../resources/greenTick.png" />
+                        <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>

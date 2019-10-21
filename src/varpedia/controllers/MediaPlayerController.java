@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,6 +9,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import varpedia.main.Main;
 
 import java.io.File;
 import java.net.URL;
@@ -56,7 +57,7 @@ public class MediaPlayerController implements Initializable {
     @FXML
     private void handleBack() {
         player.dispose();
-        Main.switchScene(getClass().getResource("CreationsList.fxml"));
+        Main.switchScene(getClass().getResource("/varpedia/fxml/CreationsList.fxml"));
     }
 
     @FXML

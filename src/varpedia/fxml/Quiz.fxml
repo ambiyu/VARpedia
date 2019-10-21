@@ -7,7 +7,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.QuizController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.controllers.QuizController">
    <children>
       <Button layoutX="241.0" layoutY="360.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu" />
       <Pane fx:id="quizPane" prefHeight="350.0" prefWidth="600.0" visible="false">
@@ -27,7 +27,7 @@
       <Pane fx:id="welcomePane" layoutY="14.0" prefHeight="340.0" prefWidth="600.0">
          <children>
             <Button layoutX="259.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleStart" text="Start Quiz" />
-            <Text layoutX="140.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter select the number of questions for the quiz" textAlignment="CENTER" />
+            <Text layoutX="140.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the number of questions for the quiz" textAlignment="CENTER" />
             <Spinner fx:id="spinner" layoutX="215.0" layoutY="157.0" />
          </children>
       </Pane>

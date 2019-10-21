@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.main;
 
 public class Creation {
     private int _id;
