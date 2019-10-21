@@ -36,13 +36,7 @@ public class CreationsListController implements Initializable {
     private TableColumn<Creation, String> searchTermCol;
 
     @FXML
-    private Button playBtn;
-
-    @FXML
     private Button playAudioBtn;
-
-    @FXML
-    private Button deleteBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -7,11 +7,11 @@
 
 <AnchorPane id="pane" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.controllers.MenuController">
    <children>
-      <Button id="stdBtn" layoutX="352.0" layoutY="192.0" mnemonicParsing="false" onAction="#toMyCreations" text="My Creations">
+      <Button id="stdBtn" layoutX="298.0" layoutY="196.0" mnemonicParsing="false" onAction="#toMyCreations" prefHeight="57.0" prefWidth="334.0" text="My Creations">
          <font>
             <Font size="28.0" />
          </font></Button>
-      <Text layoutX="326.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VARpedia" textAlignment="CENTER" wrappingWidth="277.13671875">
+      <Text layoutX="326.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VARpedia" textAlignment="CENTER" wrappingWidth="277.13671875">
          <font>
             <Font name="Purisa Bold" size="48.0" />
          </font>
@@ -20,7 +20,7 @@
          <font>
             <Font size="28.0" />
          </font></Button>
-      <Button id="stdBtn" fx:id="toQuiz" layoutX="344.0" layoutY="392.0" mnemonicParsing="false" onAction="#toQuiz" text="Matching Quiz">
+      <Button id="stdBtn" fx:id="toQuiz" layoutX="298.0" layoutY="392.0" mnemonicParsing="false" onAction="#toQuiz" prefHeight="57.0" prefWidth="334.0" text="Quiz">
          <font>
             <Font size="28.0" />
          </font>

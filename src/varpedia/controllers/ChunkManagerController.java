@@ -182,7 +182,7 @@ public class ChunkManagerController implements Initializable {
     }
 
     @FXML
-    private void makeCreation() {
+    private void toImageSelect() {
         try {
             FXMLLoader newLoader = new FXMLLoader(getClass().getResource("/varpedia/fxml/ImageChoice.fxml"));
             ImageChoiceController imageScene = new ImageChoiceController(_chunks, _searchTerm, this);
@@ -212,13 +212,6 @@ public class ChunkManagerController implements Initializable {
             window.show();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void returnToMenu() {
-        if (Main.returnToMenuWarning()) {
-            Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
         }
     }
 
