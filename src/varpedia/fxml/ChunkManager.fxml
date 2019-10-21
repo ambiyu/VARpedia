@@ -34,11 +34,11 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="nextBtn" fx:id="createBtn" layoutX="796.0" layoutY="547.0" mnemonicParsing="false" onAction="#makeCreation" prefHeight="39.0" prefWidth="90.0" text="Next">
+      <Button id="nextBtn" fx:id="createBtn" layoutX="786.0" layoutY="547.0" mnemonicParsing="false" onAction="#makeCreation" prefHeight="39.0" prefWidth="100.0" text="Next">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="backBtn" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="90.0" text="Back">
+      <Button id="backBtn" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="100.0" text="Back">
          <font>
             <Font size="20.0" />
          </font></Button>

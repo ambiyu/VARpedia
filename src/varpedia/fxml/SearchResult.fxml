@@ -9,7 +9,7 @@
 
 <AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@SearchResult.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button id="backBtn" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="39.0" prefWidth="100.0" text="Back">
+      <Button id="backBtn" layoutX="14.0" layoutY="543.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="41.0" prefWidth="100.0" text="Back">
          <font>
             <Font size="20.0" />
          </font></Button>
@@ -25,7 +25,7 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button fx:id="manageBtn" layoutX="802.0" layoutY="549.0" mnemonicParsing="false" onAction="#toChunkManager" prefHeight="39.0" prefWidth="85.0" text="Next">
+      <Button fx:id="manageBtn" layoutX="787.0" layoutY="549.0" mnemonicParsing="false" onAction="#toChunkManager" prefHeight="39.0" prefWidth="100.0" text="Next">
          <font>
             <Font size="20.0" />
          </font></Button>
