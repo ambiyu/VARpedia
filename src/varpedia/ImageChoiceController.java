@@ -1,4 +1,4 @@
-package varpedia;
+package softeng206a3;
 
 
 import java.awt.image.BufferedImage;
@@ -20,6 +20,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -31,9 +32,13 @@ import javafx.scene.control.TextField;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
@@ -41,10 +46,13 @@ public class ImageChoiceController implements Initializable {
 
 	@FXML
 	private ImageView imageView0,imageView1,imageView2,imageView3,imageView4;
-	@FXML
+	@FXML	
 	private ImageView imageView5,imageView6,imageView7,imageView8,imageView9;
 	@FXML
 	private ImageView imageView10,imageView11,imageView12,imageView13,imageView14;
+	@FXML
+	private ImageView greenTickView0, greenTickView1, greenTickView2, greenTickView3, greenTickView4, greenTickView5, greenTickView6, greenTickView7, greenTickView8, greenTickView9, greenTickView10, greenTickView11, greenTickView12, greenTickView13, greenTickView14;
+
 	@FXML
 	private Button createBtn;
 	@FXML
@@ -55,18 +63,21 @@ public class ImageChoiceController implements Initializable {
 	private AnchorPane anchor;
 	@FXML
 	private CheckBox musicOption;
-	
+
 	private ProgressIndicator progress = new ProgressIndicator();
 	private Label progressLabel = new Label("Retrieving Images...");
-	
+
 	private ArrayList<ImageView> listOfImages = new ArrayList<>();
 	private ArrayList<Image> imagesToMerge = new ArrayList<>();
+	private ArrayList<ImageView> allGreenTicks = new ArrayList<>();
 
 	private String _searchTerm;
 	private List<Chunk> _chunks;
 	private ChunkManagerController _previousScene;
 
-	
+
+	private Image greenTick;
+
 	public ImageChoiceController(List<Chunk> allChunks, String name, ChunkManagerController scene) {
 		_searchTerm = name;
 		_chunks = allChunks;
@@ -75,7 +86,10 @@ public class ImageChoiceController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+		System.out.println("START");
+
+
+
 		//create spinning loading thing and label
 		progress.setMinSize(100, 100);;
 		progress.setLayoutY(anchor.getPrefHeight()/2 - 50);
@@ -87,6 +101,7 @@ public class ImageChoiceController implements Initializable {
 		anchor.getChildren().add(progressLabel);
 
 		setUpList();
+		
 		createBtn.setDisable(true);
 		pane.setVisible(false);
 
@@ -98,11 +113,15 @@ public class ImageChoiceController implements Initializable {
 			int numOfImages = new File(".temp/images").list().length;
 
 			try {
+//				greenTick = new Image(new FileInputStream("resources/greenTick.png"));
+//				greenTickView.setImage(greenTick);
+
 				for (int i = 0; i < numOfImages; i++) {
 					file = new FileInputStream(".temp/images/" + _searchTerm + "-" + i + ".jpg");
 					Image image = new Image(file);
 
 					listOfImages.get(i).setImage(image);
+					
 				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -120,7 +139,7 @@ public class ImageChoiceController implements Initializable {
 	public void handleCreate() {
 		createBtn.setDisable(true);
 
-		if (imagesToMerge.size() > 10) {
+		if(imagesToMerge.size() > 10) {
 			int exceedingImages = imagesToMerge.size() - 10;
 			displayError("Only 10 images may be selected, please unselect " +  exceedingImages + " image(s)");
 			createBtn.setDisable(false);
@@ -191,18 +210,17 @@ public class ImageChoiceController implements Initializable {
 						// create video and then combine audio/video into one
 						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
 
-						File dir = new File(".quiz/" + creationName);
-						dir.mkdir();
-
 						//checks if it needs to combine .mp3 or .wav
 						if (musicOption.isSelected()) {
 							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.mp3\" -shortest creations/" + creationName + ".mp4");
-							Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.mp3\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
 						} else {
 							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
-							Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
 						}
 
+						// QUIZ stuff
+						File dir = new File(".quiz/" + creationName);
+						dir.mkdir();
+						Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
 						Main.execCmd("echo \"" + _searchTerm + "\" > .quiz/" + creationName + "/searchTerm.txt");
 
 
@@ -231,99 +249,111 @@ public class ImageChoiceController implements Initializable {
 	@FXML
 	public void handleClick(MouseEvent event) {
 		ImageView selectedImage = null;
+		
 
 		//finds what image was clicked
-		for (ImageView im : listOfImages) {
-			if (event.getSource().equals(im)) {
+		for(ImageView im : listOfImages) {
+			if(event.getSource().equals(im)) {
+				selectedImage = im;
+			}
+			else if(event.getSource().equals(allGreenTicks.get(listOfImages.indexOf(im)))){
 				selectedImage = im;
 			}
 		}
 
-		if (selectedImage.getOpacity() == 0.2) {
+		if(selectedImage.getOpacity() == 0.2) {
 			selectedImage.setOpacity(1);
-
-			if (imagesToMerge.contains(selectedImage.getImage())) {
+			allGreenTicks.get(listOfImages.indexOf(selectedImage)).setOpacity(0);
+			if(imagesToMerge.contains(selectedImage.getImage())) {
 				imagesToMerge.remove(selectedImage.getImage());
 			}
+		}
+		else {
 
-		} else {
+			if(selectedImage != null) {
+			allGreenTicks.get(listOfImages.indexOf(selectedImage)).setOpacity(1);
 			selectedImage.setOpacity(0.2);
+			}
 			imagesToMerge.add(selectedImage.getImage());
 		}
 	}
 
-	@FXML
-	public void handleBack() {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));           
-			loader.setController(_previousScene);
 
-			Parent parent = loader.load();
-			Scene createScene = new Scene(parent);
-			Stage window = Main.getPrimaryStage();
-			window.setScene(createScene);
-			window.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+
+@FXML
+public void handleBack() {
+
+	try {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));           
+		loader.setController(_previousScene);
+
+		Parent parent = loader.load();
+		Scene createScene = new Scene(parent);
+		Stage window = Main.getPrimaryStage();
+		window.setScene(createScene);
+		window.show();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}		
+}
+
+@FXML
+private void returnToMenu() {
+	if (Main.returnToMenuWarning()) {
+		Main.switchScene(getClass().getResource("Menu.fxml"));
 	}
+}
 
-	@FXML
-	private void returnToMenu() {
-		if (Main.returnToMenuWarning()) {
-			Main.switchScene(getClass().getResource("Menu.fxml"));
+private void displayError(String message) {
+	Alert alert = new Alert(Alert.AlertType.ERROR);
+	alert.setTitle("ERROR");
+	alert.setHeaderText(null);
+	alert.setContentText(message);
+	alert.showAndWait();
+}
+
+@FXML
+public void enableCreate() {
+	if(!fileNameInput.getText().trim().isEmpty() && imagesToMerge.size() > 0) {
+		createBtn.setDisable(false);
+	}
+	else {
+		createBtn.setDisable(true);
+	}
+}
+
+private boolean isConflicting(String folder, String name, String format) {
+	try {
+		String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
+		Process process = new ProcessBuilder("bash", "-c", cmd).start();
+		int exitStatus = process.waitFor();
+
+		if (exitStatus == 0) {
+			return true;
 		}
+	} catch (Exception e) {
+		e.printStackTrace();
 	}
+	return false;
+}
 
-	private void displayError(String message) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("ERROR");
-		alert.setHeaderText(null);
-		alert.setContentText(message);
-		alert.showAndWait();
-	}
-
-	@FXML
-	public void enableCreate() {
-		if(!fileNameInput.getText().trim().isEmpty() && imagesToMerge.size() > 0) {
-			createBtn.setDisable(false);
-		}
-		else {
-			createBtn.setDisable(true);
-		}
-	}
-
-	private boolean isConflicting(String folder, String name, String format) {
-		try {
-			String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
-			Process process = new ProcessBuilder("bash", "-c", cmd).start();
-			int exitStatus = process.waitFor();
-
-			if (exitStatus == 0) {
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	private void setUpList() {
-		listOfImages.add(imageView0);
-		listOfImages.add(imageView1);
-		listOfImages.add(imageView2);
-		listOfImages.add(imageView3);
-		listOfImages.add(imageView4);
-		listOfImages.add(imageView5);
-		listOfImages.add(imageView6);
-		listOfImages.add(imageView7);
-		listOfImages.add(imageView8);
-		listOfImages.add(imageView9);
-		listOfImages.add(imageView10);
-		listOfImages.add(imageView11);
-		listOfImages.add(imageView12);
-		listOfImages.add(imageView13);
-		listOfImages.add(imageView14);
-	}
+private void setUpList() {
+	
+	listOfImages.add(imageView0); allGreenTicks.add(greenTickView0); 
+	listOfImages.add(imageView1); allGreenTicks.add(greenTickView1);
+	listOfImages.add(imageView2); allGreenTicks.add(greenTickView2);
+	listOfImages.add(imageView3); allGreenTicks.add(greenTickView3);
+	listOfImages.add(imageView4); allGreenTicks.add(greenTickView4);
+	listOfImages.add(imageView5); allGreenTicks.add(greenTickView5);
+	listOfImages.add(imageView6); allGreenTicks.add(greenTickView6);
+	listOfImages.add(imageView7); allGreenTicks.add(greenTickView7);
+	listOfImages.add(imageView8); allGreenTicks.add(greenTickView8);
+	listOfImages.add(imageView9); allGreenTicks.add(greenTickView9);
+	listOfImages.add(imageView10); allGreenTicks.add(greenTickView10);
+	listOfImages.add(imageView11); allGreenTicks.add(greenTickView11);
+	listOfImages.add(imageView12); allGreenTicks.add(greenTickView12);
+	listOfImages.add(imageView13); allGreenTicks.add(greenTickView13);
+	listOfImages.add(imageView14); allGreenTicks.add(greenTickView14);
+}
 
 }
