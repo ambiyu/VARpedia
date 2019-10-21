@@ -8,17 +8,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@ChunkManager.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button layoutX="364.0" layoutY="361.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="26.0" prefWidth="120.0" text="Return to Menu" />
         <Text layoutX="325.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Chunks">
             <font>
                 <Font name="System Bold" size="28.0" />
             </font>
         </Text>
-        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="60.0" prefHeight="450.0" prefWidth="600.0">
+        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="60.0" prefHeight="400.0" prefWidth="600.0">
             <content>
-                <TableView fx:id="tableView" editable="true" onMouseClicked="#handleClick" prefWidth="817.0">
+                <TableView fx:id="tableView" editable="true" onMouseClicked="#handleClick" prefHeight="401.0" prefWidth="598.0">
                     <columns>
                         <TableColumn fx:id="chunkNumCol" editable="false" maxWidth="51.0" minWidth="30.0" prefWidth="30.0" resizable="false" sortable="false" text="#" />
                         <TableColumn fx:id="chunkTextCol" editable="false" maxWidth="662.0" minWidth="206.0" prefWidth="426.0" sortable="false" text="Text" />
@@ -27,29 +26,34 @@
                 </TableView>
             </content>
         </ScrollPane>
-        <Button fx:id="playBtn" disable="true" layoutX="708.0" layoutY="397.0" maxWidth="94.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="39.0" prefWidth="94.0" text="Play">
+        <Button fx:id="playBtn" disable="true" layoutX="708.0" layoutY="204.0" maxWidth="120.0" minWidth="60.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="39.0" prefWidth="120.0" text="Play">
          <font>
             <Font size="20.0" />
          </font></Button>
-        <Button fx:id="deleteBtn" disable="true" layoutX="707.0" layoutY="338.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
+        <Button fx:id="deleteBtn" disable="true" layoutX="708.0" layoutY="280.0" mnemonicParsing="false" onAction="#handleDelete" prefHeight="39.0" prefWidth="120.0" text="Delete">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button fx:id="createBtn" layoutX="796.0" layoutY="547.0" mnemonicParsing="false" onAction="#makeCreation" prefHeight="39.0" prefWidth="90.0" text="Next">
+      <Button id="nextBtn" fx:id="createBtn" layoutX="796.0" layoutY="547.0" mnemonicParsing="false" onAction="#makeCreation" prefHeight="39.0" prefWidth="90.0" text="Next">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="90.0" text="Back">
+      <Button id="backBtn" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="90.0" text="Back">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button fx:id="upBtn" disable="true" layoutX="713.0" layoutY="132.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="39.0" prefWidth="85.0" text="Up">
+      <Button fx:id="upBtn" disable="true" layoutX="17.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="33.0" prefWidth="85.0" text="Up">
          <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font></Button>
-      <Button fx:id="downBtn" disable="true" layoutX="713.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleDown" text="Down">
+      <Button fx:id="downBtn" disable="true" layoutX="116.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleDown" prefHeight="33.0" prefWidth="85.0" text="Down">
          <font>
-            <Font size="20.0" />
+            <Font size="16.0" />
          </font></Button>
+      <Text fx:id="warningText" layoutX="236.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have not saved any chunks. Please go back and add a chunk" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
     </children>
 </AnchorPane>

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
@@ -50,6 +51,8 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private Button downBtn;
 
+    @FXML
+    private Text warningText;
 
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
         _searchTerm = searchTerm;
@@ -73,6 +76,10 @@ public class ChunkManagerController implements Initializable {
         }
         else {
             createBtn.setDisable(false);
+        }
+
+        if (_chunks.size() == 0) {
+            warningText.setVisible(true);
         }
     }
 
