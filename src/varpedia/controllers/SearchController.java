@@ -24,7 +24,7 @@ public class SearchController {
     private Button searchBtn;
 
     @FXML
-    private Text searchingText;
+    private Text textPrompt;
 
     
     @FXML
@@ -37,7 +37,7 @@ public class SearchController {
         if (!textField.getText().trim().isEmpty()) {
             searchBtn.setDisable(true);
             String searchTerm = textField.getText();
-            searchingText.setVisible(true);
+            textPrompt.setText("Searching...");
             new Thread(() -> {
                 try {
                     //String cmd = "wikit \"" + searchTerm + "\" | grep -o '[^ ][^.]*\\.'"; // each sentence on new line
@@ -57,7 +57,7 @@ public class SearchController {
                             alert.showAndWait();
 
                             searchBtn.setDisable(false);
-                            searchingText.setVisible(false);
+                            textPrompt.setText("Enter your search term");
                         });
                     } else {
 

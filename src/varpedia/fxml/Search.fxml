@@ -7,21 +7,21 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="pane" prefHeight="600.0" prefWidth="900.0" stylesheets="@Search.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.controllers.SearchController">
+<AnchorPane id="pane" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="varpedia.controllers.SearchController">
    <children>
-      <Text fx:id="searchingText" layoutX="375.0" layoutY="248.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Searching..." textAlignment="CENTER" visible="false">
+      <Text fx:id="textPrompt" layoutX="319.0" layoutY="249.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter your search term" textAlignment="CENTER" wrappingWidth="262.0">
          <font>
             <Font size="18.0" />
          </font></Text>
-      <TextField id="textField" fx:id="textField" layoutX="273.0" layoutY="261.0" onAction="#searchWiki" promptText="Enter your search term">
+      <TextField id="search-textField" fx:id="textField" layoutX="273.0" layoutY="261.0" onAction="#searchWiki" promptText="Enter your search term">
          <font>
             <Font size="20.0" />
          </font></TextField>
-      <Button id="searchBtn" fx:id="searchBtn" layoutX="535.0" layoutY="262.0" mnemonicParsing="false" onAction="#searchWiki" text="Search">
+      <Button id="search-searchBtn" fx:id="searchBtn" layoutX="535.0" layoutY="262.0" mnemonicParsing="false" onAction="#searchWiki" text="Search">
          <font>
             <Font size="19.0" />
          </font></Button>
-      <Button id="mainMenuBtn" fx:id="backBtn" layoutX="358.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" text="Return to Menu">
+      <Button id="yellowBtn" fx:id="backBtn" layoutX="358.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" text="Return to Menu">
          <font>
             <Font size="20.0" />
          </font></Button>

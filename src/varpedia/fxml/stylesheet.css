@@ -2,12 +2,12 @@
     -fx-background-color: rgba(6,180,255,0.5);
 }
 
-#backBtn. #continueBtn {
+#yellowBtn {
     -fx-background-color: yellow;
     -fx-background-radius: 15;
 }
 
-#btn {
+#stdBtn {
     -fx-background-color: white;
     -fx-background-radius: 10;
     -fx-border-color: black;
@@ -15,8 +15,22 @@
     -fx-border-radius: 10;
 }
 
-#mediaView {
+#search-textField {
+    -fx-background-radius: 5 0 0 5;
+}
+
+#search-searchBtn {
+    -fx-background-radius: 0 5 5 0;
+}
+
+#upBtn, #downBtn {
+    -fx-background-color: lightgrey;
+    -fx-background-radius: 10;
     -fx-border-color: black;
-    -fx-border-width: 1.5;
+    -fx-border-width: 1;
     -fx-border-radius: 10;
+}
+
+#dropdown {
+    -fx-background-color: white;
 }

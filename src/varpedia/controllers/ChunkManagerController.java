@@ -65,21 +65,15 @@ public class ChunkManagerController implements Initializable {
         chunkNumCol.setCellValueFactory(new PropertyValueFactory<>("chunkNumber"));
         chunkTextCol.setCellValueFactory(new PropertyValueFactory<>("text"));
         chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
-        
-        for (Chunk chunk : _chunks) {
-            tableView.getItems().add(chunk);
-        }
 
         //check if user has any chunks to display at chunkManager
-        if(_chunks.isEmpty()) {
+        if (_chunks.isEmpty()) {
             createBtn.setDisable(true);
-        }
-        else {
-            createBtn.setDisable(false);
+            warningText.setVisible(true);
         }
 
-        if (_chunks.size() == 0) {
-            warningText.setVisible(true);
+        for (Chunk chunk : _chunks) {
+            tableView.getItems().add(chunk);
         }
     }
 

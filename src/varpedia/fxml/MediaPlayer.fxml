@@ -7,25 +7,25 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="pane" prefHeight="600.0" prefWidth="900.0" stylesheets="@MediaPlayer.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="pane" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-    <Button id="backBtn" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="39.0" prefWidth="100.0" text="Back">
+    <Button id="yellowBtn" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="39.0" prefWidth="100.0" text="Back">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="btn" fx:id="playPauseBtn" layoutX="400.0" layoutY="545.0" mnemonicParsing="false" onAction="#playPause" prefHeight="39.0" prefWidth="100.0" text="Pause">
+      <Button id="stdBtn" fx:id="playPauseBtn" layoutX="400.0" layoutY="545.0" mnemonicParsing="false" onAction="#playPause" prefHeight="39.0" prefWidth="100.0" text="Pause">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="btn" layoutX="722.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleMute" text="Mute">
+      <Button id="stdBtn" layoutX="722.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleMute" text="Mute">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="btn" layoutX="515.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="39.0" prefWidth="65.0" text="&gt;&gt;">
+      <Button id="stdBtn" layoutX="515.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="39.0" prefWidth="65.0" text="&gt;&gt;">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="btn" layoutX="319.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleBackward" prefHeight="39.0" prefWidth="65.0" text="&lt;&lt;">
+      <Button id="stdBtn" layoutX="319.0" layoutY="545.0" mnemonicParsing="false" onAction="#handleBackward" prefHeight="39.0" prefWidth="65.0" text="&lt;&lt;">
          <font>
             <Font size="20.0" />
          </font></Button>
