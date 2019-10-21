@@ -3,6 +3,8 @@ package varpedia;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -23,15 +25,18 @@ public class QuizController implements Initializable {
     private MediaPlayer player;
     private List<Creation> _creations;
     private List<Button> _options;
+    private int _numQuestions;
     private int _correctCount;
     private int _incorrectCount;
-
 
     @FXML
     private Pane welcomePane;
 
     @FXML
     private Pane quizPane;
+
+    @FXML
+    private Spinner<Integer> spinner;
 
     @FXML
     private Button option1;
@@ -59,6 +64,7 @@ public class QuizController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10, 5, 1));
 
         _options = new ArrayList<>();
         _options.add(option1);
@@ -100,6 +106,7 @@ public class QuizController implements Initializable {
 
     @FXML
     private void handleStart() {
+        _numQuestions = spinner.getValue();
         welcomePane.setVisible(false);
         quizPane.setVisible(true);
         player.play();
@@ -154,6 +161,12 @@ public class QuizController implements Initializable {
     }
 
     private void nextCreation() {
+        if (_correctCount+_incorrectCount == _numQuestions-1) {
+            //Main.switchScene();
+            System.out.println("finished");
+        }
+
+
         int nextId = (int)(Math.random() * _creations.size());
         String creationName = _creations.get(nextId).getName();
         File fileUrl = new File(".quiz/" + creationName + "/" + creationName + ".mp4");
