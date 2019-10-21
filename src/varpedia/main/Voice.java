@@ -15,4 +15,13 @@ public enum Voice {
         return _name;
     }
 
+    public static Voice fromString(String name) {
+        for (Voice voice : Voice.values()) {
+            if (voice._name.equals(name)) {
+                return voice;
+            }
+        }
+        throw new IllegalArgumentException("No voice with name: " + name);
+    }
+
 }

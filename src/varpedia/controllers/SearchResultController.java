@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
+import varpedia.main.Voice;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -65,13 +66,12 @@ public class SearchResultController implements Initializable {
         // display search result
         textArea.setText(_text);
         termText.setText(_searchTerm);
-
         ObservableList<String> voices = FXCollections.observableArrayList(
-                "kal_diphone",
-                "akl_nz_jdt_diphone",
-                "akl_nz_cw_cg_cg");
+                Voice.kal_diphone.getName(),
+                Voice.akl_nz_jdt_diphone.getName(),
+                Voice.akl_nz_cw_cg_cg.getName());
         comboBox.setItems(voices);
-        comboBox.setValue("kal_diphone");
+        comboBox.setValue(Voice.kal_diphone.getName());
 
         int exitCode = Main.execCmd("[ ! -e .temp/chunks ]");
         if (exitCode == 0) { // if there is no chunk folder, then create one
@@ -94,7 +94,7 @@ public class SearchResultController implements Initializable {
                     String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
 
                     // create .scm file in order to use festival to play different voices
-                    Main.execCmd("echo \"(voice_" + comboBox.getValue() + ")\" > .temp/voice.scm");
+                    Main.execCmd("echo \"(voice_" + Voice.fromString(comboBox.getValue()) + ")\" > .temp/voice.scm");
                     Main.execCmd("echo \"(SayText " + selectedText + ")\" >> .temp/voice.scm");
                     int exitCode = Main.execCmd("festival -b .temp/voice.scm");
 
@@ -127,7 +127,7 @@ public class SearchResultController implements Initializable {
             saveBtn.setDisable(true);
             new Thread(() -> {
                 try {
-                    String voice = comboBox.getValue();
+                    String voice = Voice.fromString(comboBox.getValue()).toString();
                     String selectedText = textArea.getSelectedText().replace("\"", ""); // remove all double quotes to prevent some errors
                     int id = 1;
                     int numChunks = _chunks.size();
@@ -145,7 +145,7 @@ public class SearchResultController implements Initializable {
                     BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
                     int size = Integer.parseInt(stdout.readLine());
                     if (size > 0) {
-                        Chunk chunk = new Chunk(id, selectedText, voice);
+                        Chunk chunk = new Chunk(id, selectedText, Voice.valueOf(voice));
                         _chunks.add(chunk);
 
                         Platform.runLater(() -> {

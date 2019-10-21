@@ -3,9 +3,9 @@ package varpedia.main;
 public class Chunk {
     private int _chunkNumber;
     private String _text;
-    private String _voice;
+    private Voice _voice;
 
-    public Chunk(int chunkNumber, String text, String voice) {
+    public Chunk(int chunkNumber, String text, Voice voice) {
         _chunkNumber = chunkNumber;
         _text = text;
         _voice = voice;
@@ -20,6 +20,6 @@ public class Chunk {
     }
 
     public String getVoice() {
-        return _voice;
+        return _voice.getName();
     }
 }

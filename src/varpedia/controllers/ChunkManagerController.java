@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
+import varpedia.main.Voice;
 
 import java.net.URL;
 import java.util.List;
@@ -137,7 +138,7 @@ public class ChunkManagerController implements Initializable {
             new Thread(() -> {
                 try {
 
-                    Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
+                    Main.execCmd("echo \"(voice_" + Voice.fromString(selected.getVoice()) + ")\" > .temp/voice.scm");
                     Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
                     Main.execCmd("festival -b .temp/voice.scm");
 
