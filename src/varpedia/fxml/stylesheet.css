@@ -1,7 +1,9 @@
 #pane {
     -fx-background-color: rgba(6,180,255,0.5);
 }
-
+#loadingPane{
+	-fx-background-color: rgba(6,180,255,0.5);
+}
 #yellowBtn {
     -fx-background-color: yellow;
     -fx-background-radius: 15;

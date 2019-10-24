@@ -1,42 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Button layoutX="14.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
-        <Button fx:id="createBtn" layoutX="377.0" layoutY="360.0" mnemonicParsing="false" onAction="#handleCreate" text="Create" />
-        <Button layoutX="491.0" layoutY="360.0" mnemonicParsing="false" onAction="#returnToMenu" text="Exit to Main" />
-        <Label layoutX="165.0" prefHeight="48.0" prefWidth="274.0" text="Image Selector">
-            <font>
-                <Font name="System Bold" size="31.0" />
-            </font>
-        </Label>
-        <TextField fx:id="fileNameInput" layoutX="195.0" layoutY="360.0" onKeyReleased="#enableCreate" />
-        <Pane fx:id="pane" layoutX="2.0" layoutY="46.0" prefHeight="308.0" prefWidth="600.0">
+        <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
             <children>
-            <StackPane fx:id="stack0">
+              <CheckBox fx:id="musicOption" layoutX="150.0" layoutY="564.0" mnemonicParsing="false" text="Music" />
+              <Button layoutX="791.0" layoutY="560.0" mnemonicParsing="false" onAction="#returnToMenu" text="Exit to Main" />
+            <StackPane layoutY="50.0">
                <children>
-                      <ImageView fx:id="imageView0" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="greenTickView0" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../resources/greenTick.png" />
-                     </image>
-                  </ImageView>
+                      <ImageView fx:id="imageView0" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="greenTickView0" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </StackPane>
-            <StackPane layoutX="120.0">
+            <StackPane layoutX="180.0" layoutY="50.0">
                <children>
-                      <ImageView fx:id="imageView1" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView1" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView1" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -44,29 +32,32 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="240.0">
+            <StackPane layoutX="360.0" layoutY="50.0">
                <children>
-                      <ImageView fx:id="imageView2" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView2" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                          <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
+                      <ImageView fx:id="imageView2" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                </children>
             </StackPane>
-            <StackPane layoutX="360.0">
+            <StackPane layoutX="540.0" layoutY="50.0">
                <children>
-                      <ImageView fx:id="imageView3" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView3" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView3" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
                      </image>
                   </ImageView>
                </children>
+               <opaqueInsets>
+                  <Insets left="5.0" right="5.0" />
+               </opaqueInsets>
             </StackPane>
-            <StackPane layoutX="480.0">
+            <StackPane layoutX="720.0" layoutY="50.0">
                <children>
-                      <ImageView fx:id="imageView4" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView4" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView4" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -74,9 +65,9 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="-7.0" layoutY="104.0">
+            <StackPane layoutY="205.0">
                <children>
-                      <ImageView fx:id="imageView5" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView5" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView5" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -84,9 +75,9 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="113.0" layoutY="104.0">
+            <StackPane layoutX="180.0" layoutY="205.0">
                <children>
-                      <ImageView fx:id="imageView6" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView6" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView6" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -94,9 +85,9 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="233.0" layoutY="104.0">
+            <StackPane layoutX="360.0" layoutY="205.0">
                <children>
-                      <ImageView fx:id="imageView7" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView7" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView7" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -104,29 +95,21 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="353.0" layoutY="104.0">
+            <StackPane layoutX="540.0" layoutY="205.0">
                <children>
-                      <ImageView fx:id="imageView8" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="greenTickView8" fitHeight="45.0" fitWidth="41.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../resources/greenTick.png" />
-                     </image>
-                  </ImageView>
+                      <ImageView fx:id="imageView8" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="greenTickView8" fitHeight="45.0" fitWidth="41.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </StackPane>
-            <StackPane layoutX="473.0" layoutY="104.0">
+            <StackPane layoutX="720.0" layoutY="205.0">
                <children>
-                      <ImageView fx:id="imageView9" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="greenTickView9" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../resources/greenTick.png" />
-                     </image>
-                  </ImageView>
+                  <ImageView fx:id="greenTickView9" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView9" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                </children>
             </StackPane>
-            <StackPane layoutX="-7.0" layoutY="204.0">
+            <StackPane layoutY="360.0">
                <children>
-                      <ImageView fx:id="imageView10" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView10" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView10" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -134,19 +117,15 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="113.0" layoutY="204.0">
+            <StackPane layoutX="180.0" layoutY="360.0">
                <children>
-                      <ImageView fx:id="imageView11" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="greenTickView11" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../resources/greenTick.png" />
-                     </image>
-                  </ImageView>
+                      <ImageView fx:id="imageView11" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="greenTickView11" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </StackPane>
-            <StackPane layoutX="233.0" layoutY="204.0">
+            <StackPane layoutX="360.0" layoutY="360.0">
                <children>
-                      <ImageView fx:id="imageView12" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView12" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView12" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -154,9 +133,9 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="353.0" layoutY="204.0">
+            <StackPane layoutX="540.0" layoutY="360.0">
                <children>
-                      <ImageView fx:id="imageView13" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView13" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView13" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -164,9 +143,9 @@
                   </ImageView>
                </children>
             </StackPane>
-            <StackPane layoutX="473.0" layoutY="204.0">
+            <StackPane layoutX="720.0" layoutY="360.0">
                <children>
-                      <ImageView fx:id="imageView14" fitHeight="100.0" fitWidth="120.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
+                      <ImageView fx:id="imageView14" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fx:id="greenTickView14" fitHeight="45.0" fitWidth="49.0" onMouseReleased="#handleClick" opacity="0.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../resources/greenTick.png" />
@@ -174,8 +153,11 @@
                   </ImageView>
                </children>
             </StackPane>
+              <TextField fx:id="fileNameInput" layoutX="345.0" layoutY="560.0" onKeyReleased="#enableCreate" />
+              <Button fx:id="createBtn" layoutX="535.0" layoutY="560.0" mnemonicParsing="false" onAction="#handleCreate" text="Create" />
+              <Button layoutX="14.0" layoutY="560.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
             </children>
         </Pane>
-        <CheckBox fx:id="musicOption" layoutX="104.0" layoutY="364.0" mnemonicParsing="false" text="Music" />
+      <Pane fx:id="loadingPane" prefHeight="600.0" prefWidth="900.0" />
     </children>
 </AnchorPane>
