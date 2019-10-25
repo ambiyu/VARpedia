@@ -2,20 +2,26 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
+      <Pane fx:id="loadingPane" prefHeight="600.0" prefWidth="900.0" />
         <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
             <children>
-              <CheckBox fx:id="musicOption" layoutX="150.0" layoutY="564.0" mnemonicParsing="false" text="Music" />
-              <Button layoutX="791.0" layoutY="560.0" mnemonicParsing="false" onAction="#returnToMenu" text="Exit to Main" />
+              <Button layoutX="748.0" layoutY="554.0" mnemonicParsing="false" onAction="#returnToMenu" text="Exit to Main">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
             <StackPane layoutY="50.0">
                <children>
                       <ImageView fx:id="imageView0" fitHeight="150.0" fitWidth="175.0" onMouseReleased="#handleClick" pickOnBounds="true" preserveRatio="true" />
@@ -153,11 +159,28 @@
                   </ImageView>
                </children>
             </StackPane>
-              <TextField fx:id="fileNameInput" layoutX="345.0" layoutY="560.0" onKeyReleased="#enableCreate" />
-              <Button fx:id="createBtn" layoutX="535.0" layoutY="560.0" mnemonicParsing="false" onAction="#handleCreate" text="Create" />
-              <Button layoutX="14.0" layoutY="560.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+              <TextField fx:id="fileNameInput" layoutX="334.0" layoutY="554.0" onKeyReleased="#enableCreate">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+              <Button fx:id="createBtn" layoutX="596.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleCreate" text="Create">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+              <Button layoutX="11.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleBack" text="Back">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <ChoiceBox fx:id="musicSelection" layoutX="127.0" layoutY="554.0" prefHeight="39.0" prefWidth="166.0" />
+            <Label layoutX="127.0" layoutY="529.0" text="Music">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
             </children>
         </Pane>
-      <Pane fx:id="loadingPane" prefHeight="600.0" prefWidth="900.0" />
     </children>
 </AnchorPane>
