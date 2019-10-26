@@ -50,7 +50,7 @@
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Text fx:id="warningText" layoutX="157.0" layoutY="526.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You do you have any chunks saved. Please go back and save a chunk">
+      <Text fx:id="warningText" layoutX="157.0" layoutY="526.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You do you have any chunks saved. Please go back and save a chunk" visible="false">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>

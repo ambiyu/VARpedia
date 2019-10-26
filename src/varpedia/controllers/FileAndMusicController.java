@@ -39,6 +39,8 @@ public class FileAndMusicController implements Initializable {
 
 	private String _searchTerm;
 	private List<Chunk> _chunks;
+	private ArrayList<Image> imagesToMerge;
+	private ChunkManagerController _previousScene;
 
 	@FXML private Button createBtn;
 	@FXML private TextField fileNameInput;
@@ -47,10 +49,8 @@ public class FileAndMusicController implements Initializable {
 	@FXML private Pane pane;
 	private ProgressIndicator progress = new ProgressIndicator();
 	private Label progressLabel = new Label("Making creation...");
-	
-	private ArrayList<Image> imagesToMerge;
-	private ChunkManagerController _previousScene;
-	
+
+
 	public FileAndMusicController( String name, ChunkManagerController scene, ArrayList<Image> images, List<Chunk> chunks) {
 		_searchTerm = name;
 		_previousScene = scene;

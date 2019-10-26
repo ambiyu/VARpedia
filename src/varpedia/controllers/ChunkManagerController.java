@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
 import varpedia.main.Voice;
+import varpedia.tasks.PlayAudioTask;
+import varpedia.tasks.SaveChunkTask;
 
 import java.net.URL;
 import java.util.List;
@@ -24,36 +26,18 @@ public class ChunkManagerController implements Initializable {
     private String _searchTerm;
     private String _text;
     private List<Chunk> _chunks;
+    private PlayAudioTask _previewTask;
 
-    @FXML
-    private TableView<Chunk> tableView;
-
-    @FXML
-    private TableColumn<Chunk, String> chunkNumCol;
-
-    @FXML
-    private TableColumn<Chunk, String> chunkTextCol;
-
-    @FXML
-    private TableColumn<Chunk, String> chunkVoiceCol;
-
-    @FXML
-    private Button playBtn;
-
-    @FXML
-    private Button deleteBtn;
-
-    @FXML
-    private Button createBtn;
-
-    @FXML
-    private Button upBtn;
-
-    @FXML
-    private Button downBtn;
-
-    @FXML
-    private Text warningText;
+    @FXML private TableView<Chunk> tableView;
+    @FXML private TableColumn<Chunk, String> chunkNumCol;
+    @FXML private TableColumn<Chunk, String> chunkTextCol;
+    @FXML private TableColumn<Chunk, String> chunkVoiceCol;
+    @FXML private Button playBtn;
+    @FXML private Button deleteBtn;
+    @FXML private Button createBtn;
+    @FXML private Button upBtn;
+    @FXML private Button downBtn;
+    @FXML private Text warningText;
 
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
         _searchTerm = searchTerm;
@@ -134,22 +118,18 @@ public class ChunkManagerController implements Initializable {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            playBtn.setDisable(true);
-            new Thread(() -> {
-                try {
+            if (_previewTask != null && playBtn.getText().equals("Stop")) {
+                _previewTask.destroyProcess();
+                _previewTask.cancel();
+                playBtn.setText("Play");
+            } else {
+                _previewTask = new PlayAudioTask(".temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
+                _previewTask.setOnRunning(e -> playBtn.setText("Stop"));
+                _previewTask.setOnSucceeded(e -> playBtn.setText("Play"));
 
-                    Main.execCmd("echo \"(voice_" + Voice.fromString(selected.getVoice()) + ")\" > .temp/voice.scm");
-                    Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
-                    Main.execCmd("festival -b .temp/voice.scm");
-
-                    Platform.runLater(() -> {
-                        playBtn.setDisable(false);
-                    });
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
+                Thread previewThread = new Thread(_previewTask);
+                previewThread.start();
+            }
 
         } else {
             displayError("No chunk selected");

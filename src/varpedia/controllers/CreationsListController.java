@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import varpedia.main.Creation;
 import varpedia.main.Main;
+import varpedia.tasks.PlayAudioTask;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,21 +23,13 @@ import java.util.ResourceBundle;
 
 public class CreationsListController implements Initializable {
     private List<Creation> _creations;
+    private PlayAudioTask _playAudioTask;
 
-    @FXML
-    private TableView<Creation> tableView;
-
-    @FXML
-    private TableColumn<Creation, String> creationIdCol;
-
-    @FXML
-    private TableColumn<Creation, String> creationNameCol;
-
-    @FXML
-    private TableColumn<Creation, String> searchTermCol;
-
-    @FXML
-    private Button playAudioBtn;
+    @FXML private TableView<Creation> tableView;
+    @FXML private TableColumn<Creation, String> creationIdCol;
+    @FXML private TableColumn<Creation, String> creationNameCol;
+    @FXML private TableColumn<Creation, String> searchTermCol;
+    @FXML private Button playAudioBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -115,26 +108,30 @@ public class CreationsListController implements Initializable {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            playAudioBtn.setDisable(true);
-            String creationName = selected.getName();
+            if (_playAudioTask != null && playAudioBtn.getText().equals("Stop")) {
+                _playAudioTask.destroyProcess();
+                _playAudioTask.cancel();
+                playAudioBtn.setText("Play Audio");
+            } else {
 
-            new Thread(() -> {
-                try {
-                    // check if audio file already exists, otherwise create one
-                    int exitCode = Main.execCmd("test -f .temp/" + creationName + ".wav");
-                    if (exitCode != 0) {
-                        Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/" + creationName + ".wav");
-                    }
+                String creationName = selected.getName();
 
-                    Main.execCmd("play .temp/" + creationName + ".wav");
-
-                    Platform.runLater(() -> {
-                        playAudioBtn.setDisable(false);
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // check if audio file already exists, if so then delete it
+                int exitCode = Main.execCmd("test -f .temp/preview.wav");
+                if (exitCode == 0) {
+                    Main.execCmd("rm .temp/preview.wav");
                 }
-            }).start();
+
+                // create an audio file with that contains the audio of the creation
+                Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/preview.wav");
+
+                _playAudioTask = new PlayAudioTask(".temp/preview.wav");
+                _playAudioTask.setOnSucceeded(e -> playAudioBtn.setText("Play Audio"));
+                _playAudioTask.setOnRunning(e -> playAudioBtn.setText("Stop"));
+
+                Thread thread = new Thread(_playAudioTask);
+                thread.start();
+            }
 
         } else {
             displaySelectionError();

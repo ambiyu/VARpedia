@@ -1,6 +1,5 @@
 package varpedia.controllers;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +16,7 @@ import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
 import varpedia.main.Voice;
-import varpedia.tasks.PreviewChunkTask;
+import varpedia.tasks.PlayAudioTask;
 import varpedia.tasks.SaveChunkTask;
 
 import java.net.URL;
@@ -30,7 +29,7 @@ public class SearchResultController implements Initializable {
     private String _searchTerm;
     private String _text;
     private List<Chunk> _chunks;
-    private PreviewChunkTask _previewTask;
+    private PlayAudioTask _previewTask;
 
     @FXML
     private TextArea textArea;
@@ -107,7 +106,7 @@ public class SearchResultController implements Initializable {
                         previewBtn.setText("Preview Chunk");
                         displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"US Male\"");
                     } else {
-                        _previewTask = new PreviewChunkTask();
+                        _previewTask = new PlayAudioTask(".temp/preview.wav");
                         _previewTask.setOnRunning(e -> previewBtn.setText("Stop Preview"));
                         _previewTask.setOnSucceeded(e -> previewBtn.setText("Preview Chunk"));
                     }
