@@ -163,7 +163,7 @@ public class SearchResultController implements Initializable {
                         Main.execCmd("rm .temp/chunks/chunk" + id +".wav");
                         Platform.runLater(() -> {
                             saveBtn.setDisable(false);
-                            displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"kal_diphone\"");
+                            displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"US male\"");
                         });
                     }
 
