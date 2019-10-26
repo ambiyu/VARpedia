@@ -50,9 +50,9 @@
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Text fx:id="warningText" layoutX="236.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have not saved any chunks. Please go back and add a chunk" visible="false">
+      <Text fx:id="warningText" layoutX="175.0" layoutY="526.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have not saved any chunks. Please go back and add a chunk">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="15.0" />
          </font>
       </Text>
       <Button id="yellowBtn" layoutX="14.0" layoutY="541.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="45.0" prefWidth="190.0" text="Return to Menu">
