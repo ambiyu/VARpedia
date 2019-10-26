@@ -1,6 +1,5 @@
 package varpedia.controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,9 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
-import varpedia.main.Voice;
 import varpedia.tasks.PlayAudioTask;
-import varpedia.tasks.SaveChunkTask;
 
 import java.net.URL;
 import java.util.List;

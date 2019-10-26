@@ -17,7 +17,7 @@ import varpedia.main.Chunk;
 import varpedia.main.Main;
 import varpedia.main.Voice;
 import varpedia.tasks.PlayAudioTask;
-import varpedia.tasks.SaveChunkTask;
+import varpedia.tasks.SaveAudioTask;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -98,7 +98,7 @@ public class SearchResultController implements Initializable {
                 String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
                 String voice = Voice.fromString(comboBox.getValue()).toString();
 
-                SaveChunkTask saveTask = new SaveChunkTask(selectedText, voice, 0, true);
+                SaveAudioTask saveTask = new SaveAudioTask(selectedText, voice, 0, true);
                 saveTask.setOnSucceeded(evt -> {
                     int fileSize = (int) saveTask.getValue();
 
@@ -140,7 +140,7 @@ public class SearchResultController implements Initializable {
                 id = _chunks.get(numChunks-1).getChunkNumber()+1; // last chunk number + 1
             }
 
-            SaveChunkTask task = new SaveChunkTask(selectedText, voice, id, false);
+            SaveAudioTask task = new SaveAudioTask(selectedText, voice, id, false);
             int finalId = id;
             task.setOnSucceeded(e -> {
                 // size of the audio file created
