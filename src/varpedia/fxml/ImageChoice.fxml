@@ -12,8 +12,8 @@
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <Pane fx:id="loadingPane" prefHeight="600.0" prefWidth="900.0" />
-        <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
+      <Pane id="pane" fx:id="loadingPane" prefHeight="600.0" prefWidth="900.0" />
+        <Pane id="pane" prefHeight="600.0" prefWidth="900.0">
             <children>
             <StackPane layoutX="2.5" layoutY="70.0">
                <children>
@@ -152,7 +152,7 @@
                   </ImageView>
                </children>
             </StackPane>
-              <Button layoutX="723.0" layoutY="547.0" mnemonicParsing="false" onAction="#handleBack" text="Back">
+              <Button id="yellowBtn" layoutX="653.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="45.0" prefWidth="110.0" text="Back">
                <font>
                   <Font size="20.0" />
                </font>
@@ -162,12 +162,12 @@
                   <Font size="27.0" />
                </font>
             </Label>
-            <Button layoutX="810.0" layoutY="547.0" mnemonicParsing="false" onAction="#handleNext" text="Next">
+            <Button id="yellowBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleNext" prefHeight="45.0" prefWidth="110.0" text="Next">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu">
+            <Button id="yellowBtn" layoutX="14.0" layoutY="541.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="45.0" prefWidth="190.0" text="Return to Menu">
                <font>
                   <Font size="20.0" />
                </font>

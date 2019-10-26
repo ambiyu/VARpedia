@@ -12,33 +12,33 @@
     <children>
         <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
             <children>
-              <Button layoutX="702.0" layoutY="547.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu">
+              <Button id="yellowBtn" layoutX="14.0" layoutY="541.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="45.0" prefWidth="190.0" text="Return to Menu">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-              <TextField fx:id="fileNameInput" layoutX="250.0" layoutY="313.0" onKeyReleased="#enableCreate" prefHeight="39.0" prefWidth="300.0">
+              <TextField fx:id="fileNameInput" layoutX="300.0" layoutY="313.0" onKeyReleased="#enableCreate" prefHeight="39.0" prefWidth="300.0" promptText="Enter a name for the creation">
                <font>
-                  <Font size="20.0" />
+                  <Font size="18.0" />
                </font>
             </TextField>
-              <Button fx:id="createBtn" layoutX="550.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="39.0" prefWidth="100.0" text="Create">
+              <Button id="yellowBtn" fx:id="createBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="45.0" prefWidth="110.0" style="-fx-background-color: lightgreen;" text="Create!">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-              <Button layoutX="11.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleBack" text="Back">
+              <Button id="yellowBtn" layoutX="653.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleBack" prefHeight="45.0" prefWidth="110.0" text="Back">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <ChoiceBox fx:id="musicSelection" layoutX="350.0" layoutY="200.0" prefHeight="26.0" prefWidth="200.0" />
-            <Label layoutX="349.0" layoutY="175.0" text="Music">
+            <ChoiceBox id="dropdown" fx:id="musicSelection" layoutX="350.0" layoutY="200.0" prefHeight="26.0" prefWidth="200.0" />
+            <Label layoutX="358.0" layoutY="175.0" text="Background Music">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="250.0" layoutY="288.0" text="File name">
+            <Label layoutX="375.0" layoutY="288.0" text="Creation Name">
                <font>
                   <Font size="20.0" />
                </font>
