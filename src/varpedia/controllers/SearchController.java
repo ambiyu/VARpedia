@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import varpedia.main.Main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,12 +24,12 @@ public class SearchController {
     private Button searchBtn;
 
     @FXML
-    private Text text;
+    private Text textPrompt;
 
     
     @FXML
     public void back() {
-    	Main.switchScene(getClass().getResource("Menu.fxml"));
+    	Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
     }
     
     @FXML
@@ -36,7 +37,7 @@ public class SearchController {
         if (!textField.getText().trim().isEmpty()) {
             searchBtn.setDisable(true);
             String searchTerm = textField.getText();
-            text.setText("Searching...");
+            textPrompt.setText("Searching...");
             new Thread(() -> {
                 try {
                     //String cmd = "wikit \"" + searchTerm + "\" | grep -o '[^ ][^.]*\\.'"; // each sentence on new line
@@ -56,7 +57,7 @@ public class SearchController {
                             alert.showAndWait();
 
                             searchBtn.setDisable(false);
-                            text.setText("Enter search term:");
+                            textPrompt.setText("Enter your search term");
                         });
                     } else {
 
@@ -68,7 +69,7 @@ public class SearchController {
                             try {
                                 searchBtn.setDisable(false);
 
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("SearchResult.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/SearchResult.fxml"));
                                 SearchResultController controller = new SearchResultController(searchTerm, sb.toString());
                                 loader.setController(controller);
 

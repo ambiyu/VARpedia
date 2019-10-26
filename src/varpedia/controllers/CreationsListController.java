@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import varpedia.main.Creation;
+import varpedia.main.Main;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,7 +21,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class CreationsListController implements Initializable {
-    private List<String> _creations;
+    private List<Creation> _creations;
 
     @FXML
     private TableView<Creation> tableView;
@@ -31,37 +33,49 @@ public class CreationsListController implements Initializable {
     private TableColumn<Creation, String> creationNameCol;
 
     @FXML
-    private Button playBtn;
+    private TableColumn<Creation, String> searchTermCol;
 
     @FXML
     private Button playAudioBtn;
-
-    @FXML
-    private Button deleteBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         creationIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         creationNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        searchTermCol.setCellValueFactory(new PropertyValueFactory<>("searchTerm"));
 
         try {
             String cmd = "ls -1 creations";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-            _creations = new ArrayList<>();
+            List<String> files = new ArrayList<>();
             String line;
             while ((line = stdout.readLine()) != null) {
-                _creations.add(line);
+                files.add(line);
             }
 
-            // remove .mp4 at the end of filename and remove non .mp4
-            for (int i = _creations.size()-1; i >= 0; i--) {
-                String creation = _creations.get(i);
-                if (creation.endsWith(".mp4")) {
-                    _creations.set(i, creation.substring(0, creation.length()-4));
-                } else {
-                    _creations.remove(i);
+            _creations = new ArrayList<>();
+            // get all the mp4 files
+            for (String file : files) {
+                if (file.endsWith(".mp4")) {
+                    try {
+                        file = file.substring(0, file.length()-4);
+
+                        cmd = "cat .quiz/" + file + "/searchTerm.txt";
+                        process = new ProcessBuilder("bash", "-c", cmd).start();
+                        int exitCode = process.waitFor();
+                        String searchTerm = "";
+                        if (exitCode == 0) {
+                            stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                            searchTerm = stdout.readLine();
+                        }
+
+                        _creations.add(new Creation(_creations.size()+1, file, searchTerm));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -78,7 +92,7 @@ public class CreationsListController implements Initializable {
 
         if (selected != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("MediaPlayer.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/MediaPlayer.fxml"));
                 MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
                 loader.setController(controller);
 
@@ -139,7 +153,7 @@ public class CreationsListController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK){
                 tableView.getItems().removeAll(selected);
-                _creations.remove(selected.getName());
+                _creations.remove(selected);
 
                 // repopulate table to reset ids
                 tableView.getItems().clear();
@@ -156,14 +170,17 @@ public class CreationsListController implements Initializable {
 
     @FXML
     private void returnToMenu() {
-        Main.switchScene(getClass().getResource("Menu.fxml"));
+        Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
     }
 
     private void populateTable() {
-        for (int i = 0; i < _creations.size(); i++) {
-            Creation creation = new Creation(i+1, _creations.get(i));
+        for (Creation creation : _creations) {
             tableView.getItems().add(creation);
         }
+/*        for (int i = 0; i < _creations.size(); i++) {
+            Creation creation = new Creation(i+1, _creations.get(i));
+            tableView.getItems().add(creation);
+        }*/
     }
 
     private void displaySelectionError() {

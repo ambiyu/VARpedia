@@ -1,11 +1,10 @@
-package varpedia;
+package varpedia.controllers;
 
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -16,6 +15,8 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,7 +25,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
@@ -32,19 +33,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import varpedia.main.Chunk;
+import varpedia.main.ImageDownload;
+import varpedia.main.Main;
 
 
 public class ImageChoiceController implements Initializable {
 
 	@FXML
 	private ImageView imageView0,imageView1,imageView2,imageView3,imageView4;
-	@FXML
+	@FXML	
 	private ImageView imageView5,imageView6,imageView7,imageView8,imageView9;
 	@FXML
 	private ImageView imageView10,imageView11,imageView12,imageView13,imageView14;
+	@FXML
+	private ImageView greenTickView0, greenTickView1, greenTickView2, greenTickView3, greenTickView4, greenTickView5, greenTickView6, greenTickView7, greenTickView8, greenTickView9, greenTickView10, greenTickView11, greenTickView12, greenTickView13, greenTickView14;
 	@FXML
 	private Button createBtn;
 	@FXML
@@ -52,21 +57,25 @@ public class ImageChoiceController implements Initializable {
 	@FXML
 	private Pane pane;
 	@FXML
-	private AnchorPane anchor;
+	private Pane loadingPane;
+	//private AnchorPane anchor;
 	@FXML
-	private CheckBox musicOption;
-	
+	private ChoiceBox<String> musicSelection;
+
 	private ProgressIndicator progress = new ProgressIndicator();
 	private Label progressLabel = new Label("Retrieving Images...");
-	
+
 	private ArrayList<ImageView> listOfImages = new ArrayList<>();
 	private ArrayList<Image> imagesToMerge = new ArrayList<>();
+	private ArrayList<ImageView> allGreenTicks = new ArrayList<>();
 
 	private String _searchTerm;
 	private List<Chunk> _chunks;
 	private ChunkManagerController _previousScene;
 
-	
+
+	private Image greenTick;
+
 	public ImageChoiceController(List<Chunk> allChunks, String name, ChunkManagerController scene) {
 		_searchTerm = name;
 		_chunks = allChunks;
@@ -75,18 +84,24 @@ public class ImageChoiceController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		//create spinning loading thing and label
-		progress.setMinSize(100, 100);;
-		progress.setLayoutY(anchor.getPrefHeight()/2 - 50);
-		progress.setLayoutX(anchor.getPrefWidth()/2 - 50);
-		progressLabel.setMinSize(100, 100);
-		progressLabel.setLayoutY(anchor.getPrefHeight()/2 + 25);
-		progressLabel.setLayoutX(anchor.getPrefWidth()/2 - 60);
-		anchor.getChildren().add(progress);
-		anchor.getChildren().add(progressLabel);
 
+		//create and position loading wheel and label
+		progress.setMinSize(100, 100);;
+		progress.setLayoutY(loadingPane.getPrefHeight()/2 - 50);
+		progress.setLayoutX(loadingPane.getPrefWidth()/2 - 50);
+		progressLabel.setMinSize(100, 100);
+		progressLabel.setLayoutY(loadingPane.getPrefHeight()/2 + 25);
+		progressLabel.setLayoutX(loadingPane.getPrefWidth()/2 - 60);
+		loadingPane.getChildren().add(progress);
+		loadingPane.getChildren().add(progressLabel);
+
+		// setup music choice
+	    ObservableList<String> listOfMusic =  FXCollections.observableArrayList("None","Classical", "Jazz", "Techno");
+	    musicSelection.setItems(listOfMusic);
+	    musicSelection.setValue("None");
+		
 		setUpList();
+
 		createBtn.setDisable(true);
 		pane.setVisible(false);
 
@@ -94,23 +109,29 @@ public class ImageChoiceController implements Initializable {
 			ImageDownload downloader = new ImageDownload();
 			downloader.downloadImages(_searchTerm, 15);
 
-			FileInputStream file;
+			FileInputStream flickrImage;
 			int numOfImages = new File(".temp/images").list().length;
 
 			try {
+				FileInputStream greenTickFile = new FileInputStream("resources/greenTick.png");
+				greenTick = new Image(greenTickFile);
+				greenTickFile.close();
+
 				for (int i = 0; i < numOfImages; i++) {
-					file = new FileInputStream(".temp/images/" + _searchTerm + "-" + i + ".jpg");
-					Image image = new Image(file);
+					flickrImage = new FileInputStream(".temp/images/" + _searchTerm + "-" + i + ".jpg");
+					Image image = new Image(flickrImage);
 
 					listOfImages.get(i).setImage(image);
+					allGreenTicks.get(i).setImage(greenTick);
+					flickrImage.close();
 				}
-			} catch (FileNotFoundException e) {
+
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 			Platform.runLater(() -> {
-				progress.setVisible(false);
-				progressLabel.setVisible(false);
+				loadingPane.setVisible(false);
 				pane.setVisible(true);
 			});
 		}).start();
@@ -119,21 +140,32 @@ public class ImageChoiceController implements Initializable {
 	@FXML
 	public void handleCreate() {
 		createBtn.setDisable(true);
+		fileNameInput.setDisable(true);
 
-		if (imagesToMerge.size() > 10) {
+		if(imagesToMerge.size() > 10) {
 			int exceedingImages = imagesToMerge.size() - 10;
 			displayError("Only 10 images may be selected, please unselect " +  exceedingImages + " image(s)");
 			createBtn.setDisable(false);
+			fileNameInput.setDisable(false);
 		}
 		else if (!fileNameInput.getText().matches("^[a-zA-Z0-9\\_-]+")) {
 			displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
 			createBtn.setDisable(false);
+			fileNameInput.setDisable(false);
 		} 
 		else if (isConflicting("creations", fileNameInput.getText(), "mp4")) {
 			displayError("Creation with the same name already exists. Please enter another name.");
 			createBtn.setDisable(false);
+			fileNameInput.setDisable(false);
 		} 
 		else {
+			pane.setVisible(false);
+			progressLabel.setText("Making creation...");
+			loadingPane.setVisible(true);
+			
+			
+			
+
 			new Thread(() -> {
 				try {
 					int count = 0;
@@ -166,8 +198,9 @@ public class ImageChoiceController implements Initializable {
 					Main.execCmd(combineAudioCmd);
 
 					//adds background music
-					if (musicOption.isSelected()) {
-						String combineMusic = "ffmpeg -y -i .temp/combinedAudio.wav -i resources/destinazione_altrove_-_Billions_of_stars_1.mp3 -filter_complex amix=inputs=2:duration=shortest .temp/combinedAudio.mp3";
+					if (!musicSelection.getValue().equals("None")) {
+						String combineMusic = "ffmpeg -y -i .temp/combinedAudio.wav -i resources/"+ musicSelection.getValue() +".mp3 -filter_complex amix=inputs=2:duration=shortest .temp/combinedAudio.mp3";
+						
 						Main.execCmd(combineMusic);
 					}
 
@@ -191,71 +224,93 @@ public class ImageChoiceController implements Initializable {
 						// create video and then combine audio/video into one
 						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
 
-						File dir = new File(".quiz/" + creationName);
-						dir.mkdir();
-
 						//checks if it needs to combine .mp3 or .wav
-						if (musicOption.isSelected()) {
+						if (!musicSelection.getValue().equals("None")) {
 							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.mp3\" -shortest creations/" + creationName + ".mp4");
-							Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.mp3\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
 						} else {
 							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
-							Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
 						}
 
+						// QUIZ stuff
+						File dir = new File(".quiz/" + creationName);
+						dir.mkdir();
+						Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
 						Main.execCmd("echo \"" + _searchTerm + "\" > .quiz/" + creationName + "/searchTerm.txt");
 
 
 						Platform.runLater(() -> {
-							createBtn.setDisable(false);
+
+
+							progress.setVisible(false);
+							progressLabel.setVisible(false);
+
 							//create a success alert
 							Alert alert = new Alert(Alert.AlertType.INFORMATION);
 							alert.setTitle("Success");
 							alert.setHeaderText(null);
 							alert.setContentText("Successfully created creation \"" + fileNameInput.getText() + "\"");
 							alert.showAndWait();
+							Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
 						});
 					} else {
 						Platform.runLater(() -> {
 							displayError("An error occurred while attempting to generate creation");
 							createBtn.setDisable(false);
+							fileNameInput.setDisable(false);
 						});
 					}
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
 			}).start();
-		}
+		}		
 	}
 
 	@FXML
 	public void handleClick(MouseEvent event) {
 		ImageView selectedImage = null;
+		
 
 		//finds what image was clicked
-		for (ImageView im : listOfImages) {
-			if (event.getSource().equals(im)) {
+		for(ImageView im : listOfImages) {
+			if(event.getSource().equals(im)) {
+				selectedImage = im;
+			}
+			else if(event.getSource().equals(allGreenTicks.get(listOfImages.indexOf(im)))){
 				selectedImage = im;
 			}
 		}
-
-		if (selectedImage.getOpacity() == 0.2) {
+		
+		
+		if(selectedImage.getOpacity() == 0.3) {
 			selectedImage.setOpacity(1);
-
-			if (imagesToMerge.contains(selectedImage.getImage())) {
+			allGreenTicks.get(listOfImages.indexOf(selectedImage)).setOpacity(0);
+			if(imagesToMerge.contains(selectedImage.getImage())) {
 				imagesToMerge.remove(selectedImage.getImage());
 			}
+			if(imagesToMerge.size() == 0) {
+				createBtn.setDisable(true);
+			}
+		}
+		else {
 
-		} else {
-			selectedImage.setOpacity(0.2);
-			imagesToMerge.add(selectedImage.getImage());
+			if(selectedImage != null) {
+				allGreenTicks.get(listOfImages.indexOf(selectedImage)).setOpacity(1);
+				selectedImage.setOpacity(0.3);
+				imagesToMerge.add(selectedImage.getImage());
+				enableCreate();
+			}
+			
 		}
 	}
 
+
+
 	@FXML
 	public void handleBack() {
+
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("ChunkManager.fxml"));           
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/ChunkManager.fxml"));
 			loader.setController(_previousScene);
 
 			Parent parent = loader.load();
@@ -271,7 +326,7 @@ public class ImageChoiceController implements Initializable {
 	@FXML
 	private void returnToMenu() {
 		if (Main.returnToMenuWarning()) {
-			Main.switchScene(getClass().getResource("Menu.fxml"));
+			Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
 		}
 	}
 
@@ -307,23 +362,24 @@ public class ImageChoiceController implements Initializable {
 		}
 		return false;
 	}
-
+	//method to put all immageViews in arrays
 	private void setUpList() {
-		listOfImages.add(imageView0);
-		listOfImages.add(imageView1);
-		listOfImages.add(imageView2);
-		listOfImages.add(imageView3);
-		listOfImages.add(imageView4);
-		listOfImages.add(imageView5);
-		listOfImages.add(imageView6);
-		listOfImages.add(imageView7);
-		listOfImages.add(imageView8);
-		listOfImages.add(imageView9);
-		listOfImages.add(imageView10);
-		listOfImages.add(imageView11);
-		listOfImages.add(imageView12);
-		listOfImages.add(imageView13);
-		listOfImages.add(imageView14);
+
+		listOfImages.add(imageView0); allGreenTicks.add(greenTickView0); 
+		listOfImages.add(imageView1); allGreenTicks.add(greenTickView1);
+		listOfImages.add(imageView2); allGreenTicks.add(greenTickView2);
+		listOfImages.add(imageView3); allGreenTicks.add(greenTickView3);
+		listOfImages.add(imageView4); allGreenTicks.add(greenTickView4);
+		listOfImages.add(imageView5); allGreenTicks.add(greenTickView5);
+		listOfImages.add(imageView6); allGreenTicks.add(greenTickView6);
+		listOfImages.add(imageView7); allGreenTicks.add(greenTickView7);
+		listOfImages.add(imageView8); allGreenTicks.add(greenTickView8);
+		listOfImages.add(imageView9); allGreenTicks.add(greenTickView9);
+		listOfImages.add(imageView10); allGreenTicks.add(greenTickView10);
+		listOfImages.add(imageView11); allGreenTicks.add(greenTickView11);
+		listOfImages.add(imageView12); allGreenTicks.add(greenTickView12);
+		listOfImages.add(imageView13); allGreenTicks.add(greenTickView13);
+		listOfImages.add(imageView14); allGreenTicks.add(greenTickView14);
 	}
 
 }

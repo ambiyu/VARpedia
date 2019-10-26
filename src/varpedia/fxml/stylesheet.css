@@ -1,0 +1,39 @@
+#pane {
+    -fx-background-color: linear-gradient(to top, #df89b5 0%, #bfd9fe 100%);
+}
+
+#loadingPane{
+	-fx-background-color: rgba(6,180,255,0.5);
+}
+#yellowBtn {
+    -fx-background-color: rgba(255, 230, 66, 1);
+    -fx-background-radius: 15;
+}
+
+#stdBtn {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: black;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+}
+
+#search-textField {
+    -fx-background-radius: 5 0 0 5;
+}
+
+#search-searchBtn {
+    -fx-background-radius: 0 5 5 0;
+}
+
+#upBtn, #downBtn {
+    -fx-background-color: lightgrey;
+    -fx-background-radius: 10;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+#dropdown {
+    -fx-background-color: white;
+}

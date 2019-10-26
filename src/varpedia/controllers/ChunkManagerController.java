@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -8,7 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import varpedia.main.Chunk;
+import varpedia.main.Main;
+import varpedia.main.Voice;
 
 import java.net.URL;
 import java.util.List;
@@ -48,6 +52,8 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private Button downBtn;
 
+    @FXML
+    private Text warningText;
 
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
         _searchTerm = searchTerm;
@@ -60,17 +66,15 @@ public class ChunkManagerController implements Initializable {
         chunkNumCol.setCellValueFactory(new PropertyValueFactory<>("chunkNumber"));
         chunkTextCol.setCellValueFactory(new PropertyValueFactory<>("text"));
         chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
-        
-        for (Chunk chunk : _chunks) {
-            tableView.getItems().add(chunk);
-        }
 
         //check if user has any chunks to display at chunkManager
-        if(_chunks.isEmpty()) {
+        if (_chunks.isEmpty()) {
             createBtn.setDisable(true);
+            warningText.setVisible(true);
         }
-        else {
-            createBtn.setDisable(false);
+
+        for (Chunk chunk : _chunks) {
+            tableView.getItems().add(chunk);
         }
     }
 
@@ -134,7 +138,7 @@ public class ChunkManagerController implements Initializable {
             new Thread(() -> {
                 try {
 
-                    Main.execCmd("echo \"(voice_" + selected.getVoice() + ")\" > .temp/voice.scm");
+                    Main.execCmd("echo \"(voice_" + Voice.fromString(selected.getVoice()) + ")\" > .temp/voice.scm");
                     Main.execCmd("echo \"(SayText \\\"" + selected.getText() + "\\\")\" >> .temp/voice.scm");
                     Main.execCmd("festival -b .temp/voice.scm");
 
@@ -179,9 +183,9 @@ public class ChunkManagerController implements Initializable {
     }
 
     @FXML
-    private void makeCreation() {
+    private void toImageSelect() {
         try {
-            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("imageChoice.fxml"));
+            FXMLLoader newLoader = new FXMLLoader(getClass().getResource("/varpedia/fxml/ImageChoice.fxml"));
             ImageChoiceController imageScene = new ImageChoiceController(_chunks, _searchTerm, this);
             newLoader.setController(imageScene);
 
@@ -198,7 +202,7 @@ public class ChunkManagerController implements Initializable {
     @FXML
     private void back() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SearchResult.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/SearchResult.fxml"));
             SearchResultController controller = new SearchResultController(_searchTerm, _text, _chunks);
             loader.setController(controller);
 
@@ -209,13 +213,6 @@ public class ChunkManagerController implements Initializable {
             window.show();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void returnToMenu() {
-        if (Main.returnToMenuWarning()) {
-            Main.switchScene(getClass().getResource("Menu.fxml"));
         }
     }
 

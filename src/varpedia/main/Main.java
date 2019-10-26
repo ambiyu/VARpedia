@@ -1,4 +1,4 @@
-package varpedia;
+package varpedia.main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         _primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("Menu.fxml"));
+        loader.setLocation(getClass().getResource("/varpedia/fxml/Menu.fxml"));
         Parent layout = loader.load();
         Scene scene = new Scene(layout);
         primaryStage.setScene(scene);

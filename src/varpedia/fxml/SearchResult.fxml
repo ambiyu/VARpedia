@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button id="yellowBtn" layoutX="14.0" layoutY="543.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="41.0" prefWidth="100.0" text="Back">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <TextArea fx:id="textArea" layoutX="14.0" layoutY="54.0" prefHeight="450.0" prefWidth="600.0" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font></TextArea>
+      <Button id="stdBtn" fx:id="previewBtn" layoutX="673.0" layoutY="160.0" maxHeight="43.0" maxWidth="180.0" minHeight="43.0" minWidth="180.0" mnemonicParsing="false" onAction="#preview" prefHeight="43.0" prefWidth="180.0" text="Preview Chunk">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button id="stdBtn" fx:id="saveBtn" layoutX="674.0" layoutY="232.0" maxHeight="39.0" maxWidth="180.0" minHeight="39.0" minWidth="180.0" mnemonicParsing="false" onAction="#saveChunk" prefHeight="39.0" prefWidth="180.0" text="Save Chunk">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button id="yellowBtn" fx:id="manageBtn" layoutX="787.0" layoutY="549.0" mnemonicParsing="false" onAction="#toChunkManager" prefHeight="39.0" prefWidth="100.0" text="Next">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <ComboBox id="dropdown" fx:id="comboBox" layoutX="674.0" layoutY="337.0" prefHeight="26.0" prefWidth="180.0" />
+      <Text layoutX="742.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voice">
+         <font>
+            <Font size="16.0" />
+         </font></Text>
+      <Text fx:id="termText" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Term">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
