@@ -58,7 +58,6 @@ public class ImageChoiceController implements Initializable {
 	private Pane pane;
 	@FXML
 	private Pane loadingPane;
-	//private AnchorPane anchor;
 	@FXML
 	private ChoiceBox<String> musicSelection;
 
@@ -95,14 +94,11 @@ public class ImageChoiceController implements Initializable {
 		loadingPane.getChildren().add(progress);
 		loadingPane.getChildren().add(progressLabel);
 
-		// setup music choice
-	    ObservableList<String> listOfMusic =  FXCollections.observableArrayList("None","Classical", "Jazz", "Techno");
-	    musicSelection.setItems(listOfMusic);
-	    musicSelection.setValue("None");
+		
 		
 		setUpList();
 
-		createBtn.setDisable(true);
+		
 		pane.setVisible(false);
 
 		new Thread(() ->{
@@ -137,134 +133,7 @@ public class ImageChoiceController implements Initializable {
 		}).start();
 	}
 
-	@FXML
-	public void handleCreate() {
-		createBtn.setDisable(true);
-		fileNameInput.setDisable(true);
-
-		if(imagesToMerge.size() > 10) {
-			int exceedingImages = imagesToMerge.size() - 10;
-			displayError("Only 10 images may be selected, please unselect " +  exceedingImages + " image(s)");
-			createBtn.setDisable(false);
-			fileNameInput.setDisable(false);
-		}
-		else if (!fileNameInput.getText().matches("^[a-zA-Z0-9\\_-]+")) {
-			displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
-			createBtn.setDisable(false);
-			fileNameInput.setDisable(false);
-		} 
-		else if (isConflicting("creations", fileNameInput.getText(), "mp4")) {
-			displayError("Creation with the same name already exists. Please enter another name.");
-			createBtn.setDisable(false);
-			fileNameInput.setDisable(false);
-		} 
-		else {
-			pane.setVisible(false);
-			progressLabel.setText("Making creation...");
-			loadingPane.setVisible(true);
-			
-			
-			
-
-			new Thread(() -> {
-				try {
-					int count = 0;
-
-					//put selected images in a temporary folder
-					for(Image im : imagesToMerge) {
-
-						File dir = new File(".temp/selectedImages");
-						dir.mkdir();
-
-						File outputFile = new File(".temp/selectedImages", _searchTerm + count + ".jpg");
-						try {
-							BufferedImage bim = SwingFXUtils.fromFXImage(im, null);
-							ImageIO.write(bim, "jpg",outputFile);
-							count++;
-
-						} catch(IOException e) {
-							e.printStackTrace();
-						}
-					}
-
-					// get chunks in the correct order
-					StringBuilder chunkList = new StringBuilder();
-					for (Chunk chunk : _chunks) {
-						chunkList.append(".temp/chunks/chunk").append(chunk.getChunkNumber()).append(".wav ");
-					}
-
-					// combine chunks into a single audio file
-					String combineAudioCmd = "sox " + chunkList.toString() + " .temp/combinedAudio.wav";
-					Main.execCmd(combineAudioCmd);
-
-					//adds background music
-					if (!musicSelection.getValue().equals("None")) {
-						String combineMusic = "ffmpeg -y -i .temp/combinedAudio.wav -i resources/"+ musicSelection.getValue() +".mp3 -filter_complex amix=inputs=2:duration=shortest .temp/combinedAudio.mp3";
-						
-						Main.execCmd(combineMusic);
-					}
-
-					String cmd = "soxi -D '.temp/combinedAudio.wav'";
-					Process process = new ProcessBuilder("bash", "-c", cmd).start();
-					int exitCode = process.waitFor();
-
-					if (exitCode == 0) {
-						BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-						double length = Double.parseDouble(stdout.readLine()) + 1;
-
-						int numOfImages = imagesToMerge.size();
-						double lengthOfImage = numOfImages/length;
-
-						String creationName = fileNameInput.getText();
-
-						// combine images into a video
-						//Main.execCmd("cat .temp/images/*.jpg | ffmpeg -f image2pipe -framerate 1 -i - -i .temp/combinedAudio.wav -r " + lengthOfImage + " -pattern_type glob -c:v libx264 -pix_fmt yuv420p -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 -max_muxing_queue_size 1024 -y creations/" + fileNameInput.getText() + ".mp4");
-						Main.execCmd("ffmpeg -framerate " + lengthOfImage + " -pattern_type glob -i '.temp/selectedImages/*.jpg' -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 .temp/combinedImages.mp4");
-
-						// create video and then combine audio/video into one
-						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
-
-						//checks if it needs to combine .mp3 or .wav
-						if (!musicSelection.getValue().equals("None")) {
-							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.mp3\" -shortest creations/" + creationName + ".mp4");
-						} else {
-							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
-						}
-
-						// QUIZ stuff
-						File dir = new File(".quiz/" + creationName);
-						dir.mkdir();
-						Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
-						Main.execCmd("echo \"" + _searchTerm + "\" > .quiz/" + creationName + "/searchTerm.txt");
-
-
-						Platform.runLater(() -> {
-
-
-							progress.setVisible(false);
-							progressLabel.setVisible(false);
-
-							//create a success alert
-							Alert alert = new Alert(Alert.AlertType.INFORMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText(null);
-							alert.setContentText("Successfully created creation \"" + fileNameInput.getText() + "\"");
-							alert.showAndWait();
-							Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
-						});
-					} else {
-						Platform.runLater(() -> {
-							displayError("An error occurred while attempting to generate creation");
-							createBtn.setDisable(false);
-							fileNameInput.setDisable(false);
-						});
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}).start();
-		}		
-	}
+	
 
 	@FXML
 	public void handleClick(MouseEvent event) {
@@ -288,9 +157,6 @@ public class ImageChoiceController implements Initializable {
 			if(imagesToMerge.contains(selectedImage.getImage())) {
 				imagesToMerge.remove(selectedImage.getImage());
 			}
-			if(imagesToMerge.size() == 0) {
-				createBtn.setDisable(true);
-			}
 		}
 		else {
 
@@ -298,13 +164,40 @@ public class ImageChoiceController implements Initializable {
 				allGreenTicks.get(listOfImages.indexOf(selectedImage)).setOpacity(1);
 				selectedImage.setOpacity(0.3);
 				imagesToMerge.add(selectedImage.getImage());
-				enableCreate();
+				
 			}
 			
 		}
 	}
 
+   @FXML
+   public void handleNext() {
+	   int numOfImages = imagesToMerge.size();
+	   if( numOfImages > 10) {
+			int exceedingImages = imagesToMerge.size() - 10;
+			displayError("Only 10 images may be selected, please unselect " +  exceedingImages + " image(s)");
+		}
+	   else if(numOfImages == 0) {
+		   displayError("No images selected");
 
+	   }
+	   else {
+		   try {
+			   Main.execCmd("rm -r .temp/images");
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/FileAndMusic.fxml"));
+				FileAndMusicController scene = new FileAndMusicController(_searchTerm, _previousScene, imagesToMerge, _chunks);
+				loader.setController(scene);
+
+				Parent parent = loader.load();
+				Scene createScene = new Scene(parent);
+				Stage window = Main.getPrimaryStage();
+				window.setScene(createScene);
+				window.show();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}	
+	   }
+   }
 
 	@FXML
 	public void handleBack() {
@@ -336,31 +229,6 @@ public class ImageChoiceController implements Initializable {
 		alert.setHeaderText(null);
 		alert.setContentText(message);
 		alert.showAndWait();
-	}
-
-	@FXML
-	public void enableCreate() {
-		if(!fileNameInput.getText().trim().isEmpty() && imagesToMerge.size() > 0) {
-			createBtn.setDisable(false);
-		}
-		else {
-			createBtn.setDisable(true);
-		}
-	}
-
-	private boolean isConflicting(String folder, String name, String format) {
-		try {
-			String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
-			Process process = new ProcessBuilder("bash", "-c", cmd).start();
-			int exitStatus = process.waitFor();
-
-			if (exitStatus == 0) {
-				return true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 	//method to put all immageViews in arrays
 	private void setUpList() {

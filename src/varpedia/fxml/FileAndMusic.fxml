@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
+            <children>
+              <Button layoutX="702.0" layoutY="547.0" mnemonicParsing="false" onAction="#returnToMenu" text="Return to Menu">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+              <TextField fx:id="fileNameInput" layoutX="250.0" layoutY="313.0" onKeyReleased="#enableCreate" prefHeight="39.0" prefWidth="300.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </TextField>
+              <Button fx:id="createBtn" layoutX="550.0" layoutY="313.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="39.0" prefWidth="100.0" text="Create">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+              <Button layoutX="11.0" layoutY="554.0" mnemonicParsing="false" onAction="#handleBack" text="Back">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <ChoiceBox fx:id="musicSelection" layoutX="350.0" layoutY="200.0" prefHeight="26.0" prefWidth="200.0" />
+            <Label layoutX="349.0" layoutY="175.0" text="Music">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="250.0" layoutY="288.0" text="File name">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="251.0" layoutY="46.0" text="Please enter a unique file name">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>
