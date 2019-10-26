@@ -69,8 +69,6 @@ public class MediaPlayerController implements Initializable {
             player.setVolume(newValue.doubleValue() / 100);
         });
 
-        player.volumeProperty().bindBidirectional(volSlider.valueProperty());
-
         // Set the speaker image
         try {
             FileInputStream file = new FileInputStream("resources/speaker.png");
