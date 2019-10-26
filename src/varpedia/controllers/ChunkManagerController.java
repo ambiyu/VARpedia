@@ -216,6 +216,17 @@ public class ChunkManagerController implements Initializable {
         }
     }
 
+    @FXML
+    private void returnToMenu() {
+        if (_chunks.size() == 0) {
+            Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
+        } else {
+            if (Main.returnToMenuWarning()) {
+                Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
+            }
+        }
+    }
+
     private void displayError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");

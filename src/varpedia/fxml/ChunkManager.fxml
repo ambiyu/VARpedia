@@ -34,11 +34,11 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="yellowBtn" fx:id="createBtn" layoutX="786.0" layoutY="547.0" mnemonicParsing="false" onAction="#toImageSelect" prefHeight="39.0" prefWidth="100.0" text="Next">
+      <Button id="yellowBtn" fx:id="createBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#toImageSelect" prefHeight="45.0" prefWidth="110.0" text="Next">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="yellowBtn" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="100.0" text="Back">
+      <Button id="yellowBtn" layoutX="653.0" layoutY="541.0" mnemonicParsing="false" onAction="#back" prefHeight="45.0" prefWidth="110.0" text="Back">
          <font>
             <Font size="20.0" />
          </font></Button>
@@ -55,5 +55,10 @@
             <Font size="14.0" />
          </font>
       </Text>
+      <Button id="yellowBtn" layoutX="14.0" layoutY="541.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="45.0" prefWidth="190.0" text="Return to Menu">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
