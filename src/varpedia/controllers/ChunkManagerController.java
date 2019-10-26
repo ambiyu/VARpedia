@@ -172,6 +172,7 @@ public class ChunkManagerController implements Initializable {
                 Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
                 if (_chunks.isEmpty()) {
                     createBtn.setDisable(true);
+                    warningText.setVisible(true);
                 }
 
                 playBtn.setDisable(true);

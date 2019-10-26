@@ -13,7 +13,7 @@
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
       <Pane id="pane" fx:id="loadingPane" prefHeight="600.0" prefWidth="900.0" />
-        <Pane id="pane" prefHeight="600.0" prefWidth="900.0">
+        <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
             <children>
             <StackPane layoutX="2.5" layoutY="70.0">
                <children>

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="pane" fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
             <children>
@@ -22,7 +22,7 @@
                   <Font size="18.0" />
                </font>
             </TextField>
-              <Button id="yellowBtn" fx:id="createBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="45.0" prefWidth="110.0" style="-fx-background-color: lightgreen;" text="Create!">
+              <Button id="yellowBtn" fx:id="createBtn" disable="true" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleCreate" prefHeight="45.0" prefWidth="110.0" style="-fx-background-color: lightgreen;" text="Create!">
                <font>
                   <Font size="20.0" />
                </font>

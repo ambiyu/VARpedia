@@ -33,24 +33,20 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
+import varpedia.tasks.CreateCreationTask;
 
 public class FileAndMusicController implements Initializable {
 
-	@FXML
-	private Button createBtn;
-	@FXML
-	private TextField fileNameInput;
-	@FXML
-	private ChoiceBox<String> musicSelection;
-	@FXML
-	private AnchorPane anchor;
-	@FXML
-	private Pane pane;
-	private ProgressIndicator progress = new ProgressIndicator();
-	private Label progressLabel = new Label("Making creation...");
-	
 	private String _searchTerm;
 	private List<Chunk> _chunks;
+
+	@FXML private Button createBtn;
+	@FXML private TextField fileNameInput;
+	@FXML private ChoiceBox<String> musicSelection;
+	@FXML private AnchorPane anchor;
+	@FXML private Pane pane;
+	private ProgressIndicator progress = new ProgressIndicator();
+	private Label progressLabel = new Label("Making creation...");
 	
 	private ArrayList<Image> imagesToMerge;
 	private ChunkManagerController _previousScene;
@@ -69,155 +65,107 @@ public class FileAndMusicController implements Initializable {
 	    musicSelection.setItems(listOfMusic);
 	    musicSelection.setValue("None");
 	    
-	  //create and position loading wheel and label
-	  		progress.setMinSize(100, 100);;
-	  		progress.setLayoutY(anchor.getPrefHeight()/2 - 50);
-	  		progress.setLayoutX(anchor.getPrefWidth()/2 - 50);
-	  		progressLabel.setMinSize(100, 100);
-	  		progressLabel.setLayoutY(anchor.getPrefHeight()/2 + 25);
-	  		progressLabel.setLayoutX(anchor.getPrefWidth()/2 - 60);
-	  		anchor.getChildren().add(progress);
-	  		anchor.getChildren().add(progressLabel);
-	  		progress.setVisible(false);
-	  		progressLabel.setVisible(false);
-		
+	  	//create and position loading wheel and label
+		progress.setMinSize(100, 100);;
+		progress.setLayoutY(anchor.getPrefHeight()/2 - 50);
+		progress.setLayoutX(anchor.getPrefWidth()/2 - 50);
+		progressLabel.setMinSize(100, 100);
+		progressLabel.setLayoutY(anchor.getPrefHeight()/2 + 25);
+		progressLabel.setLayoutX(anchor.getPrefWidth()/2 - 60);
+		anchor.getChildren().add(progress);
+		anchor.getChildren().add(progressLabel);
+		progress.setVisible(false);
+		progressLabel.setVisible(false);
 	}
-	
 	
 	@FXML
 	public void handleCreate() {
-		createBtn.setDisable(true);
-		fileNameInput.setDisable(true);
-
-		progress.setVisible(true);
-  		progressLabel.setVisible(true);
-		
 		if (!fileNameInput.getText().matches("^[a-zA-Z0-9\\_-]+")) {
 			displayError("Invalid character(s) in creation name. Only letters, numbers, hyphens and underscores are allowed.");
-			createBtn.setDisable(false);
-			fileNameInput.setDisable(false);
 		} 
-		else if (isConflicting("creations", fileNameInput.getText(), "mp4")) {
+		else if (isConflicting(fileNameInput.getText().trim())) {
 			displayError("Creation with the same name already exists. Please enter another name.");
-			createBtn.setDisable(false);
-			fileNameInput.setDisable(false);
 		} 
 		else {
-			pane.setVisible(false);
+			createBtn.setDisable(true);
+			fileNameInput.setDisable(true);
+
 			progressLabel.setText("Making creation...");
+			progress.setVisible(true);
+			progressLabel.setVisible(true);
+
+			pane.setVisible(false);
 			anchor.setVisible(true);
-			
-			
-			
 
-			new Thread(() -> {
-				try {
-					int count = 0;
+			try {
+				int count = 0;
 
-					//put selected images in a temporary folder
-					for(Image im : imagesToMerge) {
+				//put selected images in a temporary folder
+				for(Image im : imagesToMerge) {
 
-						File dir = new File(".temp/selectedImages");
-						dir.mkdir();
+					File dir = new File(".temp/selectedImages");
+					dir.mkdir();
 
-						File outputFile = new File(".temp/selectedImages", _searchTerm + count + ".jpg");
-						try {
-							BufferedImage bim = SwingFXUtils.fromFXImage(im, null);
-							ImageIO.write(bim, "jpg",outputFile);
-							count++;
+					File outputFile = new File(".temp/selectedImages", _searchTerm + count + ".jpg");
+					try {
+						BufferedImage bim = SwingFXUtils.fromFXImage(im, null);
+						ImageIO.write(bim, "jpg",outputFile);
+						count++;
 
-						} catch(IOException e) {
-							e.printStackTrace();
-						}
+					} catch(IOException e) {
+						e.printStackTrace();
 					}
-
-					// get chunks in the correct order
-					StringBuilder chunkList = new StringBuilder();
-					for (Chunk chunk : _chunks) {
-						chunkList.append(".temp/chunks/chunk").append(chunk.getChunkNumber()).append(".wav ");
-					}
-
-					// combine chunks into a single audio file
-					String combineAudioCmd = "sox " + chunkList.toString() + " .temp/combinedAudio.wav";
-					Main.execCmd(combineAudioCmd);
-
-					//adds background music
-					if (!musicSelection.getValue().equals("None")) {
-						String combineMusic = "ffmpeg -y -i .temp/combinedAudio.wav -i resources/"+ musicSelection.getValue() +".mp3 -filter_complex amix=inputs=2:duration=shortest .temp/combinedAudio.mp3";
-						
-						Main.execCmd(combineMusic);
-					}
-
-					String cmd = "soxi -D '.temp/combinedAudio.wav'";
-					Process process = new ProcessBuilder("bash", "-c", cmd).start();
-					int exitCode = process.waitFor();
-
-					if (exitCode == 0) {
-						BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-						double length = Double.parseDouble(stdout.readLine()) + 1;
-
-						int numOfImages = imagesToMerge.size();
-						double lengthOfImage = numOfImages/length;
-
-						String creationName = fileNameInput.getText();
-
-						// combine images into a video
-						//Main.execCmd("cat .temp/images/*.jpg | ffmpeg -f image2pipe -framerate 1 -i - -i .temp/combinedAudio.wav -r " + lengthOfImage + " -pattern_type glob -c:v libx264 -pix_fmt yuv420p -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 -max_muxing_queue_size 1024 -y creations/" + fileNameInput.getText() + ".mp4");
-						Main.execCmd("ffmpeg -framerate " + lengthOfImage + " -pattern_type glob -i '.temp/selectedImages/*.jpg' -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 .temp/combinedImages.mp4");
-
-						// create video and then combine audio/video into one
-						Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + length + " -r 25 .temp/vidWithWord.mp4");
-
-						//checks if it needs to combine .mp3 or .wav
-						if (!musicSelection.getValue().equals("None")) {
-							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.mp3\" -shortest creations/" + creationName + ".mp4");
-						} else {
-							Main.execCmd("ffmpeg -i \".temp/vidWithWord.mp4\" -i \".temp/combinedAudio.wav\" -shortest creations/" + creationName + ".mp4");
-						}
-
-						// QUIZ stuff
-						File dir = new File(".quiz/" + creationName);
-						dir.mkdir();
-						Main.execCmd("ffmpeg -i \".temp/combinedImages.mp4\" -i \".temp/combinedAudio.wav\" -shortest .quiz/" + creationName + "/" + creationName + ".mp4");
-						Main.execCmd("echo \"" + _searchTerm + "\" > .quiz/" + creationName + "/searchTerm.txt");
-
-
-						Platform.runLater(() -> {
-
-
-							progress.setVisible(false);
-							progressLabel.setVisible(false);
-
-							//create a success alert
-							Alert alert = new Alert(Alert.AlertType.INFORMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText(null);
-							alert.setContentText("Successfully created creation \"" + fileNameInput.getText() + "\"");
-							alert.showAndWait();
-							Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
-						});
-					} else {
-						Platform.runLater(() -> {
-							displayError("An error occurred while attempting to generate creation");
-							createBtn.setDisable(false);
-							fileNameInput.setDisable(false);
-						});
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
 				}
-			}).start();
+
+				// get chunk files in the correct order and put them all into a string separated by spaces
+				StringBuilder chunkList = new StringBuilder();
+				for (Chunk chunk : _chunks) {
+					chunkList.append(".temp/chunks/chunk").append(chunk.getChunkNumber()).append(".wav ");
+				}
+
+				int numImages = imagesToMerge.size();
+				String creationName = fileNameInput.getText();
+
+				CreateCreationTask task = new CreateCreationTask(_searchTerm, creationName, chunkList.toString(),
+						musicSelection.getValue(), numImages);
+
+				task.setOnSucceeded(e -> {
+					progress.setVisible(false);
+					progressLabel.setVisible(false);
+
+					//create a success alert
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("Success");
+					alert.setHeaderText(null);
+					alert.setContentText("\"" + fileNameInput.getText() + "\" successfully created");
+					alert.showAndWait();
+					Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
+				});
+
+				task.setOnFailed(e -> {
+					displayError("An error occurred while attempting to generate creation");
+					createBtn.setDisable(false);
+					fileNameInput.setDisable(false);
+				});
+
+				Thread thread = new Thread(task);
+				thread.start();
+
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}		
 	}
+
 	@FXML
 	public void enableCreate() {
-		if(!fileNameInput.getText().trim().isEmpty()) {
+		if (!fileNameInput.getText().trim().isEmpty()) {
 			createBtn.setDisable(false);
-		}
-		else {
+		} else {
 			createBtn.setDisable(true);
 		}
 	}
+
 	@FXML
 	private void returnToMenu() {
 		if (Main.returnToMenuWarning()) {
@@ -243,6 +191,7 @@ public class FileAndMusicController implements Initializable {
 			e.printStackTrace();
 		}		
 	}
+
 	private void displayError(String message) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setTitle("ERROR");
@@ -251,9 +200,9 @@ public class FileAndMusicController implements Initializable {
 		alert.showAndWait();
 	}
 	
-	private boolean isConflicting(String folder, String name, String format) {
+	private boolean isConflicting(String name) {
 		try {
-			String cmd = "test -f \"" + folder + "/" + name + "." + format + "\"";
+			String cmd = "test -f \"creations/" + name + ".mp4\"";
 			Process process = new ProcessBuilder("bash", "-c", cmd).start();
 			int exitStatus = process.waitFor();
 
