@@ -1,11 +1,12 @@
 #pane {
-    -fx-background-color: rgba(6,180,255,0.5);
+    -fx-background-color: linear-gradient(to top, #df89b5 0%, #bfd9fe 100%);
 }
+
 #loadingPane{
 	-fx-background-color: rgba(6,180,255,0.5);
 }
 #yellowBtn {
-    -fx-background-color: yellow;
+    -fx-background-color: rgba(255, 230, 66, 1);
     -fx-background-radius: 15;
 }
 

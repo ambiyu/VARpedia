@@ -17,9 +17,9 @@ import javafx.stage.Stage;
 import varpedia.main.Chunk;
 import varpedia.main.Main;
 import varpedia.main.Voice;
+import varpedia.tasks.PreviewChunkTask;
+import varpedia.tasks.SaveChunkTask;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +30,7 @@ public class SearchResultController implements Initializable {
     private String _searchTerm;
     private String _text;
     private List<Chunk> _chunks;
+    private PreviewChunkTask _previewTask;
 
     @FXML
     private TextArea textArea;
@@ -81,37 +82,43 @@ public class SearchResultController implements Initializable {
 
     @FXML
     private void preview() {
-        String[] words = textArea.getSelectedText().split("\\s+");
-
-        if (textArea.getSelectedText().trim().isEmpty()) {
-            displayError("No text selected. Please highlight a part of the text.");
-        } else if (words.length > 30) {
-            displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
+        if (_previewTask != null && previewBtn.getText().equals("Stop Preview")) {
+            _previewTask.destroyProcess();
+            _previewTask.cancel();
+            previewBtn.setText("Preview Chunk");
         } else {
-            previewBtn.setDisable(true);
-            new Thread(() -> {
-                try {
-                    String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
 
-                    // create .scm file in order to use festival to play different voices
-                    Main.execCmd("echo \"(voice_" + Voice.fromString(comboBox.getValue()) + ")\" > .temp/voice.scm");
-                    Main.execCmd("echo \"(SayText " + selectedText + ")\" >> .temp/voice.scm");
-                    int exitCode = Main.execCmd("festival -b .temp/voice.scm");
+            String[] words = textArea.getSelectedText().split("\\s+");
 
-                    if (exitCode != 0) {
-                        Platform.runLater(() -> {
-                            previewBtn.setDisable(false);
-                            displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"kal_diphone\"");
-                        });
+            if (textArea.getSelectedText().trim().isEmpty()) {
+                displayError("No text selected. Please highlight a part of the text.");
+            } else if (words.length > 30) {
+                displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
+            } else {
+
+                String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
+                String voice = Voice.fromString(comboBox.getValue()).toString();
+
+                SaveChunkTask saveTask = new SaveChunkTask(selectedText, voice, 0, true);
+                saveTask.setOnSucceeded(evt -> {
+                    int fileSize = (int) saveTask.getValue();
+
+                    if (fileSize == 0) { // check empty/invalid file due to invalid chunk selected
+                        previewBtn.setText("Preview Chunk");
+                        displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"US Male\"");
                     } else {
-                        Platform.runLater(() -> {
-                            previewBtn.setDisable(false);
-                        });
+                        _previewTask = new PreviewChunkTask();
+                        _previewTask.setOnRunning(e -> previewBtn.setText("Stop Preview"));
+                        _previewTask.setOnSucceeded(e -> previewBtn.setText("Preview Chunk"));
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }).start();
+
+                    Thread previewThread = new Thread(_previewTask);
+                    previewThread.start();
+                });
+
+                Thread saveThread = new Thread(saveTask);
+                saveThread.start();
+            }
         }
     }
 
@@ -125,53 +132,42 @@ public class SearchResultController implements Initializable {
             displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
         } else {
             saveBtn.setDisable(true);
-            new Thread(() -> {
-                try {
-                    String voice = Voice.fromString(comboBox.getValue()).toString();
-                    String selectedText = textArea.getSelectedText().replace("\"", ""); // remove all double quotes to prevent some errors
-                    int id = 1;
-                    int numChunks = _chunks.size();
-                    if (numChunks != 0) {
-                        id = _chunks.get(numChunks-1).getChunkNumber()+1; // last chunk number + 1
-                    }
 
-                    // create .wav audio file with selected voice
-                    Main.execCmd("echo \"" + selectedText + "\" | text2wave -eval '(voice_" + voice + ")' -o \".temp/chunks/chunk" + id + ".wav\"");
+            String voice = Voice.fromString(comboBox.getValue()).toString();
+            String selectedText = textArea.getSelectedText().replace("\"", ""); // remove all double quotes to prevent some errors
+            int id = 1;
+            int numChunks = _chunks.size();
+            if (numChunks != 0) {
+                id = _chunks.get(numChunks-1).getChunkNumber()+1; // last chunk number + 1
+            }
 
-                    // check file size in case of any errors
-                    String cmd = "wc -c < .temp/chunks/chunk" + id + ".wav";
-                    Process process = new ProcessBuilder("bash", "-c", cmd).start();
-                    process.waitFor();
-                    BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    int size = Integer.parseInt(stdout.readLine());
-                    if (size > 0) {
-                        Chunk chunk = new Chunk(id, selectedText, Voice.valueOf(voice));
-                        _chunks.add(chunk);
+            SaveChunkTask task = new SaveChunkTask(selectedText, voice, id, false);
+            int finalId = id;
+            task.setOnSucceeded(e -> {
+                // size of the audio file created
+                int size = (int) task.getValue();
 
-                        Platform.runLater(() -> {
-                            manageBtn.setDisable(false);
-                            saveBtn.setDisable(false);
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Success");
-                            alert.setHeaderText(null);
-                            alert.setContentText("Successfully saved chunk");
-                            alert.showAndWait();
-                        });
+                if (size > 0) {
+                    Chunk chunk = new Chunk(finalId, selectedText, Voice.valueOf(voice));
+                    _chunks.add(chunk);
 
-                    } else {
-                        // remove invalid audio file
-                        Main.execCmd("rm .temp/chunks/chunk" + id +".wav");
-                        Platform.runLater(() -> {
-                            saveBtn.setDisable(false);
-                            displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"US male\"");
-                        });
-                    }
+                    saveBtn.setDisable(false);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully saved chunk");
+                    alert.showAndWait();
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    // remove invalid/empty audio file
+                    Main.execCmd("rm .temp/chunks/chunk" + finalId +".wav");
+                    saveBtn.setDisable(false);
+                    displayError("An error occurred when saving the chunk. Please try another chunk of text or use the voice \"US Male\"");
                 }
-            }).start();
+            });
 
+            Thread thread = new Thread(task);
+            thread.start();
         }
     }
 
