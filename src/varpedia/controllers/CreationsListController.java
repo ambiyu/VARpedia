@@ -174,10 +174,6 @@ public class CreationsListController implements Initializable {
         for (Creation creation : _creations) {
             tableView.getItems().add(creation);
         }
-/*        for (int i = 0; i < _creations.size(); i++) {
-            Creation creation = new Creation(i+1, _creations.get(i));
-            tableView.getItems().add(creation);
-        }*/
     }
 
     private void displaySelectionError() {

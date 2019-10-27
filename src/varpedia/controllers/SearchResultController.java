@@ -23,6 +23,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SearchResultController implements Initializable {
 
@@ -31,23 +33,12 @@ public class SearchResultController implements Initializable {
     private List<Chunk> _chunks;
     private PlayAudioTask _previewTask;
 
-    @FXML
-    private TextArea textArea;
-
-    @FXML
-    private Button previewBtn;
-
-    @FXML
-    private Button saveBtn;
-
-    @FXML
-    private ComboBox<String> comboBox;
-
-    @FXML
-    private Button manageBtn;
-
-    @FXML
-    private Text termText;
+    @FXML private TextArea textArea;
+    @FXML private Button previewBtn;
+    @FXML private Button saveBtn;
+    @FXML private ComboBox<String> comboBox;
+    @FXML private Button manageBtn;
+    @FXML private Text termText;
 
     public SearchResultController(String searchTerm, String text) {
         _searchTerm = searchTerm;
@@ -63,13 +54,18 @@ public class SearchResultController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         // display search result
         textArea.setText(_text);
         termText.setText(_searchTerm);
+
+        // Creating an array list of all voices from enum
+        // Code snippet from: https://stackoverflow.com/questions/29465943/get-enum-values-as-list-of-string-in-java-8
         ObservableList<String> voices = FXCollections.observableArrayList(
-                Voice.kal_diphone.getName(),
-                Voice.akl_nz_jdt_diphone.getName(),
-                Voice.akl_nz_cw_cg_cg.getName());
+                Stream.of(Voice.values())
+                        .map(Voice::getName)
+                        .collect(Collectors.toList()));
+
         comboBox.setItems(voices);
         comboBox.setValue(Voice.kal_diphone.getName());
 
@@ -85,51 +81,39 @@ public class SearchResultController implements Initializable {
             _previewTask.destroyProcess();
             _previewTask.cancel();
             previewBtn.setText("Preview Chunk");
-        } else {
+        } else if (validChunk()){
+            String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
+            String voice = Voice.fromString(comboBox.getValue()).toString();
 
-            String[] words = textArea.getSelectedText().split("\\s+");
+            previewBtn.setDisable(true);
+            SaveAudioTask saveTask = new SaveAudioTask(selectedText, voice, 0, true);
+            saveTask.setOnSucceeded(evt -> {
+                int fileSize = (int) saveTask.getValue();
 
-            if (textArea.getSelectedText().trim().isEmpty()) {
-                displayError("No text selected. Please highlight a part of the text.");
-            } else if (words.length > 30) {
-                displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
-            } else {
+                if (fileSize == 0) { // check empty/invalid file due to invalid chunk selected
+                    previewBtn.setText("Preview Chunk");
+                    displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"US Male\"");
+                } else {
+                    _previewTask = new PlayAudioTask(".temp/preview.wav");
+                    _previewTask.setOnRunning(e -> {
+                        previewBtn.setDisable(false);
+                        previewBtn.setText("Stop Preview");
+                    });
+                    _previewTask.setOnSucceeded(e -> previewBtn.setText("Preview Chunk"));
+                }
 
-                String selectedText = "\\\"" + textArea.getSelectedText().replace("\"", "") + "\\\"";
-                String voice = Voice.fromString(comboBox.getValue()).toString();
+                Thread previewThread = new Thread(_previewTask);
+                previewThread.start();
+            });
 
-                SaveAudioTask saveTask = new SaveAudioTask(selectedText, voice, 0, true);
-                saveTask.setOnSucceeded(evt -> {
-                    int fileSize = (int) saveTask.getValue();
-
-                    if (fileSize == 0) { // check empty/invalid file due to invalid chunk selected
-                        previewBtn.setText("Preview Chunk");
-                        displayError("An error occurred when previewing the chunk. Please try another chunk of text or use the voice \"US Male\"");
-                    } else {
-                        _previewTask = new PlayAudioTask(".temp/preview.wav");
-                        _previewTask.setOnRunning(e -> previewBtn.setText("Stop Preview"));
-                        _previewTask.setOnSucceeded(e -> previewBtn.setText("Preview Chunk"));
-                    }
-
-                    Thread previewThread = new Thread(_previewTask);
-                    previewThread.start();
-                });
-
-                Thread saveThread = new Thread(saveTask);
-                saveThread.start();
-            }
+            Thread saveThread = new Thread(saveTask);
+            saveThread.start();
         }
     }
 
     @FXML
     private void saveChunk() {
-        String[] words = textArea.getSelectedText().split("\\s+");
-
-        if (textArea.getSelectedText().trim().isEmpty()) {
-            displayError("No text selected. Please highlight a part of the text.");
-        } else if (words.length > 30) {
-            displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
-        } else {
+        if (validChunk()) {
             saveBtn.setDisable(true);
 
             String voice = Voice.fromString(comboBox.getValue()).toString();
@@ -196,6 +180,20 @@ public class SearchResultController implements Initializable {
                 Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
             }
         }
+    }
+
+    private boolean validChunk() {
+        String[] words = textArea.getSelectedText().split("\\s+");
+
+        if (textArea.getSelectedText().trim().isEmpty()) {
+            displayError("No text selected. Please highlight a part of the text.");
+            return false;
+        } else if (words.length > 30) {
+            displayError("Selected text exceeds the maximum number of words (30). Please select a smaller chunk.");
+            return false;
+        }
+
+        return true;
     }
 
     private void displayError(String message) {

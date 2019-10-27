@@ -1,9 +1,9 @@
 package varpedia.tasks;
 
 import javafx.concurrent.Task;
+import varpedia.main.Main;
 
 public class PlayAudioTask extends Task {
-    private Process _process;
     private String _filePath;
 
     public PlayAudioTask(String filePath) {
@@ -13,14 +13,14 @@ public class PlayAudioTask extends Task {
     @Override
     protected Object call() throws Exception {
         String cmd = "aplay " + _filePath;
-        _process = new ProcessBuilder("bash", "-c", cmd).start();
-        _process.waitFor();
+        Main.createNewProcess(cmd);
         return null;
     }
 
     public void destroyProcess() {
-        if (_process != null) {
-            _process.destroyForcibly();
+        Process process = Main.getCurrentProcess();
+        if (process != null) {
+            process.destroyForcibly();
         }
     }
 }

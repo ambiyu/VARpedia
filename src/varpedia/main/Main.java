@@ -1,6 +1,7 @@
 package varpedia.main;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 public class Main extends Application {
     private static Stage _primaryStage;
+    private static Process _currentProcess;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -32,10 +34,33 @@ public class Main extends Application {
         new ProcessBuilder("bash", "-c", cmd).start();
         cmd = "mkdir .quiz";
         new ProcessBuilder("bash", "-c", cmd).start();
+
+        // remove .temp folder and destroy process (if there is a playing audio) on exit
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            execCmd("rm -r .temp");
+
+            if (_currentProcess != null) {
+                _currentProcess.destroyForcibly();
+            }
+        });
     }
 
     public static Stage getPrimaryStage() {
         return _primaryStage;
+    }
+
+    public static Process getCurrentProcess() {
+        return _currentProcess;
+    }
+
+    public static void createNewProcess(String cmd) {
+        try {
+            _currentProcess = new ProcessBuilder("bash", "-c", cmd).start();
+            _currentProcess.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
@@ -49,6 +74,7 @@ public class Main extends Application {
             Stage window = _primaryStage;
             window.setScene(createScene);
             window.show();
+
         } catch (IOException ioex) {
             System.out.println("error switching scene");
         }
