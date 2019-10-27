@@ -41,7 +41,7 @@ public class Main extends Application {
             execCmd("rm -r .temp");
 
             if (_currentProcess != null) {
-                _currentProcess.destroyForcibly();
+                _currentProcess.destroy();
             }
         });
     }
@@ -58,9 +58,7 @@ public class Main extends Application {
         try {
             _currentProcess = new ProcessBuilder("bash", "-c", cmd).start();
             _currentProcess.waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
     public static void main(String[] args) {

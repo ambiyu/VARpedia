@@ -20,7 +20,7 @@ public class PlayAudioTask extends Task {
     public void destroyProcess() {
         Process process = Main.getCurrentProcess();
         if (process != null) {
-            process.destroyForcibly();
+            process.destroy();
         }
     }
 }
