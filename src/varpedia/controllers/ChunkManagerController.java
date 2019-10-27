@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class ChunkManagerController implements Initializable {
+public class ChunkManagerController extends HelpScene implements Initializable {
 
     private String _searchTerm;
     private String _text;

@@ -26,23 +26,12 @@ public class MediaPlayerController implements Initializable {
     private File fileUrl;
     private MediaPlayer player;
 
-    @FXML
-    private BorderPane borderPane;
-
-    @FXML
-    private MediaView mediaView;
-
-    @FXML
-    private Button playPauseBtn;
-
-    @FXML
-    private Text currentTime;
-
-    @FXML
-    private Slider volSlider;
-
-    @FXML
-    private ImageView speakerImg;
+    @FXML private BorderPane borderPane;
+    @FXML private MediaView mediaView;
+    @FXML private Button playPauseBtn;
+    @FXML private Text currentTime;
+    @FXML private Slider volSlider;
+    @FXML private ImageView speakerImg;
 
     public MediaPlayerController(String filePath) {
         fileUrl = new File(filePath);

@@ -40,7 +40,7 @@ import varpedia.main.ImageDownload;
 import varpedia.main.Main;
 
 
-public class ImageChoiceController implements Initializable {
+public class ImageChoiceController extends HelpScene implements Initializable {
 
 	@FXML
 	private ImageView imageView0,imageView1,imageView2,imageView3,imageView4;

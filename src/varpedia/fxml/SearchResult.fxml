@@ -40,7 +40,7 @@
             <Font size="28.0" />
          </font>
       </Text>
-      <Pane fx:id="helpPane" layoutX="250.0" layoutY="79.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: white; -fx-border-color: black;" visible="false">
+      <Pane id="helpPane" fx:id="helpPane" layoutX="250.0" layoutY="79.0" prefHeight="400.0" prefWidth="400.0" visible="false">
          <children>
             <Text layoutX="6.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight a chunk of the text and then you can click on the &quot;Preview Chunk&quot; button, which will read the chunk of text back to you." wrappingWidth="387.99365234375">
                <font>
@@ -69,6 +69,9 @@
             </Text>
          </children>
       </Pane>
-      <Button id="stdBtn" layoutX="861.0" layoutY="13.0" mnemonicParsing="false" onMouseEntered="#helpEntered" onMouseExited="#helpExited" text="?" />
+      <Button id="helpBtn" layoutX="855.0" layoutY="10.0" mnemonicParsing="false" onMouseEntered="#helpEntered" onMouseExited="#helpExited" text="?">
+         <font>
+            <Font size="16.0" />
+         </font></Button>
    </children>
 </AnchorPane>

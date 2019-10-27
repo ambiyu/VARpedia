@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SearchResultController implements Initializable {
+public class SearchResultController extends HelpScene implements Initializable {
 
     private String _searchTerm;
     private String _text;
@@ -154,16 +154,6 @@ public class SearchResultController implements Initializable {
             Thread thread = new Thread(task);
             thread.start();
         }
-    }
-
-    @FXML
-    private void helpEntered() {
-        helpPane.setVisible(true);
-    }
-
-    @FXML
-    private void helpExited() {
-        helpPane.setVisible(false);
     }
 
     @FXML

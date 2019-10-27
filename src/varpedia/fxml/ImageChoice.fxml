@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
@@ -157,9 +158,9 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <Label layoutX="252.0" layoutY="14.0" text="Please select up to 10 images">
+            <Label layoutX="270.0" layoutY="12.0" text="Please select up to 10 images">
                <font>
-                  <Font size="27.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
             <Button id="yellowBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#handleNext" prefHeight="45.0" prefWidth="110.0" text="Next">
@@ -172,7 +173,31 @@
                   <Font size="20.0" />
                </font>
             </Button>
+            <Button id="helpBtn" layoutX="855.0" layoutY="10.0" mnemonicParsing="false" onMouseEntered="#helpEntered" onMouseExited="#helpExited" text="?">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
             </children>
         </Pane>
+      <Pane id="helpPane" fx:id="helpPane" layoutX="270.0" layoutY="99.0" prefHeight="400.0" prefWidth="400.0" visible="false">
+         <children>
+            <Text layoutX="6.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select 3-10 images for your creation." wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on any image to select it. If there is a tick over an image, then that image is selected" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
     </children>
 </AnchorPane>
