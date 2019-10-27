@@ -1,6 +1,7 @@
 package varpedia.controllers;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,6 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import varpedia.main.Creation;
 import varpedia.main.Main;
@@ -30,6 +35,7 @@ public class CreationsListController implements Initializable {
     @FXML private TableColumn<Creation, String> creationNameCol;
     @FXML private TableColumn<Creation, String> searchTermCol;
     @FXML private Button playAudioBtn;
+    @FXML private AnchorPane pane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,6 +79,18 @@ public class CreationsListController implements Initializable {
             }
 
             populateTable();
+
+            // Keyboard shortcuts for play and delete
+            // Code snippet from: https://stackoverflow.com/questions/25397742/javafx-keyboard-event-shortcut-key
+            pane.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
+                if (ke.getCode() == KeyCode.DELETE) {
+                    handleDelete();
+                    ke.consume();
+                } else if (ke.getCode() == KeyCode.ENTER) {
+                    handlePlay();
+                    ke.consume();
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,7 +198,7 @@ public class CreationsListController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
         alert.setHeaderText(null);
-        alert.setContentText("No creation selected");
+        alert.setContentText("No creation selected. Please select a creation from the list");
         alert.showAndWait();
     }
 }

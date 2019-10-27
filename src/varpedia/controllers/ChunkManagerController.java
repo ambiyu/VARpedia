@@ -7,6 +7,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
@@ -25,6 +28,7 @@ public class ChunkManagerController extends HelpScene implements Initializable {
     private List<Chunk> _chunks;
     private PlayAudioTask _previewTask;
 
+    @FXML private AnchorPane pane;
     @FXML private TableView<Chunk> tableView;
     @FXML private TableColumn<Chunk, String> chunkNumCol;
     @FXML private TableColumn<Chunk, String> chunkTextCol;
@@ -35,6 +39,7 @@ public class ChunkManagerController extends HelpScene implements Initializable {
     @FXML private Button upBtn;
     @FXML private Button downBtn;
     @FXML private Text warningText;
+
 
     public ChunkManagerController(String searchTerm, String text, List<Chunk> chunks) {
         _searchTerm = searchTerm;
@@ -48,7 +53,7 @@ public class ChunkManagerController extends HelpScene implements Initializable {
         chunkTextCol.setCellValueFactory(new PropertyValueFactory<>("text"));
         chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
 
-        //check if user has any chunks to display at chunkManager
+        // check if user has any chunks saved
         if (_chunks.isEmpty()) {
             createBtn.setDisable(true);
             warningText.setVisible(true);
@@ -57,6 +62,24 @@ public class ChunkManagerController extends HelpScene implements Initializable {
         for (Chunk chunk : _chunks) {
             tableView.getItems().add(chunk);
         }
+
+        // Keyboard shortcuts for play, delete, move chunk up and down.
+        // Code snippet from: https://stackoverflow.com/questions/25397742/javafx-keyboard-event-shortcut-key
+        pane.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
+            if (ke.getCode() == KeyCode.DELETE) {
+                handleDelete();
+                ke.consume();
+            } else if (ke.getCode() == KeyCode.ENTER) {
+                handlePlay();
+                ke.consume();
+            } else if (ke.getCode() == KeyCode.UP) {
+                handleUp();
+                ke.consume();
+            } else if (ke.getCode() == KeyCode.DOWN) {
+                handleDown();
+                ke.consume();
+            }
+        });
     }
 
     /**
@@ -82,22 +105,31 @@ public class ChunkManagerController extends HelpScene implements Initializable {
     @FXML
     private void handleUp() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
-        int index = _chunks.indexOf(selected);
+        if (selected != null) {
+            int index = _chunks.indexOf(selected);
 
-        if (index != 0) {
-            Chunk above = _chunks.get(index-1);
-            swapChunks(selected, above, index, -1);
+            if (index != 0) {
+                Chunk above = _chunks.get(index-1);
+                swapChunks(selected, above, index, -1);
+            }
+        } else {
+            displaySelectionError();
         }
     }
 
     @FXML
     private void handleDown() {
         Chunk selected = tableView.getSelectionModel().getSelectedItem();
-        int index = _chunks.indexOf(selected);
 
-        if (index != _chunks.size()-1) {
-            Chunk below = _chunks.get(index+1);
-            swapChunks(selected, below, index, 1);
+        if (selected != null) {
+            int index = _chunks.indexOf(selected);
+
+            if (index != _chunks.size()-1) {
+                Chunk below = _chunks.get(index+1);
+                swapChunks(selected, below, index, 1);
+            }
+        } else {
+            displaySelectionError();
         }
     }
 
@@ -129,7 +161,7 @@ public class ChunkManagerController extends HelpScene implements Initializable {
             }
 
         } else {
-            displayError("No chunk selected");
+            displaySelectionError();
         }
     }
 
@@ -144,9 +176,12 @@ public class ChunkManagerController extends HelpScene implements Initializable {
             alert.setContentText("Are you sure you want to delete Chunk " + selected.getChunkNumber() + "?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
+
+                // remove chunk and the audio file
                 tableView.getItems().removeAll(selected);
                 _chunks.remove(selected);
                 Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
+
                 if (_chunks.isEmpty()) {
                     createBtn.setDisable(true);
                     warningText.setVisible(true);
@@ -156,7 +191,7 @@ public class ChunkManagerController extends HelpScene implements Initializable {
                 deleteBtn.setDisable(true);
             }
         } else {
-            displayError("No chunk selected");
+            displaySelectionError();
         }
     }
 
@@ -205,11 +240,11 @@ public class ChunkManagerController extends HelpScene implements Initializable {
         }
     }
 
-    private void displayError(String message) {
+    private void displaySelectionError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText("No chunk selected. Please select a chunk");
         alert.showAndWait();
     }
 }
