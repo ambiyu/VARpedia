@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Chunk;
@@ -39,6 +40,7 @@ public class SearchResultController implements Initializable {
     @FXML private ComboBox<String> comboBox;
     @FXML private Button manageBtn;
     @FXML private Text termText;
+    @FXML private Pane helpPane;
 
     public SearchResultController(String searchTerm, String text) {
         _searchTerm = searchTerm;
@@ -57,7 +59,7 @@ public class SearchResultController implements Initializable {
 
         // display search result
         textArea.setText(_text);
-        termText.setText(_searchTerm);
+        termText.setText("Search Term: " + _searchTerm);
 
         // Creating an array list of all voices from enum
         // Code snippet from: https://stackoverflow.com/questions/29465943/get-enum-values-as-list-of-string-in-java-8
@@ -152,6 +154,16 @@ public class SearchResultController implements Initializable {
             Thread thread = new Thread(task);
             thread.start();
         }
+    }
+
+    @FXML
+    private void helpEntered() {
+        helpPane.setVisible(true);
+    }
+
+    @FXML
+    private void helpExited() {
+        helpPane.setVisible(false);
     }
 
     @FXML

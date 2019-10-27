@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -29,15 +30,45 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <ComboBox id="dropdown" fx:id="comboBox" layoutX="674.0" layoutY="337.0" prefHeight="26.0" prefWidth="180.0" />
+      <ComboBox id="dropdown" fx:id="comboBox" layoutX="674.0" layoutY="329.0" prefHeight="26.0" prefWidth="180.0" />
       <Text layoutX="742.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voice">
          <font>
             <Font size="16.0" />
          </font></Text>
-      <Text fx:id="termText" layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Term">
+      <Text fx:id="termText" layoutX="14.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Term: ">
          <font>
             <Font size="28.0" />
          </font>
       </Text>
+      <Pane fx:id="helpPane" layoutX="250.0" layoutY="79.0" prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: white; -fx-border-color: black;" visible="false">
+         <children>
+            <Text layoutX="6.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight a chunk of the text and then you can click on the &quot;Preview Chunk&quot; button, which will read the chunk of text back to you." wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There are three different voices to choose from by selecting from the dropdown box." wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you are happy with the chunk and voice, click on &quot;Save Chunk&quot;" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click &quot;Next&quot; after you have finished saving your chunks. You can always come back later to save more chunks." wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Button id="stdBtn" layoutX="861.0" layoutY="13.0" mnemonicParsing="false" onMouseEntered="#helpEntered" onMouseExited="#helpExited" text="?" />
    </children>
 </AnchorPane>
