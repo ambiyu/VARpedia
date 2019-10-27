@@ -93,12 +93,9 @@ public class ImageChoiceController extends HelpScene implements Initializable {
 		progressLabel.setLayoutX(loadingPane.getPrefWidth()/2 - 60);
 		loadingPane.getChildren().add(progress);
 		loadingPane.getChildren().add(progressLabel);
-
-		
 		
 		setUpList();
 
-		
 		pane.setVisible(false);
 
 		new Thread(() ->{

@@ -180,9 +180,9 @@
             </Button>
             </children>
         </Pane>
-      <Pane id="helpPane" fx:id="helpPane" layoutX="270.0" layoutY="99.0" prefHeight="400.0" prefWidth="400.0" visible="false">
+      <Pane id="helpPane" fx:id="helpPane" layoutX="270.0" layoutY="99.0" prefHeight="400.0" prefWidth="400.0">
          <children>
-            <Text layoutX="6.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select 3-10 images for your creation." wrappingWidth="387.99365234375">
+            <Text layoutX="6.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select up to 10 images for your creation." wrappingWidth="387.99365234375">
                <font>
                   <Font size="16.0" />
                </font>

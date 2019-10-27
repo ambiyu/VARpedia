@@ -45,8 +45,8 @@ public class CreateCreationTask extends Task {
             double imageDuration = _numImages / totalDuration;
 
             // combine images into a video
-            //Main.execCmd("cat .temp/images/*.jpg | ffmpeg -f image2pipe -framerate 1 -i - -i .temp/combinedAudio.wav -r " + lengthOfImage + " -pattern_type glob -c:v libx264 -pix_fmt yuv420p -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 -max_muxing_queue_size 1024 -y creations/" + fileNameInput.getText() + ".mp4");
-            Main.execCmd("ffmpeg -framerate " + imageDuration + " -pattern_type glob -i '.temp/selectedImages/*.jpg' -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 .temp/combinedImages.mp4");
+            //Main.execCmd("ffmpeg -framerate " + imageDuration + " -pattern_type glob -i '.temp/selectedImages/*.jpg' -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 .temp/combinedImages.mp4");
+            Main.execCmd("cat .temp/selectedImages/*.jpg | ffmpeg -f image2pipe -framerate " + imageDuration + " -pattern_type glob -i - -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 .temp/combinedImages.mp4");
 
             // create video with the search term on top
             Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + totalDuration + " -r 25 .temp/vidWithWord.mp4");
