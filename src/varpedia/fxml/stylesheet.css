@@ -3,7 +3,7 @@
 }
 
 #loadingPane{
-	-fx-background-color: rgba(6,180,255,0.5);
+	-fx-background-color: rgba(191, 217, 254,0.5);
 }
 
 #helpPane {
@@ -20,8 +20,12 @@
 }
 
 #yellowBtn {
-    -fx-background-color: rgba(255, 230, 66, 1);
-    -fx-background-radius: 15;
+     -fx-background-color: rgba(142, 205, 250, 1);
+-fx-background-radius: 10;
+    -fx-border-color: black;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+  
 }
 
 #stdBtn {
@@ -37,7 +41,7 @@
 }
 
 #search-searchBtn {
-    -fx-background-radius: 0 5 5 0;
+-fx-background-radius: 5 0 0 5;
 }
 
 #upBtn, #downBtn {
