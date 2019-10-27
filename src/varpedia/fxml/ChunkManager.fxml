@@ -88,6 +88,15 @@
                   <Font size="16.0" />
                </font>
             </Text>
+            <Text layoutX="6.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keyboard Shortcuts:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="7.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter - Play Chunk" />
+            <Text layoutX="6.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Del - Delete Chunk" />
+            <Text layoutX="6.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Up Arrow - Move Up" />
+            <Text layoutX="6.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Down Arrow - Move Down" />
          </children>
       </Pane>
     </children>
