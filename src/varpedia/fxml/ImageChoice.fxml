@@ -197,6 +197,11 @@
                   <Font size="16.0" />
                </font>
             </Text>
+            <Text layoutX="7.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The order in which you select the images will be the order they appear in the creation" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
     </children>
