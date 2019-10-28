@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -33,47 +35,22 @@ public class QuizController implements Initializable {
     private List<Button> _options;
     private int _numQuestions;
     private String _currentAnswer;
+    private int _currentQuestion;
     private int _correctCount;
-    private int _incorrectCount;
 
-    @FXML
-    private Pane welcomePane;
-
-    @FXML
-    private Pane quizPane;
-
-    @FXML
-    private Pane resultPane;
-
-    @FXML
-    private Spinner<Integer> spinner;
-
-    @FXML
-    private Button option1;
-
-    @FXML
-    private Button option2;
-
-    @FXML
-    private Button option3;
-
-    @FXML
-    private Button option4;
-
-    @FXML
-    private Text result;
-
-    @FXML
-    private Text correctAnswer;
-
-    @FXML
-    private Text correctCountText;
-
-    @FXML
-    private Text incorrectCountText;
-
-    @FXML
-    private MediaView mediaView;
+    @FXML private Pane welcomePane;
+    @FXML private Pane quizPane;
+    @FXML private Pane resultPane;
+    @FXML private Spinner<Integer> spinner;
+    @FXML private MediaView mediaView;
+    @FXML private Button replayBtn;
+    @FXML private Button option1;
+    @FXML private Button option2;
+    @FXML private Button option3;
+    @FXML private Button option4;
+    @FXML private Text questionText;
+    @FXML private Text result;
+    @FXML private Text correctAnswerText;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -85,7 +62,24 @@ public class QuizController implements Initializable {
         _options.add(option3);
         _options.add(option4);
 
+        quizPane.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
+            if (ke.getCode() == KeyCode.DIGIT1) {
+                option1.fire();
+                ke.consume();
+            } else if (ke.getCode() == KeyCode.DIGIT2) {
+                option2.fire();
+                ke.consume();
+            } else if (ke.getCode() == KeyCode.DIGIT3) {
+                option3.fire();
+                ke.consume();
+            } else if (ke.getCode() == KeyCode.DIGIT4) {
+                option4.fire();
+                ke.consume();
+            }
+        });
+
         try {
+            // get all files from the creations folder
             String cmd = "ls -1 creations";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -96,21 +90,14 @@ public class QuizController implements Initializable {
                 output.add(line);
             }
 
+            // remove .mp4 at the end of filename and remove files that are not .mp4
             _creations = new ArrayList<>();
-            // remove .mp4 at the end of filename and remove non .mp4
             for (int i = output.size()-1; i >= 0; i--) {
                 String file = output.get(i);
                 if (file.endsWith(".mp4")) {
                     _creations.add(new Creation(_creations.size(), file.substring(0, file.length()-4)));
                 }
             }
-
-            String firstCreation = _creations.get(0).getName();
-            File fileUrl = new File(".quiz/" + firstCreation + "/" + firstCreation + ".mp4");
-
-            Media video = new Media(fileUrl.toURI().toString());
-            player = new MediaPlayer(video);
-            mediaView.setMediaPlayer(player);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,10 +107,12 @@ public class QuizController implements Initializable {
     @FXML
     private void handleStart() {
         _numQuestions = spinner.getValue();
+        _currentQuestion = 1;
         welcomePane.setVisible(false);
         quizPane.setVisible(true);
-        player.play();
-        setButtons(_creations.get(0));
+
+        // initialise the quiz a random creation
+        nextCreation();
     }
 
     @FXML
@@ -139,7 +128,8 @@ public class QuizController implements Initializable {
 
     @FXML
     private void handleContinue() {
-        if (_correctCount+_incorrectCount == _numQuestions) {
+        if (_currentQuestion >= _numQuestions) {
+            // quiz is finished
             try {
                 FXMLLoader newLoader = new FXMLLoader(getClass().getResource("/varpedia/fxml/QuizResult.fxml"));
                 QuizResultController controller = new QuizResultController(_correctCount, _numQuestions);
@@ -155,6 +145,8 @@ public class QuizController implements Initializable {
             }
 
         } else {
+            // continue to next question
+            questionText.setText("Question " + ++_currentQuestion);
             resultPane.setVisible(false);
             quizPane.setVisible(true);
             nextCreation();
@@ -162,34 +154,44 @@ public class QuizController implements Initializable {
     }
 
     private void setButtons(Creation correct) {
+        // select a random creation to be the correct one
         int correctOption = (int)(Math.random() * 4);
         Button correctButton = _options.get(correctOption);
         String creationName = correct.getName();
         _currentAnswer = getSearchTerm(creationName);
 
-        correctButton.setText(_currentAnswer);
-        correctButton.setOnAction(event -> {
-            correctCountText.setText("Correct: " + ++_correctCount);
+        correctButton.setText(correctOption+1 + ". " + _currentAnswer);
+        correctButton.setOnAction(e -> {
             onSelectOption(true);
+            _correctCount++;
         });
 
+        // create new temporary lists of all creations and buttons without the correct answer
+        // used to select random creations
         List<Creation> remaining = new ArrayList<>(_creations);
         remaining.remove(correct);
         List<Button> buttons = new ArrayList<>(_options);
         buttons.remove(correctButton);
 
+        int buttonNumber = 1;
+
         // get three other random creations
         for (int i = 0; i < 3; i++) {
             int rand = (int)(Math.random() * remaining.size());
             Button falseButton = buttons.get(0);
-            falseButton.setOnAction(event -> {
-                incorrectCountText.setText("Incorrect: " + ++_incorrectCount);
-                onSelectOption(false);
-            });
+            falseButton.setOnAction(e -> onSelectOption(false));
 
             Creation creation = remaining.get(rand);
+            String searchTerm = getSearchTerm(creation.getName());
 
-            falseButton.setText(getSearchTerm(creation.getName()));
+
+            if (buttonNumber == correctOption+1) {
+                buttonNumber++;
+            }
+
+            // set the text of the button to the term
+            falseButton.setText(buttonNumber++ + ". " + searchTerm);
+
             remaining.remove(creation);
             buttons.remove(falseButton);
         }
@@ -202,11 +204,11 @@ public class QuizController implements Initializable {
 
         if (!correct) {
             result.setText("Incorrect");
-            correctAnswer.setText("Correct answer: " + _currentAnswer);
-            correctAnswer.setVisible(true);
+            correctAnswerText.setText("Correct answer: " + _currentAnswer);
+            correctAnswerText.setVisible(true);
         } else {
             result.setText("Correct!");
-            correctAnswer.setVisible(false);
+            correctAnswerText.setVisible(false);
         }
     }
 

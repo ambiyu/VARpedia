@@ -24,7 +24,18 @@ public class QuizResultController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         score.setText("Score: " + _numCorrect + "/" + _numQuestions);
-        // TODO: add messages depending on score
+
+        double percentage = (double)_numCorrect / _numQuestions;
+
+        if (percentage == 1) {
+            message.setText("Perfect score! Great work");
+        } else if (percentage >= 0.7) {
+            message.setText("Well done, keep up the good work!");
+        } else if (percentage >= 0.3) {
+            message.setText("Good effort. Keep practicing!");
+        } else {
+            message.setText("Don't give up, keep practicing!");
+        }
     }
 
     @FXML

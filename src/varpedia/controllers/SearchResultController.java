@@ -117,6 +117,7 @@ public class SearchResultController extends HelpScene implements Initializable {
     private void saveChunk() {
         if (validChunk()) {
             saveBtn.setDisable(true);
+            saveBtn.setText("Saving...");
 
             String voice = Voice.fromString(comboBox.getValue()).toString();
             String selectedText = textArea.getSelectedText().replace("\"", ""); // remove all double quotes to prevent some errors
@@ -129,6 +130,9 @@ public class SearchResultController extends HelpScene implements Initializable {
             SaveAudioTask task = new SaveAudioTask(selectedText, voice, id, false);
             int finalId = id;
             task.setOnSucceeded(e -> {
+                saveBtn.setText("Save Chunk");
+                saveBtn.setDisable(false);
+
                 // size of the audio file created
                 int size = (int) task.getValue();
 
@@ -136,7 +140,6 @@ public class SearchResultController extends HelpScene implements Initializable {
                     Chunk chunk = new Chunk(finalId, selectedText, Voice.valueOf(voice));
                     _chunks.add(chunk);
 
-                    saveBtn.setDisable(false);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText(null);
@@ -146,7 +149,6 @@ public class SearchResultController extends HelpScene implements Initializable {
                 } else {
                     // remove invalid/empty audio file
                     Main.execCmd("rm .temp/chunks/chunk" + finalId +".wav");
-                    saveBtn.setDisable(false);
                     displayError("An error occurred when saving the chunk. Please try another chunk of text or use the voice \"US Male\"");
                 }
             });
