@@ -49,7 +49,7 @@ public class CreateCreationTask extends Task {
             Main.execCmd("cat .temp/selectedImages/*.jpg | ffmpeg -f image2pipe -framerate " + imageDuration + " -pattern_type glob -i - -c:v libx264 -vf \"scale=-2:min(1080\\,trunc(ih/2)*2)\" -r 25 .temp/combinedImages.mp4");
 
             // create video with the search term on top
-            Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/myFont.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=50: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + totalDuration + " -r 25 .temp/vidWithWord.mp4");
+            Main.execCmd("ffmpeg -i .temp/combinedImages.mp4 -vf drawtext=\"fontfile=resources/BubblegumSans-Regular.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=100: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy -t " + totalDuration + " -r 25 .temp/vidWithWord.mp4");
 
             // combine audio/video into one
             if (_music.equals("None")) {
