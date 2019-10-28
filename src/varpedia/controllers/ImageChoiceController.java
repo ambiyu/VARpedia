@@ -42,24 +42,14 @@ import varpedia.main.Main;
 
 public class ImageChoiceController extends HelpScene implements Initializable {
 
-	@FXML
-	private ImageView imageView0,imageView1,imageView2,imageView3,imageView4;
-	@FXML	
-	private ImageView imageView5,imageView6,imageView7,imageView8,imageView9;
-	@FXML
-	private ImageView imageView10,imageView11,imageView12,imageView13,imageView14;
-	@FXML
-	private ImageView greenTickView0, greenTickView1, greenTickView2, greenTickView3, greenTickView4, greenTickView5, greenTickView6, greenTickView7, greenTickView8, greenTickView9, greenTickView10, greenTickView11, greenTickView12, greenTickView13, greenTickView14;
-	@FXML
-	private Button createBtn;
-	@FXML
-	private TextField fileNameInput;
-	@FXML
-	private Pane pane;
-	@FXML
-	private Pane loadingPane;
-	@FXML
-	private ChoiceBox<String> musicSelection;
+	@FXML private ImageView imageView0,imageView1,imageView2,imageView3,imageView4;
+	@FXML private ImageView imageView5,imageView6,imageView7,imageView8,imageView9;
+	@FXML private ImageView imageView10,imageView11,imageView12,imageView13,imageView14;
+	@FXML private ImageView greenTickView0, greenTickView1, greenTickView2, greenTickView3, greenTickView4;
+	@FXML private ImageView greenTickView5, greenTickView6, greenTickView7, greenTickView8, greenTickView9;
+	@FXML private ImageView greenTickView10, greenTickView11, greenTickView12, greenTickView13, greenTickView14;
+	@FXML private Pane pane;
+	@FXML private Pane loadingPane;
 
 	private ProgressIndicator progress = new ProgressIndicator();
 	private Label progressLabel = new Label("Retrieving Images...");
@@ -110,6 +100,7 @@ public class ImageChoiceController extends HelpScene implements Initializable {
 				greenTick = new Image(greenTickFile);
 				greenTickFile.close();
 
+				// set all downloaded images to the ImageView and set ticks on top
 				for (int i = 0; i < numOfImages; i++) {
 					flickrImage = new FileInputStream(".temp/images/" + _searchTerm + "-" + i + ".jpg");
 					Image image = new Image(flickrImage);
@@ -135,7 +126,6 @@ public class ImageChoiceController extends HelpScene implements Initializable {
 	@FXML
 	public void handleClick(MouseEvent event) {
 		ImageView selectedImage = null;
-		
 
 		//finds what image was clicked
 		for(ImageView im : listOfImages) {
@@ -170,17 +160,16 @@ public class ImageChoiceController extends HelpScene implements Initializable {
    @FXML
    public void handleNext() {
 	   int numOfImages = imagesToMerge.size();
-	   if( numOfImages > 10) {
+	   if (numOfImages > 10) {
 			int exceedingImages = imagesToMerge.size() - 10;
 			displayError("Only 10 images may be selected, please unselect " +  exceedingImages + " image(s)");
-		}
+	   }
 	   else if(numOfImages == 0) {
 		   displayError("No images selected");
-
 	   }
-	   else {
+	   else { // continue to next step
 		   try {
-			   Main.execCmd("rm -r .temp/images");
+			    Main.execCmd("rm -r .temp/images");
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/FileAndMusic.fxml"));
 				FileAndMusicController scene = new FileAndMusicController(_searchTerm, _previousScene, imagesToMerge, _chunks);
 				loader.setController(scene);
@@ -198,7 +187,6 @@ public class ImageChoiceController extends HelpScene implements Initializable {
 
 	@FXML
 	public void handleBack() {
-
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/ChunkManager.fxml"));
 			loader.setController(_previousScene);
@@ -227,7 +215,8 @@ public class ImageChoiceController extends HelpScene implements Initializable {
 		alert.setContentText(message);
 		alert.showAndWait();
 	}
-	//method to put all immageViews in arrays
+
+	//method to put all imageViews in arrays
 	private void setUpList() {
 
 		listOfImages.add(imageView0); allGreenTicks.add(greenTickView0); 

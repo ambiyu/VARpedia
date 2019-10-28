@@ -47,6 +47,11 @@
                   <Font size="32.0" />
                </font>
             </Text>
+            <Button id="helpBtn" layoutX="851.0" layoutY="14.0" mnemonicParsing="false" onMouseEntered="#helpEntered" onMouseExited="#helpExited" text="?">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <Pane fx:id="welcomePane" prefHeight="600.0" prefWidth="900.0">
@@ -82,6 +87,40 @@
             <Text fx:id="correctAnswerText" layoutX="200.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer: " textAlignment="CENTER" wrappingWidth="499.2138671875">
                <font>
                   <Font size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane id="helpPane" fx:id="helpPane" layoutX="270.0" layoutY="99.0" prefHeight="400.0" prefWidth="400.0" visible="false">
+         <children>
+            <Text layoutX="6.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select the option that matches the creation" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="7.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There is no time limit so take your time answering!" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keyboard Shortcuts:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="7.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[1] - Select option 1" />
+            <Text layoutX="7.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[2] - Select option 2" />
+            <Text layoutX="7.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[SPACEBAR] - Continue/Next question" />
+            <Text layoutX="7.0" layoutY="268.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[3] - Select option 3" />
+            <Text layoutX="7.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[4] - Select option 4" />
+            <Text layoutX="6.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="There is only one correct answer" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
                </font>
             </Text>
          </children>

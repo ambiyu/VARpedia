@@ -1,7 +1,5 @@
 package varpedia.controllers;
 
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,7 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import varpedia.main.Creation;
 import varpedia.main.Main;
@@ -44,6 +41,7 @@ public class CreationsListController implements Initializable {
         searchTermCol.setCellValueFactory(new PropertyValueFactory<>("searchTerm"));
 
         try {
+            // get all files from the creations folder
             String cmd = "ls -1 creations";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -55,7 +53,7 @@ public class CreationsListController implements Initializable {
             }
 
             _creations = new ArrayList<>();
-            // get all the mp4 files
+            // filter out all files that are not .mp4
             for (String file : files) {
                 if (file.endsWith(".mp4")) {
                     try {

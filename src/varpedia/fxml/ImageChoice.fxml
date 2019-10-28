@@ -192,7 +192,7 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Text>
-            <Text layoutX="6.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on any image to select it. If there is a tick over an image, then that image is selected" wrappingWidth="387.99365234375">
+            <Text layoutX="6.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on any image to select it. If there is a tick over an image, then the image is selected" wrappingWidth="387.99365234375">
                <font>
                   <Font size="16.0" />
                </font>

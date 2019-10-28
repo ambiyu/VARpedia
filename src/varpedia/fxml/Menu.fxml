@@ -11,7 +11,7 @@
          <font>
             <Font size="28.0" />
          </font></Button>
-      <Text layoutX="326.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VARpedia" textAlignment="CENTER" wrappingWidth="277.13671875">
+      <Text id="title" layoutX="326.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VARpedia" textAlignment="CENTER" wrappingWidth="277.13671875">
          <font>
             <Font name="Purisa Bold" size="48.0" />
          </font>

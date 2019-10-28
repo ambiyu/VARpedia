@@ -31,7 +31,7 @@
             <Font size="20.0" />
          </font></Button>
       <ComboBox id="dropdown" fx:id="comboBox" layoutX="674.0" layoutY="329.0" prefHeight="26.0" prefWidth="180.0" />
-      <Text layoutX="742.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voice">
+      <Text layoutX="742.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voice">
          <font>
             <Font size="16.0" />
          </font></Text>

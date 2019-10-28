@@ -35,7 +35,7 @@ public class ChunkManagerController extends HelpScene implements Initializable {
     @FXML private TableColumn<Chunk, String> chunkVoiceCol;
     @FXML private Button playBtn;
     @FXML private Button deleteBtn;
-    @FXML private Button createBtn;
+    @FXML private Button nextBtn;
     @FXML private Button upBtn;
     @FXML private Button downBtn;
     @FXML private Text warningText;
@@ -53,9 +53,9 @@ public class ChunkManagerController extends HelpScene implements Initializable {
         chunkTextCol.setCellValueFactory(new PropertyValueFactory<>("text"));
         chunkVoiceCol.setCellValueFactory(new PropertyValueFactory<>("voice"));
 
-        // check if user has any chunks saved
+        // prevent user from continuing if there are no saved chunks
         if (_chunks.isEmpty()) {
-            createBtn.setDisable(true);
+            nextBtn.setDisable(true);
             warningText.setVisible(true);
         }
 
@@ -183,7 +183,7 @@ public class ChunkManagerController extends HelpScene implements Initializable {
                 Main.execCmd("rm .temp/chunks/chunk" + selected.getChunkNumber() + ".wav");
 
                 if (_chunks.isEmpty()) {
-                    createBtn.setDisable(true);
+                    nextBtn.setDisable(true);
                     warningText.setVisible(true);
                 }
 

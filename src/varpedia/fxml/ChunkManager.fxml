@@ -35,7 +35,7 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="yellowBtn" fx:id="createBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#toImageSelect" prefHeight="45.0" prefWidth="110.0" text="Next">
+      <Button id="yellowBtn" fx:id="nextBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#toImageSelect" prefHeight="45.0" prefWidth="110.0" text="Next">
          <font>
             <Font size="20.0" />
          </font></Button>
@@ -43,11 +43,11 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button fx:id="upBtn" disable="true" layoutX="17.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="33.0" prefWidth="85.0" text="Up">
+      <Button fx:id="upBtn" disable="true" layoutX="14.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="34.0" prefWidth="80.0" text="↑">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="downBtn" disable="true" layoutX="116.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleDown" prefHeight="33.0" prefWidth="85.0" text="Down">
+      <Button fx:id="downBtn" disable="true" layoutX="117.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleDown" prefHeight="34.0" prefWidth="80.0" text="↓">
          <font>
             <Font size="16.0" />
          </font></Button>
@@ -83,7 +83,7 @@
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text layoutX="6.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The ordering of the chunks can be changed by selecting a chunk from the table and clicking on either &quot;Up&quot; or &quot;Down&quot;" wrappingWidth="387.99365234375">
+            <Text layoutX="6.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The ordering of the chunks can be changed by selecting a chunk from the table and clicking on either ↑ or ↓" wrappingWidth="387.99365234375">
                <font>
                   <Font size="16.0" />
                </font>
@@ -93,10 +93,10 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Text>
-            <Text layoutX="7.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter - Play Chunk" />
-            <Text layoutX="6.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Del - Delete Chunk" />
-            <Text layoutX="6.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Up Arrow - Move Up" />
-            <Text layoutX="6.0" layoutY="361.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Down Arrow - Move Down" />
+            <Text layoutX="7.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[ENTER] - Play Chunk" />
+            <Text layoutX="7.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[DELETE] - Delete Chunk" />
+            <Text layoutX="7.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[▲] (up arrow key) - Move Up ↑" />
+            <Text layoutX="7.0" layoutY="362.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[▼] (down arrow key) - Move Down ↓" />
          </children>
       </Pane>
     </children>

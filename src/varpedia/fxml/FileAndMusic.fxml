@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ComboBox?>
 <AnchorPane id="pane" fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Pane fx:id="pane" prefHeight="600.0" prefWidth="900.0">
@@ -32,7 +33,7 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <ChoiceBox id="dropdown" fx:id="musicSelection" layoutX="350.0" layoutY="200.0" prefHeight="26.0" prefWidth="200.0" />
+            <ComboBox id="dropdown" fx:id="musicSelection" layoutX="350.0" layoutY="200.0" prefHeight="26.0" prefWidth="200.0" />
             <Label layoutX="358.0" layoutY="175.0" text="Background Music">
                <font>
                   <Font size="20.0" />
@@ -43,7 +44,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="228.0" layoutY="36.0" text="Please enter a unique creation name">
+            <Label layoutX="348.0" layoutY="31.0" text="Creation Naming">
                <font>
                   <Font size="24.0" />
                </font>
