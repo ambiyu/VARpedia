@@ -137,7 +137,7 @@ public class FileAndMusicController implements Initializable {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setTitle("Success");
 					alert.setHeaderText(null);
-					alert.setContentText("\"" + fileNameInput.getText() + "\" successfully created");
+					alert.setContentText("\"" + fileNameInput.getText() + "\" has been successfully created");
 					alert.showAndWait();
 					Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
 				});
@@ -214,6 +214,4 @@ public class FileAndMusicController implements Initializable {
 		}
 		return false;
 	}
-
-	
 }

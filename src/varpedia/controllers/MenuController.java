@@ -35,7 +35,7 @@ public class MenuController {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
                 alert.setHeaderText(null);
-                alert.setContentText("You need at least 4 creations to start the quiz. Please create " + required + " more creation(s).");
+                alert.setContentText("You need at least 4 different creations to start the quiz. Please create " + required + " more creation(s).");
                 alert.showAndWait();
             } else {
                 Main.switchScene(getClass().getResource("/varpedia/fxml/Quiz.fxml"));

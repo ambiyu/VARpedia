@@ -122,7 +122,10 @@ public class QuizController implements Initializable {
 
     @FXML
     private void returnToMenu() {
-        player.dispose();
+        if (player != null) {
+            player.dispose();
+        }
+
         Main.switchScene(getClass().getResource("/varpedia/fxml/Menu.fxml"));
     }
 

@@ -25,7 +25,7 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Label layoutX="274.0" layoutY="31.0" text="Wikipedia Search">
+      <Label layoutX="381.0" layoutY="20.0" text="Search">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>

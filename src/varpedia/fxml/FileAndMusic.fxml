@@ -43,9 +43,9 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label layoutX="251.0" layoutY="46.0" text="Please enter a unique file name">
+            <Label layoutX="228.0" layoutY="36.0" text="Please enter a unique creation name">
                <font>
-                  <Font size="25.0" />
+                  <Font size="24.0" />
                </font>
             </Label>
             </children>
