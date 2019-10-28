@@ -1,34 +1,22 @@
 package varpedia.controllers;
 
-
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javax.imageio.ImageIO;
-
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TextField;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -137,23 +125,19 @@ public class ImageChoiceController extends HelpScene implements Initializable {
 			}
 		}
 		
-		
+		// if the image is already selected then unselect it
 		if(selectedImage.getOpacity() == 0.3) {
 			selectedImage.setOpacity(1);
 			allGreenTicks.get(listOfImages.indexOf(selectedImage)).setOpacity(0);
+
 			if(imagesToMerge.contains(selectedImage.getImage())) {
 				imagesToMerge.remove(selectedImage.getImage());
 			}
 		}
-		else {
-
-			if(selectedImage != null) {
+		else if(selectedImage != null) { // if the image is not selected then select it
 				allGreenTicks.get(listOfImages.indexOf(selectedImage)).setOpacity(1);
 				selectedImage.setOpacity(0.3);
 				imagesToMerge.add(selectedImage.getImage());
-				
-			}
-			
 		}
 	}
 

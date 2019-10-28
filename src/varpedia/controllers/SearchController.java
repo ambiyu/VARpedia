@@ -1,6 +1,5 @@
 package varpedia.controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,20 +12,11 @@ import javafx.stage.Stage;
 import varpedia.main.Main;
 import varpedia.tasks.WikiSearchTask;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 public class SearchController {
 
-    @FXML
-    private TextField textField;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private Text textPrompt;
-
+    @FXML private TextField textField;
+    @FXML private Button searchBtn;
+    @FXML private Text textPrompt;
     
     @FXML
     public void back() {
@@ -62,6 +52,7 @@ public class SearchController {
                 }
             });
 
+            // Search term not found on wikit
             task.setOnFailed(e -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");

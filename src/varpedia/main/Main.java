@@ -28,6 +28,7 @@ public class Main extends Application {
         primaryStage.setTitle("VARpedia");
         primaryStage.show();
 
+        // make required folders
         String cmd = "mkdir creations";
         new ProcessBuilder("bash", "-c", cmd).start();
         cmd = "mkdir .temp";
@@ -54,6 +55,10 @@ public class Main extends Application {
         return _currentProcess;
     }
 
+    /**
+     * Method used to create a global process that is used for play audio.
+     * Allows the process to be destroyed on exit
+     */
     public static void createNewProcess(String cmd) {
         try {
             _currentProcess = new ProcessBuilder("bash", "-c", cmd).start();

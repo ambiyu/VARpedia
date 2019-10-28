@@ -43,7 +43,6 @@ public class QuizController extends HelpScene implements Initializable {
     @FXML private Pane resultPane;
     @FXML private Spinner<Integer> spinner;
     @FXML private MediaView mediaView;
-    @FXML private Button replayBtn;
     @FXML private Button option1;
     @FXML private Button option2;
     @FXML private Button option3;

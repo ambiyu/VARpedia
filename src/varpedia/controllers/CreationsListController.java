@@ -100,6 +100,7 @@ public class CreationsListController implements Initializable {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
+            // go to the media player
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/MediaPlayer.fxml"));
                 MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
@@ -172,6 +173,7 @@ public class CreationsListController implements Initializable {
                 tableView.getItems().clear();
                 populateTable();
 
+                // delete related files
                 Main.execCmd("rm creations/" + selected.getName() + ".mp4");
                 Main.execCmd("rm -r .quiz/" + selected.getName());
             }

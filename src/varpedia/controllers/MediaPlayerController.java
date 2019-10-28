@@ -102,7 +102,6 @@ public class MediaPlayerController implements Initializable {
 
     @FXML
     private void handleForward() {
-
         Duration time = player.getCurrentTime();
         player.seek(time.add(Duration.seconds(3)));
     }
