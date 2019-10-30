@@ -5,12 +5,13 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="pane" fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Text layoutX="325.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Manage Chunks">
+        <Text layoutX="339.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Saved Chunks">
             <font>
                 <Font name="System Bold" size="28.0" />
             </font>
@@ -34,26 +35,69 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="yellowBtn" fx:id="createBtn" layoutX="786.0" layoutY="547.0" mnemonicParsing="false" onAction="#toImageSelect" prefHeight="39.0" prefWidth="100.0" text="Next">
+      <Button id="yellowBtn" fx:id="nextBtn" layoutX="776.0" layoutY="541.0" mnemonicParsing="false" onAction="#toImageSelect" prefHeight="45.0" prefWidth="110.0" text="Next">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button id="yellowBtn" layoutX="14.0" layoutY="547.0" mnemonicParsing="false" onAction="#back" prefHeight="39.0" prefWidth="100.0" text="Back">
+      <Button id="yellowBtn" layoutX="653.0" layoutY="541.0" mnemonicParsing="false" onAction="#back" prefHeight="45.0" prefWidth="110.0" text="Back">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Button fx:id="upBtn" disable="true" layoutX="17.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="33.0" prefWidth="85.0" text="Up">
+      <Button fx:id="upBtn" disable="true" layoutX="14.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleUp" prefHeight="34.0" prefWidth="80.0" text="↑">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Button fx:id="downBtn" disable="true" layoutX="116.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleDown" prefHeight="33.0" prefWidth="85.0" text="Down">
+      <Button fx:id="downBtn" disable="true" layoutX="117.0" layoutY="469.0" mnemonicParsing="false" onAction="#handleDown" prefHeight="34.0" prefWidth="80.0" text="↓">
          <font>
             <Font size="16.0" />
          </font></Button>
-      <Text fx:id="warningText" layoutX="236.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have not saved any chunks. Please go back and add a chunk" visible="false">
+      <Text fx:id="warningText" layoutX="157.0" layoutY="526.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You do you have any chunks saved. Please go back and save a chunk" visible="false">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="15.0" />
          </font>
       </Text>
+      <Button id="yellowBtn" layoutX="14.0" layoutY="541.0" mnemonicParsing="false" onAction="#returnToMenu" prefHeight="45.0" prefWidth="190.0" text="Return to Menu">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Button id="helpBtn" layoutX="855.0" layoutY="10.0" mnemonicParsing="false" onMouseEntered="#helpEntered" onMouseExited="#helpExited" text="?">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+      <Pane id="helpPane" fx:id="helpPane" layoutX="260.0" layoutY="89.0" prefHeight="400.0" prefWidth="400.0" visible="false">
+         <children>
+            <Text layoutX="6.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Here is a list of all your saved chunks" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Instructions">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You can play or delete a chunk by selecting it from the list and clicking on the &quot;Play&quot; or &quot;Delete&quot; button" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="186.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The ordering of the chunks can be changed by selecting a chunk from the table and clicking on either ↑ or ↓" wrappingWidth="387.99365234375">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="6.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Keyboard Shortcuts:">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="7.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[ENTER] - Play Chunk" />
+            <Text layoutX="7.0" layoutY="317.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[DELETE] - Delete Chunk" />
+            <Text layoutX="7.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[▲] (up arrow key) - Move Up ↑" />
+            <Text layoutX="7.0" layoutY="362.0" strokeType="OUTSIDE" strokeWidth="0.0" text="[▼] (down arrow key) - Move Down ↓" />
+         </children>
+      </Pane>
     </children>
 </AnchorPane>

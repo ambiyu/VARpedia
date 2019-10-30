@@ -6,13 +6,13 @@ import varpedia.main.Main;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class SaveChunkTask extends Task {
+public class SaveAudioTask extends Task {
     private String _text;
     private String _voice;
     private int _id;
     private boolean _isPreview;
 
-    public SaveChunkTask(String text, String voice, int id, boolean isPreview) {
+    public SaveAudioTask(String text, String voice, int id, boolean isPreview) {
         _text = text;
         _voice = voice;
         _id = id;

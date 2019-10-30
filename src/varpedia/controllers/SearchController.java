@@ -1,6 +1,5 @@
 package varpedia.controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,21 +10,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import varpedia.main.Main;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import varpedia.tasks.WikiSearchTask;
 
 public class SearchController {
 
-    @FXML
-    private TextField textField;
-
-    @FXML
-    private Button searchBtn;
-
-    @FXML
-    private Text textPrompt;
-
+    @FXML private TextField textField;
+    @FXML private Button searchBtn;
+    @FXML private Text textPrompt;
     
     @FXML
     public void back() {
@@ -38,56 +29,44 @@ public class SearchController {
             searchBtn.setDisable(true);
             String searchTerm = textField.getText();
             textPrompt.setText("Searching...");
-            new Thread(() -> {
+
+            WikiSearchTask task = new WikiSearchTask(searchTerm);
+
+            task.setOnSucceeded(e -> {
+                String searchResult = (String) task.getValue();
+
                 try {
-                    //String cmd = "wikit \"" + searchTerm + "\" | grep -o '[^ ][^.]*\\.'"; // each sentence on new line
-                    String cmd = "wikit \"" + searchTerm + "\" | grep -o '[^ ].*'";
-                    Process process = new ProcessBuilder("bash", "-c", cmd).start();
-                    process.waitFor();
-                    BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    searchBtn.setDisable(false);
 
-                    StringBuilder sb = new StringBuilder();
-                    String line = stdout.readLine();
-                    if (line.endsWith(" not found :^(")) { // search term not found on wikit
-                        Platform.runLater(() -> {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("ERROR");
-                            alert.setHeaderText(null);
-                            alert.setContentText("\"" + searchTerm + "\" not found :(");
-                            alert.showAndWait();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/SearchResult.fxml"));
+                    SearchResultController controller = new SearchResultController(searchTerm, searchResult);
+                    loader.setController(controller);
 
-                            searchBtn.setDisable(false);
-                            textPrompt.setText("Enter your search term");
-                        });
-                    } else {
-
-                        do {
-                            sb.append(line).append("\n");
-                        } while ((line = stdout.readLine()) != null);
-
-                        Platform.runLater(() -> {
-                            try {
-                                searchBtn.setDisable(false);
-
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/SearchResult.fxml"));
-                                SearchResultController controller = new SearchResultController(searchTerm, sb.toString());
-                                loader.setController(controller);
-
-                                Parent parent = loader.load();
-                                Scene createScene = new Scene(parent);
-                                Stage window = Main.getPrimaryStage();
-                                window.setScene(createScene);
-                                window.show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        });
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    Parent parent = loader.load();
+                    Scene createScene = new Scene(parent);
+                    Stage window = Main.getPrimaryStage();
+                    window.setScene(createScene);
+                    window.show();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
-            }).start();
+            });
+
+            // Search term not found on wikit
+            task.setOnFailed(e -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText(null);
+                alert.setContentText("\"" + searchTerm + "\" not found :(");
+                alert.showAndWait();
+
+                searchBtn.setDisable(false);
+                textPrompt.setText("Enter your search term");
+            });
+
+            Thread thread = new Thread(task);
+            thread.start();
+
         }
     }
 

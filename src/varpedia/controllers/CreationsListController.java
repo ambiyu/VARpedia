@@ -1,6 +1,5 @@
 package varpedia.controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,9 +7,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import varpedia.main.Creation;
 import varpedia.main.Main;
+import varpedia.tasks.PlayAudioTask;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,21 +25,14 @@ import java.util.ResourceBundle;
 
 public class CreationsListController implements Initializable {
     private List<Creation> _creations;
+    private PlayAudioTask _playAudioTask;
 
-    @FXML
-    private TableView<Creation> tableView;
-
-    @FXML
-    private TableColumn<Creation, String> creationIdCol;
-
-    @FXML
-    private TableColumn<Creation, String> creationNameCol;
-
-    @FXML
-    private TableColumn<Creation, String> searchTermCol;
-
-    @FXML
-    private Button playAudioBtn;
+    @FXML private TableView<Creation> tableView;
+    @FXML private TableColumn<Creation, String> creationIdCol;
+    @FXML private TableColumn<Creation, String> creationNameCol;
+    @FXML private TableColumn<Creation, String> searchTermCol;
+    @FXML private Button playAudioBtn;
+    @FXML private AnchorPane pane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,6 +41,7 @@ public class CreationsListController implements Initializable {
         searchTermCol.setCellValueFactory(new PropertyValueFactory<>("searchTerm"));
 
         try {
+            // get all files from the creations folder
             String cmd = "ls -1 creations";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -56,7 +53,7 @@ public class CreationsListController implements Initializable {
             }
 
             _creations = new ArrayList<>();
-            // get all the mp4 files
+            // filter out all files that are not .mp4
             for (String file : files) {
                 if (file.endsWith(".mp4")) {
                     try {
@@ -81,6 +78,18 @@ public class CreationsListController implements Initializable {
 
             populateTable();
 
+            // Keyboard shortcuts for play and delete
+            // Code snippet from: https://stackoverflow.com/questions/25397742/javafx-keyboard-event-shortcut-key
+            pane.addEventFilter(KeyEvent.KEY_PRESSED, ke -> {
+                if (ke.getCode() == KeyCode.DELETE) {
+                    handleDelete();
+                    ke.consume();
+                } else if (ke.getCode() == KeyCode.ENTER) {
+                    handlePlay();
+                    ke.consume();
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,6 +100,7 @@ public class CreationsListController implements Initializable {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
+            // go to the media player
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/varpedia/fxml/MediaPlayer.fxml"));
                 MediaPlayerController controller = new MediaPlayerController("creations/" + selected.getName() + ".mp4");
@@ -115,26 +125,30 @@ public class CreationsListController implements Initializable {
         Creation selected = tableView.getSelectionModel().getSelectedItem();
 
         if (selected != null) {
-            playAudioBtn.setDisable(true);
-            String creationName = selected.getName();
+            if (_playAudioTask != null && playAudioBtn.getText().equals("Stop")) {
+                _playAudioTask.destroyProcess();
+                _playAudioTask.cancel();
+                playAudioBtn.setText("Play Audio");
+            } else {
 
-            new Thread(() -> {
-                try {
-                    // check if audio file already exists, otherwise create one
-                    int exitCode = Main.execCmd("test -f .temp/" + creationName + ".wav");
-                    if (exitCode != 0) {
-                        Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/" + creationName + ".wav");
-                    }
+                String creationName = selected.getName();
 
-                    Main.execCmd("play .temp/" + creationName + ".wav");
-
-                    Platform.runLater(() -> {
-                        playAudioBtn.setDisable(false);
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // check if audio file already exists, if so then delete it
+                int exitCode = Main.execCmd("test -f .temp/preview.wav");
+                if (exitCode == 0) {
+                    Main.execCmd("rm .temp/preview.wav");
                 }
-            }).start();
+
+                // create an audio file with that contains the audio of the creation
+                Main.execCmd("ffmpeg -i creations/" + creationName + ".mp4 -f wav -ab 192000 -vn .temp/preview.wav");
+
+                _playAudioTask = new PlayAudioTask(".temp/preview.wav");
+                _playAudioTask.setOnSucceeded(e -> playAudioBtn.setText("Play Audio"));
+                _playAudioTask.setOnRunning(e -> playAudioBtn.setText("Stop"));
+
+                Thread thread = new Thread(_playAudioTask);
+                thread.start();
+            }
 
         } else {
             displaySelectionError();
@@ -159,6 +173,7 @@ public class CreationsListController implements Initializable {
                 tableView.getItems().clear();
                 populateTable();
 
+                // delete related files
                 Main.execCmd("rm creations/" + selected.getName() + ".mp4");
                 Main.execCmd("rm -r .quiz/" + selected.getName());
             }
@@ -177,17 +192,13 @@ public class CreationsListController implements Initializable {
         for (Creation creation : _creations) {
             tableView.getItems().add(creation);
         }
-/*        for (int i = 0; i < _creations.size(); i++) {
-            Creation creation = new Creation(i+1, _creations.get(i));
-            tableView.getItems().add(creation);
-        }*/
     }
 
     private void displaySelectionError() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
         alert.setHeaderText(null);
-        alert.setContentText("No creation selected");
+        alert.setContentText("No creation selected. Please select a creation from the list");
         alert.showAndWait();
     }
 }

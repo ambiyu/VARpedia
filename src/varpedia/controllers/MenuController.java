@@ -25,6 +25,7 @@ public class MenuController {
     @FXML
     private void toQuiz() {
         try {
+            // gets a list of creations and checks if there are at least 4 creations before they can use the quiz
             String cmd = "ls creations/*.mp4 | wc -l";
             Process process = new ProcessBuilder("bash", "-c", cmd).start();
             BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -35,7 +36,7 @@ public class MenuController {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
                 alert.setHeaderText(null);
-                alert.setContentText("You need at least 4 creations to start the quiz. Please create " + required + " more creation(s).");
+                alert.setContentText("You need at least 4 different creations to start the quiz. Please create " + required + " more creation(s).");
                 alert.showAndWait();
             } else {
                 Main.switchScene(getClass().getResource("/varpedia/fxml/Quiz.fxml"));
